@@ -4,7 +4,7 @@
   <title><![CDATA[Software Developer's diary]]></title>
   <link href="http://mushketyk.github.io/atom.xml" rel="self"/>
   <link href="http://mushketyk.github.io/"/>
-  <updated>2015-08-24T23:07:46+01:00</updated>
+  <updated>2015-08-24T23:13:25+01:00</updated>
   <id>http://mushketyk.github.io/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -18,7 +18,7 @@
     <link href="http://mushketyk.github.io/blog/2015/08/24/git-productivity-tip/"/>
     <updated>2015-08-24T21:48:32+01:00</updated>
     <id>http://mushketyk.github.io/blog/2015/08/24/git-productivity-tip</id>
-    <content type="html"><![CDATA[<p>git provaides an efficient shortcut to refer to a previous branch: &ldquo;-&rdquo;. It can be used to quickly switch to a previous branch or to merge current branch.</p>
+    <content type="html"><![CDATA[<p>git provides an efficient shortcut to refer to a previous branch: &ldquo;-&rdquo;. It can be used to quickly switch to a previous branch or to merge current branch.</p>
 
 <!--more-->
 
