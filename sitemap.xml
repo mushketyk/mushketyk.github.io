@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://mushketyk.github.io/blog/2015/08/24/git-productivity-tip/</loc>
+    <lastmod>2015-08-24T21:48:32+01:00</lastmod>
+  </url>
+  <url>
     <loc>http://mushketyk.github.io/blog/archives/</loc>
   </url>
   <url>
     <loc>http://mushketyk.github.io/</loc>
+  </url>
+  <url>
+    <loc>http://mushketyk.github.io/blog/categories/git/</loc>
+  </url>
+  <url>
+    <loc>http://mushketyk.github.io/blog/categories/productivity/</loc>
+  </url>
+  <url>
+    <loc>http://mushketyk.github.io/blog/categories/merge/</loc>
   </url>
 </urlset>

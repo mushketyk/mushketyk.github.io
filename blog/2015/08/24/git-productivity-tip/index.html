@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>My Octopress Blog</title>
+  <title>Git Productivity Tip - My Octopress Blog</title>
   <meta name="author" content="Your Name">
 
   
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://mushketyk.github.io/">
+  <link rel="canonical" href="http://mushketyk.github.io/blog/2015/08/24/git-productivity-tip/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="My Octopress Blog" type="application/atom+xml">
@@ -63,15 +63,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2015/08/24/git-productivity-tip/">Git Productivity Tip</a></h1>
+      <h1 class="entry-title">Git Productivity Tip</h1>
     
     
       <p class="meta">
@@ -87,25 +84,83 @@
   </header>
 
 
-  <div class="entry-content"><p>git provaides an efficient shortcut to refer to a previous branch: &ldquo;-&rdquo;. It can be used to quickly switch to a previous branch or to merge current branch.</p>
+<div class="entry-content"><p>git provaides an efficient shortcut to refer to a previous branch: &ldquo;-&rdquo;. It can be used to quickly switch to a previous branch or to merge current branch.</p>
+
+<!--more-->
+
+
+<p>For example if you switched from &ldquo;master&rdquo; branch to &ldquo;feature&rdquo; branch and now you want to switch back, just type:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git checkout -</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and git will switch back to the &ldquo;master&rdquo; branch.</p>
+
+<p>This is also useful for merging. If you want to merge &ldquo;feature&rdquo; branch in to the &ldquo;master&rdquo;  you can just do the following:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># switch to from "feature" branch to "master" branch
+</span><span class='line'>git checkout master
+</span><span class='line'># merge "feature" branch in "master"
+</span><span class='line'>git merge -</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This can require even less typing if you use <a href="https://github.com/robbyrussell/oh-my-zsh">oh-my-zsh</a> extension for zsh shell:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gco master
+</span><span class='line'>gm -</span></code></pre></td></tr></table></div></figure>
 
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/08/24/git-productivity-tip/">Read on &rarr;</a>
-    </footer>
-  
 
 
-    </article>
+  <footer>
+    <p class="meta">
+      
   
-  <div class="pagination">
+
+<span class="byline author vcard">Posted by <span class="fn">Your Name</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-08-24T21:48:32+01:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>9:48 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/git/'>git</a>, <a class='category' href='/blog/categories/merge/'>merge</a>, <a class='category' href='/blog/categories/productivity/'>productivity</a>
+  
+</span>
+
+
+    </p>
     
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://mushketyk.github.io/blog/2015/08/24/git-productivity-tip/" data-via="" data-counturl="http://mushketyk.github.io/blog/2015/08/24/git-productivity-tip/" >Tweet</a>
+  
+  
+  
 </div>
+
+    
+    <p class="meta">
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
 <aside class="sidebar">
   
     <section>
@@ -125,6 +180,7 @@
 
   
 </aside>
+
 
     </div>
   </div>

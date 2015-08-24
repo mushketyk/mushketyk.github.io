@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[My Octopress Blog]]></title>
-  <link href="http://mushketyk.github.io/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Merge | My Octopress Blog]]></title>
+  <link href="http://mushketyk.github.io/blog/categories/merge/atom.xml" rel="self"/>
   <link href="http://mushketyk.github.io/"/>
   <updated>2015-08-24T22:45:37+01:00</updated>
   <id>http://mushketyk.github.io/</id>
@@ -25,31 +25,24 @@
 
 <p>For example if you switched from &ldquo;master&rdquo; branch to &ldquo;feature&rdquo; branch and now you want to switch back, just type:</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git checkout -</span></code></pre></td></tr></table></div></figure>
-
+<pre><code>git checkout -
+</code></pre>
 
 <p>and git will switch back to the &ldquo;master&rdquo; branch.</p>
 
 <p>This is also useful for merging. If you want to merge &ldquo;feature&rdquo; branch in to the &ldquo;master&rdquo;  you can just do the following:</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'># switch to from "feature" branch to "master" branch
-</span><span class='line'>git checkout master
-</span><span class='line'># merge "feature" branch in "master"
-</span><span class='line'>git merge -</span></code></pre></td></tr></table></div></figure>
-
+<pre><code># switch to from "feature" branch to "master" branch
+git checkout master
+# merge "feature" branch in "master"
+git merge -
+</code></pre>
 
 <p>This can require even less typing if you use <a href="https://github.com/robbyrussell/oh-my-zsh">oh-my-zsh</a> extension for zsh shell:</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>gco master
-</span><span class='line'>gm -</span></code></pre></td></tr></table></div></figure>
-
+<pre><code>gco master
+gm -
+</code></pre>
 ]]></content>
   </entry>
   
