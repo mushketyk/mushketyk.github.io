@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Productivity | Software Developer's diary]]></title>
   <link href="http://mushketyk.github.io/blog/categories/productivity/atom.xml" rel="self"/>
   <link href="http://mushketyk.github.io/"/>
-  <updated>2015-08-24T23:53:19+01:00</updated>
+  <updated>2015-08-25T08:29:39+01:00</updated>
   <id>http://mushketyk.github.io/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -25,14 +25,14 @@
 
 <p>For example if you switched from &ldquo;master&rdquo; branch to &ldquo;feature&rdquo; branch and now you want to switch back, just type:</p>
 
-<pre><code class="zsh">git checkout -
+<pre><code class="shell">git checkout -
 </code></pre>
 
 <p>and git will switch back to the &ldquo;master&rdquo; branch.</p>
 
 <p>This is also useful for merging. If you want to merge &ldquo;feature&rdquo; branch in to the &ldquo;master&rdquo;  you can just do the following:</p>
 
-<pre><code class="zsh"># switch to from "feature" branch to "master" branch
+<pre><code class="shell"># switch to from "feature" branch to "master" branch
 git checkout master
 # merge "feature" branch in "master"
 git merge -
@@ -40,7 +40,7 @@ git merge -
 
 <p>This can require even less typing if you use <a href="https://github.com/robbyrussell/oh-my-zsh">oh-my-zsh</a> extension for zsh shell:</p>
 
-<pre><code class="zsh">gco master
+<pre><code class="shell">gco master
 gm -
 </code></pre>
 ]]></content>
