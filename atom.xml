@@ -4,7 +4,7 @@
   <title><![CDATA[Software Developer's diary]]></title>
   <link href="http://mushketyk.github.io/atom.xml" rel="self"/>
   <link href="http://mushketyk.github.io/"/>
-  <updated>2015-08-27T20:58:59+01:00</updated>
+  <updated>2015-08-27T21:04:14+01:00</updated>
   <id>http://mushketyk.github.io/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -33,6 +33,11 @@
 
 
 <p>Here is a simple but not idiomatic solution:</p>
+
+<!--more-->
+
+
+
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -141,7 +146,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>This is much better. But to be really idiomatic we can use Counter class from  <a href="collections">https://docs.python.org/2/library/collections.html</a> library:</p>
+<p>This is much better. But to be really idiomatic we can use Counter class from  <a href="https://docs.python.org/2/library/collections.html">collections</a> library:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -152,7 +157,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>In addtion Counter class also provides more useful methods to work with counts <a href="operations">https://docs.python.org/2/library/collections.html#collections.Counter</a> such as addition of counters, subtraction, intersection, etc.</p>
+<p>In addtion Counter class also provides more useful methods to work with counts <a href="https://docs.python.org/2/library/collections.html#collections.Counter">operations</a> such as addition of counters, subtraction, intersection, etc.</p>
 ]]></content>
   </entry>
   
