@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Python | Software Developer's diary]]></title>
-  <link href="http://mushketyk.github.io/blog/categories/python/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Pythonic | Software Developer's diary]]></title>
+  <link href="http://mushketyk.github.io/blog/categories/pythonic/atom.xml" rel="self"/>
   <link href="http://mushketyk.github.io/"/>
   <updated>2015-08-27T20:58:59+01:00</updated>
   <id>http://mushketyk.github.io/</id>
@@ -99,94 +99,6 @@
 </code></pre>
 
 <p>In addtion Counter class also provides more useful methods to work with counts <a href="operations">https://docs.python.org/2/library/collections.html#collections.Counter</a> such as addition of counters, subtraction, intersection, etc.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Wrong Python Decorator and How to Fix It]]></title>
-    <link href="http://mushketyk.github.io/blog/2015/08/25/wrong-python-decorator-and-how-to-fix-it/"/>
-    <updated>2015-08-25T20:19:02+01:00</updated>
-    <id>http://mushketyk.github.io/blog/2015/08/25/wrong-python-decorator-and-how-to-fix-it</id>
-    <content type="html"><![CDATA[<p>Let&rsquo;s say you need to write a decorator that measures how long does it take to execute a function. For this task you may write something like this:</p>
-
-<!--more-->
-
-
-<pre><code class="python">def timeit(func):
-    def inner(*args, **kwargs):
-        before = datetime.now()
-        result = func(*args, **kwargs)
-        after = datetime.now()
-        diff = after.microsecond - before.microsecond
-        print "It took {} ms to execute {}".format(diff, func.__name__)
-
-        return result
-    return inner
-</code></pre>
-
-<p>So now you can apply this decorator:</p>
-
-<pre><code class="python">@timeit
-def fib(n):
-    """Returns n-th fibonachi number"""
-    if n &lt; 0:
-        raise ValueError("Input should be non-negative")
-    if n == 0 or n == 1:
-        return n
-    a, b = 0, 1
-    for i in range(1, n+1):
-        a, b = b, a + b
-    return b
-</code></pre>
-
-<p>Which seems to work:</p>
-
-<pre><code class="python">&gt;&gt;&gt; fib(100)
-It took 156 ms to execute fib
-573147844013817084101L
-</code></pre>
-
-<p>Looks fine, but let&rsquo;s try to poke our function in the interpreter:</p>
-
-<pre><code class="python">&gt;&gt;&gt; fib.__name__
-'inner'
-&gt;&gt;&gt; fib.__doc__
-&gt;&gt;&gt;
-</code></pre>
-
-<p>It doesn&rsquo;t make sense! This function is &ldquo;fib&rdquo; and not &ldquo;inner&rdquo; and it definitely has a docstring.</p>
-
-<p>Luckily we can easily fix it. We can copy necessary fields from a decorated function:</p>
-
-<pre><code class="python">def timeit(func):
-    def inner(*args, **kwargs):
-    ...
-    inner.__name__ = func.__name__
-    inner.__doc__ = func.__doc__
-    inner.__module__ = func.__module__
-    return inner
-</code></pre>
-
-<p>Now it works as expected:</p>
-
-<pre><code class="python">&gt;&gt;&gt; fib.__doc__
-'Returns n-th fibonachi number'
-&gt;&gt;&gt; fib.__module__
-'__main__'
-</code></pre>
-
-<p>Alternatively we can use <a href="https://docs.python.org/2/library/functools.html#functools.wraps">wraps</a> function from <a href="https://docs.python.org/2/library/functools.html">functools</a> module:</p>
-
-<pre><code class="python">from functools import wraps
-
-def timeit(func):
-  @wraps(func)
-    def inner(*args, **kwargs):
-    ...
-    return inner
-</code></pre>
-
-<p>Which provides the same result.</p>
 ]]></content>
   </entry>
   
