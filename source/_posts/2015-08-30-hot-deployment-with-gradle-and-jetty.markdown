@@ -94,6 +94,6 @@ When you run this command you should see an output like:
 Press any key to stop the server.
 ```
 
-Now the web site is available via the following url: http://localhost:8080/open-board
+The web site should be available via the following url: http://localhost:8080/open-board
 
 If index.html is updated new changes would be reflected if you refresh a page in a browser. No server restart is needed.
