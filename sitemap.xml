@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://mushketyk.github.io/blog/2015/08/30/hot-deployment-with-gradle-and-jetty/</loc>
+    <lastmod>2015-08-30T21:35:05+01:00</lastmod>
+  </url>
+  <url>
     <loc>http://mushketyk.github.io/blog/2015/08/27/idiomatic-way-to-count-in-python/</loc>
     <lastmod>2015-08-27T20:07:29+01:00</lastmod>
   </url>
@@ -47,5 +51,17 @@
   </url>
   <url>
     <loc>http://mushketyk.github.io/blog/categories/pythonic/</loc>
+  </url>
+  <url>
+    <loc>http://mushketyk.github.io/blog/categories/gradle/</loc>
+  </url>
+  <url>
+    <loc>http://mushketyk.github.io/blog/categories/jetty/</loc>
+  </url>
+  <url>
+    <loc>http://mushketyk.github.io/blog/categories/java/</loc>
+  </url>
+  <url>
+    <loc>http://mushketyk.github.io/blog/categories/deployment/</loc>
   </url>
 </urlset>
