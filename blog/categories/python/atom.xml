@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Python | Software Developer's diary]]></title>
   <link href="http://mushketyk.github.io/blog/categories/python/atom.xml" rel="self"/>
   <link href="http://mushketyk.github.io/"/>
-  <updated>2015-08-31T09:22:34+01:00</updated>
+  <updated>2015-09-01T22:17:02+01:00</updated>
   <id>http://mushketyk.github.io/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -12,6 +12,171 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Sorting Trick in Python]]></title>
+    <link href="http://mushketyk.github.io/blog/2015/09/01/sorting-trick-in-python/"/>
+    <updated>2015-09-01T08:28:07+01:00</updated>
+    <id>http://mushketyk.github.io/blog/2015/09/01/sorting-trick-in-python</id>
+    <content type="html"><![CDATA[<p>How would we sort a list of instances of a class like this?</p>
+
+<pre><code class="python">class Person(object):
+     def __init__(self, name, age):
+         self.name = name
+         self.age = age
+     def __repr__(self):
+         return "Person(name='{}', age={})".format(self.name, self.age)
+</code></pre>
+
+<p>One way would be to define a &ldquo;less&rdquo; operator that can be used by a sorting function:</p>
+
+<!--more-->
+
+
+<pre><code class="python">class Person(object):
+     def __init__(self, name, age):
+         ...
+     def __lt__(self, other):
+         return self.name &lt; other.name
+     def __repr__(self):
+         ...
+
+Person('John', 32) &lt; Person('Boris', 29)
+&gt;&gt;&gt; False
+
+Person('John', 32) &gt; Person('Boris', 29)
+&gt;&gt;&gt; True
+</code></pre>
+
+<p>With this we can sort a list:</p>
+
+<pre><code class="python">people = [Person('John', 32), Person('Boris', 29), Person('Ervin', 26)]
+
+sorted(people)
+&gt;&gt;&gt;
+[Person(name='Boris', age=29),
+ Person(name='Ervin', age=26),
+ Person(name='John', age=32)]
+</code></pre>
+
+<p>But what if want to sort by different fields in different cases?</p>
+
+<p>Let&rsquo;s say we have class Point with fields &ldquo;x&rdquo; and &ldquo;y&rdquo;:</p>
+
+<pre><code class="python">class Point(object):
+     def __init__(self, x, y):
+         self.x = x
+         self.y = y
+     def __repr__(self):
+         return "({}, {})".format(self.x, self.y)
+</code></pre>
+
+<p>If we need to find <a href="http://www.geeksforgeeks.org/closest-pair-of-points/">closest pair of points</a> we may need to sort an array of points in different cases by &ldquo;x&rdquo; or by &ldquo;y&rdquo; field. Since we can only implement one version of __lt__ method we should find another option.</p>
+
+<p>Let&rsquo;s see how we can overcome this limitation.</p>
+
+<p>At first we can create a function that will extract a value of a field that will be used for sorting:</p>
+
+<pre><code class="python"># "getter" function returns value of "x" field
+getter = lambda point: point.x
+
+getter(Point(1, 2))
+&gt;&gt;&gt; 1
+</code></pre>
+
+<p>Now this function can be used by &ldquo;sorted&rdquo; function to sort a list of points by &ldquo;x&rdquo; field:</p>
+
+<pre><code class="python">sorted(points, key=lambda point: point.x)
+&gt;&gt;&gt; [(-1, 4), (0, 6), (1, 42), (1, 2), (1, 5)]
+</code></pre>
+
+<p>This works fine, but in Python it can be done with less keystrokes.</p>
+
+<p>Python has the &ldquo;attrgetter&rdquo; function in &ldquo;operator&rdquo; module that can be used to generate a function that we&rsquo;ve implemented manually:</p>
+
+<pre><code class="python">from operator import attrgetter
+
+# "getter" is a function that can extract value of field "x" from
+getter = attrgetter('x')
+
+getter(Point(1, 2))
+&gt;&gt;&gt; 1
+</code></pre>
+
+<p>Now we can pass this function to &ldquo;sorted&rdquo; function as before:</p>
+
+<pre><code class="python">points = [Point(1, 42), Point(1, 2), Point(-1, 4), Point(1, 5), Point(0, 6)]
+
+sorted(points, key=attrgetter('x'))
+&gt;&gt;&gt; [(-1, 4), (0, 6), (1, 42), (1, 2), (1, 5)]
+</code></pre>
+
+<p>If we would like to sort a list by &ldquo;y&rdquo; field all we need to do is to pass another parameter to &ldquo;attrgetter&rdquo; function:</p>
+
+<pre><code class="python">sorted(points, key=attrgetter('y'))
+&gt;&gt;&gt; [(1, 2), (-1, 4), (1, 5), (0, 6), (1, 42)]
+</code></pre>
+
+<p>An additional benefit of the &ldquo;attrgetter&rdquo; function is that it can sort items in a list by several fields.</p>
+
+<p>If we want items first to be sorted by &ldquo;x&rdquo; and then by &ldquo;y&rdquo; field we can pass names of those two fields in &ldquo;attrgetter&rdquo;:</p>
+
+<pre><code class="python">sorted(points, key=attrgetter('x', 'y'))
+&gt;&gt;&gt; [(-1, 4), (0, 6), (1, 2), (1, 5), (1, 42)]
+</code></pre>
+
+<p>Notice that all points with &ldquo;x&rdquo; value equal to 1 are now sorted by &ldquo;y&rdquo; field.</p>
+
+<p>It&rsquo;s interesting to find out how sorting by multiple fields works.</p>
+
+<p>First of all if several arguments are passed to &ldquo;attrgetter&rdquo; it returns an array of values instead of a single value:</p>
+
+<pre><code class="python">getter = attrgetter('x', 'y')
+
+getter(Point(1, 2))
+&gt;&gt;&gt; (1, 2)
+</code></pre>
+
+<p>So &ldquo;sorted&rdquo; function compares arrays of values when it need to decide if one object is &ldquo;smaller&rdquo; than another one.</p>
+
+<p>When Python compares arrays it first compares element in position 0, if they are different an array with smaller element would be considered to be &ldquo;smaller&rdquo;:</p>
+
+<pre><code class="python">(1, 2) &lt; (2, 2)
+&gt;&gt;&gt; True
+
+(1, 2) &lt; (0, 2)
+&gt;&gt;&gt; False
+</code></pre>
+
+<p>If values in position 0 in both arrays are the same Python would check elements in position 1, then 2, and so on:</p>
+
+<pre><code class="python">(2, 2) &lt; (2, 3)
+&gt;&gt;&gt; True
+
+(2, 2) &lt; (2, 2)
+&gt;&gt;&gt; False
+</code></pre>
+
+<p>While &ldquo;attrgetter&rdquo; is useful for sorting arrays of objects Python also comes with a function that is useful for sorting an array of dictionaries:</p>
+
+<pre><code class="python">from operator import itemgetter
+
+# Function to extract value associated with "key"
+getter = itemgetter('key')
+
+getter({'key': 42})
+&gt;&gt;&gt; 42
+</code></pre>
+
+<p>We can use this function for sorting similarly to how we used &ldquo;attrgetter&rdquo;:</p>
+
+<pre><code class="python">lst = [{'key': 5}, {'key': 0}, {'key': 40}]
+
+sorted(lst, key=itemgetter('key'))
+&gt;&gt;&gt; [{'key': 0}, {'key': 5}, {'key': 40}]
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Idiomatic Way to Count in Python]]></title>

@@ -4,7 +4,7 @@
   <title><![CDATA[Software Developer's diary]]></title>
   <link href="http://mushketyk.github.io/atom.xml" rel="self"/>
   <link href="http://mushketyk.github.io/"/>
-  <updated>2015-08-31T09:22:34+01:00</updated>
+  <updated>2015-09-01T22:17:02+01:00</updated>
   <id>http://mushketyk.github.io/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -12,6 +12,267 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Sorting Trick in Python]]></title>
+    <link href="http://mushketyk.github.io/blog/2015/09/01/sorting-trick-in-python/"/>
+    <updated>2015-09-01T08:28:07+01:00</updated>
+    <id>http://mushketyk.github.io/blog/2015/09/01/sorting-trick-in-python</id>
+    <content type="html"><![CDATA[<p>How would we sort a list of instances of a class like this?</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+</span><span class='line'>     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">):</span>
+</span><span class='line'>         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+</span><span class='line'>         <span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span>
+</span><span class='line'>     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>         <span class="k">return</span> <span class="s">&quot;Person(name=&#39;{}&#39;, age={})&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">age</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>One way would be to define a &ldquo;less&rdquo; operator that can be used by a sorting function:</p>
+
+<!--more-->
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+</span><span class='line'>     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">):</span>
+</span><span class='line'>         <span class="o">...</span>
+</span><span class='line'>     <span class="k">def</span> <span class="nf">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+</span><span class='line'>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">&lt;</span> <span class="n">other</span><span class="o">.</span><span class="n">name</span>
+</span><span class='line'>     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>         <span class="o">...</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Person</span><span class="p">(</span><span class="s">&#39;John&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">Person</span><span class="p">(</span><span class="s">&#39;Boris&#39;</span><span class="p">,</span> <span class="mi">29</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="bp">False</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Person</span><span class="p">(</span><span class="s">&#39;John&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">Person</span><span class="p">(</span><span class="s">&#39;Boris&#39;</span><span class="p">,</span> <span class="mi">29</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="bp">True</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>With this we can sort a list:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">people</span> <span class="o">=</span> <span class="p">[</span><span class="n">Person</span><span class="p">(</span><span class="s">&#39;John&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span> <span class="n">Person</span><span class="p">(</span><span class="s">&#39;Boris&#39;</span><span class="p">,</span> <span class="mi">29</span><span class="p">),</span> <span class="n">Person</span><span class="p">(</span><span class="s">&#39;Ervin&#39;</span><span class="p">,</span> <span class="mi">26</span><span class="p">)]</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">sorted</span><span class="p">(</span><span class="n">people</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span>
+</span><span class='line'><span class="p">[</span><span class="n">Person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;Boris&#39;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">29</span><span class="p">),</span>
+</span><span class='line'> <span class="n">Person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;Ervin&#39;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">26</span><span class="p">),</span>
+</span><span class='line'> <span class="n">Person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;John&#39;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">32</span><span class="p">)]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>But what if want to sort by different fields in different cases?</p>
+
+<p>Let&rsquo;s say we have class Point with fields &ldquo;x&rdquo; and &ldquo;y&rdquo;:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">Point</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+</span><span class='line'>     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+</span><span class='line'>         <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+</span><span class='line'>         <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
+</span><span class='line'>     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>         <span class="k">return</span> <span class="s">&quot;({}, {})&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If we need to find <a href="http://www.geeksforgeeks.org/closest-pair-of-points/">closest pair of points</a> we may need to sort an array of points in different cases by &ldquo;x&rdquo; or by &ldquo;y&rdquo; field. Since we can only implement one version of __lt__ method we should find another option.</p>
+
+<p>Let&rsquo;s see how we can overcome this limitation.</p>
+
+<p>At first we can create a function that will extract a value of a field that will be used for sorting:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># &quot;getter&quot; function returns value of &quot;x&quot; field</span>
+</span><span class='line'><span class="n">getter</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">point</span><span class="p">:</span> <span class="n">point</span><span class="o">.</span><span class="n">x</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">getter</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="mi">1</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now this function can be used by &ldquo;sorted&rdquo; function to sort a list of points by &ldquo;x&rdquo; field:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="nb">sorted</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">point</span><span class="p">:</span> <span class="n">point</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="p">[(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">42</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This works fine, but in Python it can be done with less keystrokes.</p>
+
+<p>Python has the &ldquo;attrgetter&rdquo; function in &ldquo;operator&rdquo; module that can be used to generate a function that we&rsquo;ve implemented manually:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">attrgetter</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># &quot;getter&quot; is a function that can extract value of field &quot;x&quot; from</span>
+</span><span class='line'><span class="n">getter</span> <span class="o">=</span> <span class="n">attrgetter</span><span class="p">(</span><span class="s">&#39;x&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">getter</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="mi">1</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we can pass this function to &ldquo;sorted&rdquo; function as before:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">42</span><span class="p">),</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">Point</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">)]</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">sorted</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">attrgetter</span><span class="p">(</span><span class="s">&#39;x&#39;</span><span class="p">))</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="p">[(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">42</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If we would like to sort a list by &ldquo;y&rdquo; field all we need to do is to pass another parameter to &ldquo;attrgetter&rdquo; function:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="nb">sorted</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">attrgetter</span><span class="p">(</span><span class="s">&#39;y&#39;</span><span class="p">))</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">42</span><span class="p">)]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>An additional benefit of the &ldquo;attrgetter&rdquo; function is that it can sort items in a list by several fields.</p>
+
+<p>If we want items first to be sorted by &ldquo;x&rdquo; and then by &ldquo;y&rdquo; field we can pass names of those two fields in &ldquo;attrgetter&rdquo;:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="nb">sorted</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">attrgetter</span><span class="p">(</span><span class="s">&#39;x&#39;</span><span class="p">,</span> <span class="s">&#39;y&#39;</span><span class="p">))</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="p">[(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">42</span><span class="p">)]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Notice that all points with &ldquo;x&rdquo; value equal to 1 are now sorted by &ldquo;y&rdquo; field.</p>
+
+<p>It&rsquo;s interesting to find out how sorting by multiple fields works.</p>
+
+<p>First of all if several arguments are passed to &ldquo;attrgetter&rdquo; it returns an array of values instead of a single value:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">getter</span> <span class="o">=</span> <span class="n">attrgetter</span><span class="p">(</span><span class="s">&#39;x&#39;</span><span class="p">,</span> <span class="s">&#39;y&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">getter</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So &ldquo;sorted&rdquo; function compares arrays of values when it need to decide if one object is &ldquo;smaller&rdquo; than another one.</p>
+
+<p>When Python compares arrays it first compares element in position 0, if they are different an array with smaller element would be considered to be &ldquo;smaller&rdquo;:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="bp">True</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="bp">False</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If values in position 0 in both arrays are the same Python would check elements in position 1, then 2, and so on:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="bp">True</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="bp">False</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>While &ldquo;attrgetter&rdquo; is useful for sorting arrays of objects Python also comes with a function that is useful for sorting an array of dictionaries:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">itemgetter</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Function to extract value associated with &quot;key&quot;</span>
+</span><span class='line'><span class="n">getter</span> <span class="o">=</span> <span class="n">itemgetter</span><span class="p">(</span><span class="s">&#39;key&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">getter</span><span class="p">({</span><span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="mi">42</span><span class="p">})</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="mi">42</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We can use this function for sorting similarly to how we used &ldquo;attrgetter&rdquo;:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">lst</span> <span class="o">=</span> <span class="p">[{</span><span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">},</span> <span class="p">{</span><span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="mi">40</span><span class="p">}]</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">sorted</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">itemgetter</span><span class="p">(</span><span class="s">&#39;key&#39;</span><span class="p">))</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="p">[{</span><span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">},</span> <span class="p">{</span><span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="mi">40</span><span class="p">}]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Hot Deployment With Gradle and Jetty]]></title>
@@ -154,7 +415,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Now the web site is available via the following url: <a href="http://localhost:8080/open-board">http://localhost:8080/open-board</a></p>
+<p>The web site should be available via the following url: <a href="http://localhost:8080/open-board">http://localhost:8080/open-board</a></p>
 
 <p>If index.html is updated new changes would be reflected if you refresh a page in a browser. No server restart is needed.</p>
 ]]></content>

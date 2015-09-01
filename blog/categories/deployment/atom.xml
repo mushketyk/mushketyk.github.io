@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Deployment | Software Developer's diary]]></title>
   <link href="http://mushketyk.github.io/blog/categories/deployment/atom.xml" rel="self"/>
   <link href="http://mushketyk.github.io/"/>
-  <updated>2015-08-31T09:22:34+01:00</updated>
+  <updated>2015-09-01T22:17:02+01:00</updated>
   <id>http://mushketyk.github.io/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -100,7 +100,7 @@ gradle appRun
 Press any key to stop the server.
 </code></pre>
 
-<p>Now the web site is available via the following url: <a href="http://localhost:8080/open-board">http://localhost:8080/open-board</a></p>
+<p>The web site should be available via the following url: <a href="http://localhost:8080/open-board">http://localhost:8080/open-board</a></p>
 
 <p>If index.html is updated new changes would be reflected if you refresh a page in a browser. No server restart is needed.</p>
 ]]></content>
