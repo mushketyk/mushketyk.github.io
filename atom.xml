@@ -4,7 +4,7 @@
   <title><![CDATA[Software Developer's diary]]></title>
   <link href="http://mushketyk.github.io/atom.xml" rel="self"/>
   <link href="http://mushketyk.github.io/"/>
-  <updated>2015-09-02T08:33:40+01:00</updated>
+  <updated>2015-09-05T19:19:51+01:00</updated>
   <id>http://mushketyk.github.io/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -12,6 +12,283 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[How to Implement String Interpolation in Python]]></title>
+    <link href="http://mushketyk.github.io/blog/2015/09/05/string-interpolation-in-python/"/>
+    <updated>2015-09-05T15:32:28+01:00</updated>
+    <id>http://mushketyk.github.io/blog/2015/09/05/string-interpolation-in-python</id>
+    <content type="html"><![CDATA[<p>String interpolation is a process of substituting values of local variables into placeholders in a string.</p>
+
+<p>It is implemented in many programming languages such as Scala:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="c1">//Scala 2.10+</span>
+</span><span class='line'><span class="k">var</span> <span class="n">name</span> <span class="k">=</span> <span class="s">&quot;John&quot;</span><span class="o">;</span>
+</span><span class='line'><span class="n">println</span><span class="o">(</span><span class="n">s</span><span class="s">&quot;My name is $name&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="nc">My</span> <span class="n">name</span> <span class="n">is</span> <span class="nc">John</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Perl:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="k">my</span> <span class="nv">$name</span> <span class="o">=</span> <span class="s">&quot;John&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="k">print</span> <span class="s">&quot;My name is $name&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">My</span> <span class="n">name</span> <span class="n">is</span> <span class="n">John</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>CoffeeScript:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">name = </span><span class="s">&quot;John&quot;</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;My name is </span><span class="si">#{</span><span class="nx">name</span><span class="si">}</span><span class="s">&quot;</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="nx">My</span> <span class="nx">name</span> <span class="o">is</span> <span class="nx">John</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and many others.</p>
+
+<p>On the first sight, it doesn&rsquo;t seem that it&rsquo;s possible to use string interpolation in Python. However, we can implement it with just 2 lines of Python code.</p>
+
+<!--more-->
+
+
+<p>But let&rsquo;s start with basics. An idiomatic way to build a complex string in Python is to use the &ldquo;format&rdquo; function:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">print</span> <span class="s">&quot;Hi, I am {} and I am {} years old&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">Hi</span><span class="p">,</span> <span class="n">I</span> <span class="n">am</span> <span class="n">John</span> <span class="ow">and</span> <span class="n">I</span> <span class="n">am</span> <span class="mi">26</span> <span class="n">years</span> <span class="n">old</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Which is much cleaner than using string concatenation:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">print</span> <span class="s">&quot;Hi, I am &quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s">&quot; and I am &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">age</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; years old&quot;</span>
+</span><span class='line'><span class="n">Hi</span><span class="p">,</span> <span class="n">I</span> <span class="n">am</span> <span class="n">John</span> <span class="ow">and</span> <span class="n">I</span> <span class="n">am</span> <span class="mi">26</span> <span class="n">years</span> <span class="n">old</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>But if you use the &ldquo;format&rdquo; function in this way the output depends on the order of arguments:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">print</span> <span class="s">&quot;Hi, I am {} and I am {} years old&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">age</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+</span><span class='line'><span class="n">Hi</span><span class="p">,</span> <span class="n">I</span> <span class="n">am</span> <span class="mi">26</span> <span class="ow">and</span> <span class="n">I</span> <span class="n">am</span> <span class="n">John</span> <span class="n">years</span> <span class="n">old</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To avoid that we can pass key-value arguments to the &ldquo;format&rdquo; function:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">print</span> <span class="s">&quot;Hi, I am {name} and I am {age} years old&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;John&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">26</span><span class="p">)</span>
+</span><span class='line'><span class="n">Hi</span><span class="p">,</span> <span class="n">I</span> <span class="n">am</span> <span class="n">John</span> <span class="ow">and</span> <span class="n">I</span> <span class="n">am</span> <span class="mi">26</span> <span class="n">years</span> <span class="n">old</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">print</span> <span class="s">&quot;Hi, I am {name} and I am {age} years old&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">age</span><span class="o">=</span><span class="mi">26</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;John&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">Hi</span><span class="p">,</span> <span class="n">I</span> <span class="n">am</span> <span class="n">John</span> <span class="ow">and</span> <span class="n">I</span> <span class="n">am</span> <span class="mi">26</span> <span class="n">years</span> <span class="n">old</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Here we had to pass all variables for string interpolation to the &ldquo;format&rdquo; function, but still we have not achieved what we wanted, because &ldquo;name&rdquo; and &ldquo;age&rdquo; are not local variables. Can &ldquo;format&rdquo; somehow access local variables?</p>
+
+<p>To do it we can get a dictionary with all local variables using the &ldquo;locals&rdquo; function:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;John&quot;</span>
+</span><span class='line'><span class="n">age</span> <span class="o">=</span> <span class="mi">26</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">locals</span><span class="p">()</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="p">{</span>
+</span><span class='line'> <span class="o">...</span>
+</span><span class='line'> <span class="s">&#39;age&#39;</span><span class="p">:</span> <span class="mi">26</span><span class="p">,</span>
+</span><span class='line'> <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;John&#39;</span><span class="p">,</span>
+</span><span class='line'> <span class="o">...</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we just need to somehow pass it to the &ldquo;format&rdquo; function. Unfortunately we cannot just call it as &ldquo;s.format(locals())&rdquo;:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">print</span> <span class="s">&quot;Hi, I am {name} and I am {age} years old&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
+</span><span class='line'><span class="o">---------------------------------------------------------------------------</span>
+</span><span class='line'><span class="ne">KeyError</span>                                  <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">)</span>
+</span><span class='line'><span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">5</span><span class="o">-</span><span class="mi">0</span><span class="n">fb983071eb8</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="p">()</span>
+</span><span class='line'><span class="o">----&gt;</span> <span class="mi">1</span> <span class="k">print</span> <span class="s">&quot;Hi, I am {name} and I am {age} years old&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
+</span><span class='line'>
+</span><span class='line'><span class="ne">KeyError</span><span class="p">:</span> <span class="s">&#39;name&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is because &ldquo;locals()&rdquo; returns a dictionary, while &ldquo;format&rdquo; expects key-value parameters.</p>
+
+<p>Luckily we can convert a dictionary into key-value parameters using &ldquo;**&rdquo; opeartor. If we have a function that expects key-value arguments:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">arg1</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">arg2</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">print</span> <span class="s">&quot;arg1 = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">arg1</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">print</span> <span class="s">&quot;arg2 = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">arg2</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We can pass parameters packed in a dictionary:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>    <span class="s">&#39;arg1&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>    <span class="s">&#39;arg2&#39;</span><span class="p">:</span> <span class="mi">42</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">foo</span><span class="p">(</span><span class="o">**</span><span class="n">d</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">arg1</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span class='line'><span class="n">arg2</span> <span class="o">=</span> <span class="mi">42</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we can use this technique to implement our first version of string interpolation:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">print</span> <span class="s">&quot;Hi, I am {name} and I am {age} years old&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="nb">locals</span><span class="p">())</span>
+</span><span class='line'><span class="n">Hi</span><span class="p">,</span> <span class="n">I</span> <span class="n">am</span> <span class="n">John</span> <span class="ow">and</span> <span class="n">I</span> <span class="n">am</span> <span class="mi">26</span> <span class="n">years</span> <span class="n">old</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It works, but looks cumbersome. With this approach every time we need to interpolate our string we would need to write &ldquo;format(**locals())&rdquo;.
+It would be great if we could write a function that would interpolate a string like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># Can we implement inter() function in Python?</span>
+</span><span class='line'><span class="k">print</span> <span class="n">inter</span><span class="p">(</span><span class="s">&quot;Hi, I am {name} and I am {age} years old&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">Hi</span><span class="p">,</span> <span class="n">I</span> <span class="n">am</span> <span class="n">John</span> <span class="ow">and</span> <span class="n">I</span> <span class="n">am</span> <span class="mi">26</span> <span class="n">years</span> <span class="n">old</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> At first it seems impossible, since if we move interpolation code to another function it would not be able to access local variables from a scope where it was called from:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;John&quot;</span>
+</span><span class='line'><span class="k">print</span> <span class="n">inter</span><span class="p">(</span><span class="s">&quot;My name is {name}&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">...</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">inter</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+</span><span class='line'>  <span class="c"># How can we access &quot;name&quot; variable from here?</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And yet, it is possible. Python provides a way to inspect current stack with sys._getframe function:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">sys</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">foo</span><span class="p">():</span>
+</span><span class='line'>     <span class="n">foo_var</span> <span class="o">=</span> <span class="s">&#39;foo&#39;</span>
+</span><span class='line'>     <span class="n">bar</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'> <span class="k">def</span> <span class="nf">bar</span><span class="p">():</span>
+</span><span class='line'>     <span class="c"># sys._getframe(0) would return frame for function &quot;bar&quot;</span>
+</span><span class='line'>     <span class="c"># so we need to to access 1-st frame</span>
+</span><span class='line'>     <span class="c"># to get local variables from &quot;foo&quot; function</span>
+</span><span class='line'>     <span class="n">previous_frame</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>     <span class="n">previous_frame_locals</span> <span class="o">=</span> <span class="n">previous_frame</span><span class="o">.</span><span class="n">f_locals</span>
+</span><span class='line'>     <span class="k">print</span> <span class="n">previous_frame_locals</span><span class="p">[</span><span class="s">&#39;foo_var&#39;</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="n">foo</span><span class="p">()</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So the only thing that is left is to combine frames introspection with &ldquo;format&rdquo; function. Here are 2 lines of code that would do the trick:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">inter</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">f_locals</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;John&quot;</span>
+</span><span class='line'><span class="n">age</span> <span class="o">=</span> <span class="mi">26</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">print</span> <span class="n">inter</span><span class="p">(</span><span class="s">&quot;Hi, I am {name} and I am {age} years old&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">Hi</span><span class="p">,</span> <span class="n">I</span> <span class="n">am</span> <span class="n">John</span> <span class="ow">and</span> <span class="n">I</span> <span class="n">am</span> <span class="mi">26</span> <span class="n">years</span> <span class="n">old</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Sorting Trick in Python]]></title>

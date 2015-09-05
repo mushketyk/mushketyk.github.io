@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Trick | Software Developer's diary]]></title>
+  <link href="http://mushketyk.github.io/blog/categories/trick/atom.xml" rel="self"/>
+  <link href="http://mushketyk.github.io/"/>
+  <updated>2015-09-05T19:19:51+01:00</updated>
+  <id>http://mushketyk.github.io/</id>
+  <author>
+    <name><![CDATA[Ivan Mushketyk]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[How to Implement String Interpolation in Python]]></title>
+    <link href="http://mushketyk.github.io/blog/2015/09/05/string-interpolation-in-python/"/>
+    <updated>2015-09-05T15:32:28+01:00</updated>
+    <id>http://mushketyk.github.io/blog/2015/09/05/string-interpolation-in-python</id>
+    <content type="html"><![CDATA[<p>String interpolation is a process of substituting values of local variables into placeholders in a string.</p>
+
+<p>It is implemented in many programming languages such as Scala:</p>
+
+<pre><code class="scala">//Scala 2.10+
+var name = "John";
+println(s"My name is $name")
+&gt;&gt;&gt; My name is John
+</code></pre>
+
+<p>Perl:</p>
+
+<pre><code class="perl">my $name = "John";
+print "My name is $name";
+&gt;&gt;&gt; My name is John
+</code></pre>
+
+<p>CoffeeScript:</p>
+
+<pre><code class="coffeescript">name = "John"
+console.log "My name is #{name}"
+&gt;&gt;&gt; My name is John
+</code></pre>
+
+<p>and many others.</p>
+
+<p>On the first sight, it doesn&rsquo;t seem that it&rsquo;s possible to use string interpolation in Python. However, we can implement it with just 2 lines of Python code.</p>
+
+<!--more-->
+
+
+<p>But let&rsquo;s start with basics. An idiomatic way to build a complex string in Python is to use the &ldquo;format&rdquo; function:</p>
+
+<pre><code class="python">print "Hi, I am {} and I am {} years old".format(name, age)
+&gt;&gt;&gt; Hi, I am John and I am 26 years old
+</code></pre>
+
+<p>Which is much cleaner than using string concatenation:</p>
+
+<pre><code class="python">print "Hi, I am " + name + " and I am " + str(age) + " years old"
+Hi, I am John and I am 26 years old
+</code></pre>
+
+<p>But if you use the &ldquo;format&rdquo; function in this way the output depends on the order of arguments:</p>
+
+<pre><code class="python">print "Hi, I am {} and I am {} years old".format(age, name)
+Hi, I am 26 and I am John years old
+</code></pre>
+
+<p>To avoid that we can pass key-value arguments to the &ldquo;format&rdquo; function:</p>
+
+<pre><code class="python">print "Hi, I am {name} and I am {age} years old".format(name="John", age=26)
+Hi, I am John and I am 26 years old
+
+print "Hi, I am {name} and I am {age} years old".format(age=26, name="John")
+Hi, I am John and I am 26 years old
+</code></pre>
+
+<p>Here we had to pass all variables for string interpolation to the &ldquo;format&rdquo; function, but still we have not achieved what we wanted, because &ldquo;name&rdquo; and &ldquo;age&rdquo; are not local variables. Can &ldquo;format&rdquo; somehow access local variables?</p>
+
+<p>To do it we can get a dictionary with all local variables using the &ldquo;locals&rdquo; function:</p>
+
+<pre><code class="python">name = "John"
+age = 26
+
+locals()
+&gt;&gt;&gt; {
+ ...
+ 'age': 26,
+ 'name': 'John',
+ ...
+}
+</code></pre>
+
+<p>Now we just need to somehow pass it to the &ldquo;format&rdquo; function. Unfortunately we cannot just call it as &ldquo;s.format(locals())&rdquo;:</p>
+
+<pre><code class="python">print "Hi, I am {name} and I am {age} years old".format(locals())
+---------------------------------------------------------------------------
+KeyError                                  Traceback (most recent call last)
+&lt;ipython-input-5-0fb983071eb8&gt; in &lt;module&gt;()
+----&gt; 1 print "Hi, I am {name} and I am {age} years old".format(locals())
+
+KeyError: 'name'
+</code></pre>
+
+<p>This is because &ldquo;locals()&rdquo; returns a dictionary, while &ldquo;format&rdquo; expects key-value parameters.</p>
+
+<p>Luckily we can convert a dictionary into key-value parameters using &ldquo;**&rdquo; opeartor. If we have a function that expects key-value arguments:</p>
+
+<pre><code class="python">def foo(arg1=None, arg2=None):
+    print "arg1 = " + str(arg1)
+    print "arg2 = " + str(arg2)
+</code></pre>
+
+<p>We can pass parameters packed in a dictionary:</p>
+
+<pre><code class="python">d = {
+    'arg1': 1,
+    'arg2': 42
+}
+
+foo(**d)
+&gt;&gt;&gt; arg1 = 1
+arg2 = 42
+</code></pre>
+
+<p>Now we can use this technique to implement our first version of string interpolation:</p>
+
+<pre><code class="python">print "Hi, I am {name} and I am {age} years old".format(**locals())
+Hi, I am John and I am 26 years old
+</code></pre>
+
+<p>It works, but looks cumbersome. With this approach every time we need to interpolate our string we would need to write &ldquo;format(**locals())&rdquo;.
+It would be great if we could write a function that would interpolate a string like this:</p>
+
+<pre><code class="python"># Can we implement inter() function in Python?
+print inter("Hi, I am {name} and I am {age} years old")
+&gt;&gt;&gt; Hi, I am John and I am 26 years old
+</code></pre>
+
+<p> At first it seems impossible, since if we move interpolation code to another function it would not be able to access local variables from a scope where it was called from:</p>
+
+<pre><code class="python">name = "John"
+print inter("My name is {name}")
+
+...
+
+def inter(s):
+  # How can we access "name" variable from here?
+  return s.format(...)
+</code></pre>
+
+<p>And yet, it is possible. Python provides a way to inspect current stack with sys._getframe function:</p>
+
+<pre><code class="python">import sys
+
+def foo():
+     foo_var = 'foo'
+     bar()
+
+
+ def bar():
+     # sys._getframe(0) would return frame for function "bar"
+     # so we need to to access 1-st frame
+     # to get local variables from "foo" function
+     previous_frame = sys._getframe(1)
+     previous_frame_locals = previous_frame.f_locals
+     print previous_frame_locals['foo_var']
+
+
+foo()
+&gt;&gt;&gt; foo
+</code></pre>
+
+<p>So the only thing that is left is to combine frames introspection with &ldquo;format&rdquo; function. Here are 2 lines of code that would do the trick:</p>
+
+<pre><code class="python">def inter(s):
+    return s.format(**sys._getframe(1).f_locals)
+
+name = "John"
+age = 26
+
+print inter("Hi, I am {name} and I am {age} years old")
+&gt;&gt;&gt; Hi, I am John and I am 26 years old
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>
