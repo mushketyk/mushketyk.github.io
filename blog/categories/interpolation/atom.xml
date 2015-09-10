@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Trick | Software Developer's diary]]></title>
-  <link href="http://mushketyk.github.io/blog/categories/trick/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Interpolation | Software Developer's diary]]></title>
+  <link href="http://mushketyk.github.io/blog/categories/interpolation/atom.xml" rel="self"/>
   <link href="http://mushketyk.github.io/"/>
-  <updated>2015-09-10T21:24:40+01:00</updated>
+  <updated>2015-09-10T21:36:47+01:00</updated>
   <id>http://mushketyk.github.io/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>

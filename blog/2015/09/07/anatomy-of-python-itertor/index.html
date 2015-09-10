@@ -319,7 +319,7 @@
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">In</span> <span class="p">[</span><span class="mi">27</span><span class="p">]:</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">MyList</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]):</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">MyList</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]):</span>
 </span><span class='line'>    <span class="k">print</span> <span class="n">i</span>
 </span><span class='line'>   <span class="o">....</span><span class="p">:</span>
 </span><span class='line'><span class="mi">1</span>
@@ -331,7 +331,7 @@
 
 <h2>Are we done?</h2>
 
-<p>It looks like our iterator is done, but let&rsquo;s try another example with list:</p>
+<p>It looks like our iterator is done, but let&rsquo;s try another example with a list:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -360,7 +360,7 @@
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">MyList</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])):</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">MyList</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])):</span>
 </span><span class='line'>    <span class="k">print</span> <span class="n">i</span>
 </span><span class='line'>
 </span><span class='line'>
@@ -371,7 +371,18 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>This is because the Python interpretor blindly tries to call <strong>__iter__</strong> on anything that is placed on the right side of the <strong>in</strong> keyword if it is an iterator already.</p>
+<p>Why doesn&rsquo;t it work? Let&rsquo;s see what happens.</p>
+
+<p>First of all the <strong>iter</strong> function calls the <strong>__iter__</strong> method to get an instance of <strong>MyIterator</strong>. After this Python attempts to execute something like:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">MyIterator</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]):</span>
+</span><span class='line'>    <span class="k">print</span> <span class="n">i</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And as we know when Python executes &ldquo;<strong>for</strong> &hellip; <strong>in</strong> &hellip;&rdquo; it tries to call method <strong>__iter__</strong> on an object that is placed on the right side of the <strong>in</strong> operator. So the issue is that <strong>MyIterator</strong> does not define <strong>__iter__</strong> method.</p>
 
 <p>To make our iterator work like a built-in type we need to add <strong>__iter__</strong> method to it that would return&hellip; itself:</p>
 
@@ -536,7 +547,7 @@
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">MyList</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])):</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">MyList</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])):</span>
 </span><span class='line'>    <span class="k">print</span> <span class="n">i</span>
 </span><span class='line'>
 </span><span class='line'><span class="mi">4</span>
@@ -600,7 +611,7 @@
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">min_and_max</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">min_and_max</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>
 </span><span class='line'>  <span class="n">seq</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
 </span><span class='line'>  <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">seq</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
@@ -612,8 +623,10 @@
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">min_and_max</span><span class="p">((</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)))</span>
-</span><span class='line'><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">99</span><span class="p">)</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">lst</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+</span><span class='line'><span class="n">min_and_max</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">lst</span><span class="p">))</span>
+</span><span class='line'><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">34</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 </div>

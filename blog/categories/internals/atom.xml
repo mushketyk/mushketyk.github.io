@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Internals | Software Developer's diary]]></title>
   <link href="http://mushketyk.github.io/blog/categories/internals/atom.xml" rel="self"/>
   <link href="http://mushketyk.github.io/"/>
-  <updated>2015-09-10T21:24:40+01:00</updated>
+  <updated>2015-09-10T21:36:47+01:00</updated>
   <id>http://mushketyk.github.io/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -163,7 +163,7 @@ class MyIterator(object):
 <p>Let&rsquo;s check if it works as expected:</p>
 
 <pre><code class="python">
-In [27]: for i in MyList([1, 2, 3, 4]):
+for i in MyList([1, 2, 3, 4]):
     print i
    ....:
 1
@@ -174,7 +174,7 @@ In [27]: for i in MyList([1, 2, 3, 4]):
 
 <h2>Are we done?</h2>
 
-<p>It looks like our iterator is done, but let&rsquo;s try another example with list:</p>
+<p>It looks like our iterator is done, but let&rsquo;s try another example with a list:</p>
 
 <pre><code class="python">
 for i in iter([1, 2, 3, 4]):
@@ -188,7 +188,7 @@ for i in iter([1, 2, 3, 4]):
 
 <p>In this example we get an iterator for a list using <strong>iter</strong> function (that just calls <strong>__iter__</strong> method) and iterate over it. If we try to do the same with the data structure that was written in the previous section it would not work:</p>
 
-<pre><code class="python">&gt;&gt;&gt; for i in iter(MyList([1, 2, 3, 4])):
+<pre><code class="python">for i in iter(MyList([1, 2, 3, 4])):
     print i
 
 
@@ -198,7 +198,15 @@ Traceback (most recent call last):
 TypeError: 'MyList' object is not iterable
 </code></pre>
 
-<p>This is because the Python interpretor blindly tries to call <strong>__iter__</strong> on anything that is placed on the right side of the <strong>in</strong> keyword if it is an iterator already.</p>
+<p>Why doesn&rsquo;t it work? Let&rsquo;s see what happens.</p>
+
+<p>First of all the <strong>iter</strong> function calls the <strong>__iter__</strong> method to get an instance of <strong>MyIterator</strong>. After this Python attempts to execute something like:</p>
+
+<pre><code class="python">for i in MyIterator([1, 2, 3, 4]):
+    print i
+</code></pre>
+
+<p>And as we know when Python executes &ldquo;<strong>for</strong> &hellip; <strong>in</strong> &hellip;&rdquo; it tries to call method <strong>__iter__</strong> on an object that is placed on the right side of the <strong>in</strong> operator. So the issue is that <strong>MyIterator</strong> does not define <strong>__iter__</strong> method.</p>
 
 <p>To make our iterator work like a built-in type we need to add <strong>__iter__</strong> method to it that would return&hellip; itself:</p>
 
@@ -296,7 +304,7 @@ class MyList(object):
 <p>Now we can use our object with the <strong>reversed</strong> function:</p>
 
 <pre><code class="python">
-&gt;&gt;&gt; for i in reversed(MyList([1, 2, 3, 4])):
+for i in reversed(MyList([1, 2, 3, 4])):
     print i
 
 4
@@ -340,7 +348,7 @@ ValueError: max() arg is an empty sequence
 
 <p>The correct way to solve this issue would be to store all items from an iterator to a list that can be traversed multiple times:</p>
 
-<pre><code class="python">&gt;&gt;&gt; def min_and_max(seq):
+<pre><code class="python">def min_and_max(seq):
   seq = list(seq)
   return min(seq), max(seq)
 </code></pre>
@@ -349,8 +357,9 @@ ValueError: max() arg is an empty sequence
 
 <p>Now it works as expected:</p>
 
-<pre><code class="python">&gt;&gt;&gt; min_and_max((i for i in range(100)))
-(0, 99)
+<pre><code class="python">lst = [5, 2, 10, 34, 0]
+min_and_max(iter(lst))
+(0, 34)
 </code></pre>
 ]]></content>
   </entry>
