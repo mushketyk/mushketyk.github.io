@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Iterator | Software Developer's diary]]></title>
+  <link href="http://mushketyk.github.io/blog/categories/iterator/atom.xml" rel="self"/>
+  <link href="http://mushketyk.github.io/"/>
+  <updated>2015-09-10T21:24:40+01:00</updated>
+  <id>http://mushketyk.github.io/</id>
+  <author>
+    <name><![CDATA[Ivan Mushketyk]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Anatomy of Python Iterator]]></title>
+    <link href="http://mushketyk.github.io/blog/2015/09/07/anatomy-of-python-itertor/"/>
+    <updated>2015-09-07T21:52:41+01:00</updated>
+    <id>http://mushketyk.github.io/blog/2015/09/07/anatomy-of-python-itertor</id>
+    <content type="html"><![CDATA[<p>Iterator is a powerful pattern that was recognized at least as early as 1994 and since then it was incorporated in syntax of almost every modern programming language.</p>
+
+<p>Python also implements this pattern providing a pithy and concise syntax to iterate over lists, maps, dictionaries and other data structures:</p>
+
+<pre><code class="python">for i in [1, 2, 3, 4]:
+  print i
+</code></pre>
+
+<p>In this article I will write about how an iterator is used in Python, how to implement your own iterator and what types of iterators exist in Python.</p>
+
+<!--more-->
+
+
+<h2>How iterator works</h2>
+
+<p>Iterable types in Python are not limited to built-ins. Any object can be iterated over but it needs to obey a special protocol.</p>
+
+<p>This means the following:</p>
+
+<ul>
+<li>An object should define the <strong>__iter__</strong> method that should return an iterator object that will be used to obtain items of a collection one by one</li>
+</ul>
+
+
+<p>We can use <strong>list</strong> type to illustrate this:</p>
+
+<pre><code class="python">l = [1, 2, 3, 4]
+l.__iter__()
+&gt;&gt;&gt; &lt;listiterator at 0x7fb685954cd0&gt;
+</code></pre>
+
+<ul>
+<li>An iterator (returned by the <strong>__iter__</strong> method) should implement the <strong>next</strong> method. Each call to the <strong>next</strong> method should return the next element in a collection</li>
+</ul>
+
+
+<p>Let&rsquo;s see how it works with a list in Python:</p>
+
+<pre><code class="python">it.next()
+&gt;&gt;&gt; 1
+
+it.next()
+&gt;&gt;&gt; 2
+
+it.next()
+&gt;&gt;&gt; 3
+
+ it.next()
+&gt;&gt;&gt; 4
+</code></pre>
+
+<ul>
+<li>When there are no more items to return the <strong>next</strong> method should raise a <strong>StopIteration</strong> exception.</li>
+</ul>
+
+
+<p>Let&rsquo;s see if <strong>list</strong> obeys this protocol:</p>
+
+<pre><code class="python">it.next()
+---------------------------------------------------------------------------
+StopIteration                             Traceback (most recent call last)
+&lt;ipython-input-11-54f0920595b2&gt; in &lt;module&gt;()
+----&gt;
+</code></pre>
+
+<p>So when we write the following code:</p>
+
+<pre><code class="python">lst = [1, 2, 3, 4]
+for i in lst:
+  print i
+</code></pre>
+
+<p>Python actually executes something like this:</p>
+
+<pre><code class="python">
+# Get iterator for the list
+it = lst.__iter__()
+try:
+  while True:
+    # Get next element the list
+    i = it.next()
+
+    # This is a user-defined code that is written in a "for" loop
+    print i
+
+except StopIteration:
+  # We were expecting this exception so we just ignore it and do nothing
+  # If an exception of any other type is raised it will propagate further
+  pass
+</code></pre>
+
+<p>With this knowledge we are ready to implement our own iterator.</p>
+
+<h2>How to implement an iterator</h2>
+
+<p>To make this palpable, let&rsquo;s implement our own simplistic data structure. For simplicity it would be just a wrapper around Python&rsquo;s list:</p>
+
+<pre><code class="python">class MyList(object):
+     def __init__(self, lst):
+         self.lst = lst
+</code></pre>
+
+<p>Now, let&rsquo;s implement the first part of Python&rsquo;s iterator protocol: define the <strong>__iter__</strong> method:</p>
+
+<pre><code class="python">class MyList(object):
+     def __init__(self, lst):
+         self.lst = lst
+
+     def __iter__(self):
+         return MyIterator(self.lst)
+</code></pre>
+
+<p>We return an instance of iterator via the <strong>__iter__</strong> method. Now let&rsquo;s implement the second part of the iterator protocol: define <strong>MyIterator</strong> with the <strong>next</strong> method:</p>
+
+<pre><code class="python">
+class MyIterator(object):
+    def __init__(self, lst):
+        self.lst = lst
+        self.pos = 0
+
+    def next(self):
+        item = self.lst[self.pos]
+        self.pos += 1
+        return item
+</code></pre>
+
+<p>Now we are almost done. The only thing that we still need to do is to raise the <strong>StopIteration</strong> exception if there are no more elements to return:</p>
+
+<pre><code class="python">
+class MyIterator(object):
+    def __init__(self, lst):
+        self.lst = lst
+        self.pos = 0
+
+    def next(self):
+        if self.pos == len(self.lst):
+            raise StopIteration()
+        item = self.lst[self.pos]
+        self.pos += 1
+        return item
+</code></pre>
+
+<p>Let&rsquo;s check if it works as expected:</p>
+
+<pre><code class="python">
+In [27]: for i in MyList([1, 2, 3, 4]):
+    print i
+   ....:
+1
+2
+3
+4
+</code></pre>
+
+<h2>Are we done?</h2>
+
+<p>It looks like our iterator is done, but let&rsquo;s try another example with list:</p>
+
+<pre><code class="python">
+for i in iter([1, 2, 3, 4]):
+    print i
+
+1
+2
+3
+4
+</code></pre>
+
+<p>In this example we get an iterator for a list using <strong>iter</strong> function (that just calls <strong>__iter__</strong> method) and iterate over it. If we try to do the same with the data structure that was written in the previous section it would not work:</p>
+
+<pre><code class="python">&gt;&gt;&gt; for i in iter(MyList([1, 2, 3, 4])):
+    print i
+
+
+Traceback (most recent call last):
+  File "&lt;pyshell#43&gt;", line 1, in &lt;module&gt;
+    for i in iter(MyList([1, 2, 3, 4])):
+TypeError: 'MyList' object is not iterable
+</code></pre>
+
+<p>This is because the Python interpretor blindly tries to call <strong>__iter__</strong> on anything that is placed on the right side of the <strong>in</strong> keyword if it is an iterator already.</p>
+
+<p>To make our iterator work like a built-in type we need to add <strong>__iter__</strong> method to it that would return&hellip; itself:</p>
+
+<pre><code class="python">
+class MyIterator(object):
+    def __init__(self, lst):
+        self.lst = lst;
+        self.pos = 0
+
+    def __iter__(self):
+        return self
+    ...
+</code></pre>
+
+<p>Now it should work just as built-in type:</p>
+
+<pre><code class="python">
+for i in iter(MyList([1, 2, 3, 4])):
+    print i
+
+1
+2
+3
+4
+</code></pre>
+
+<h2>Reverse iterator</h2>
+
+<p>If you need to iterate over a collection in the reverse order an idiomatic way would be to use the <strong>reversed</strong> function:</p>
+
+<pre><code class="python">
+for i in reversed([1, 2, 3, 4]):
+    print i
+   ....:
+4
+3
+2
+1
+</code></pre>
+
+<p>The <strong>reversed</strong> function would work with any implementation of an iterator, but since an iterator can be used to traverse collection only in one direction, the <strong>reversed</strong> function would need to store all items from the iterator before it would be able to return the first element (which is the last element in the original collection). This is very inefficient especially if we need to iterate over a long collection.</p>
+
+<p>Fortunately in addition to the <strong>__iter__</strong> function Python provides the <strong>__reversed__</strong> function that should return a reversed iterator to go through a collections in the opposite way:</p>
+
+<pre><code class="python">
+l = [1, 2, 3, 4]
+it = l.__reversed__()
+
+it.next()
+&gt;&gt;&gt; 4
+it.next()
+&gt;&gt;&gt; 3
+it.next()
+&gt;&gt;&gt; 2
+it.next()
+&gt;&gt;&gt; 1
+it.next()
+---------------------------------------------------------------------------
+StopIteration                             Traceback (most recent call last)
+&lt;ipython-input-21-54f0920595b2&gt; in &lt;module&gt;()
+----&gt; 1 it.next()
+
+StopIteration:
+</code></pre>
+
+<p>The implementation of the reversed iterator looks very similar. Lets update existing collection to return a reversed iterator:</p>
+
+<pre><code class="python">
+class MyList(object):
+    def __init__(self, lst):
+        self.lst = lst
+    ...
+    def __reversed__(self):
+        return MyReversedIterator(self.lst)
+</code></pre>
+
+<p>Iterator implementation is almost the same. The only difference is that we start from the end of the list and go to the first element:</p>
+
+<pre><code class="python">class MyReversedIterator(object):
+    def __init__(self, lst):
+        self.lst = lst
+        self.pos = len(lst) - 1
+
+    def __iter__(self):
+        return self
+
+    def next(self):
+        if self.pos &lt; 0:
+            raise StopIteration()
+        elem = self.lst[self.pos]
+        self.pos -= 1
+        return elem
+</code></pre>
+
+<p>Now we can use our object with the <strong>reversed</strong> function:</p>
+
+<pre><code class="python">
+&gt;&gt;&gt; for i in reversed(MyList([1, 2, 3, 4])):
+    print i
+
+4
+3
+2
+1
+</code></pre>
+
+<h2>An iterator is a one-time thing</h2>
+
+<p>Beware that usually you can use an iterator only once and generally there is no way to reset it. This can be a problem especially if you pass an iterator to a function that needs to traverse a collection more than once.</p>
+
+<p>To illustrate it let&rsquo;s say we need to calculate a minimum and a maximum numbers in a sequence:</p>
+
+<pre><code class="python">def min_and_max(seq):
+    return min(seq), max(seq)
+</code></pre>
+
+<p>Now if we pass a list to this function it will work as expected:</p>
+
+<pre><code class="python">
+lst = [5, 2, 10, 34, 0]
+min_and_max(lst)
+&gt;&gt;&gt; (0, 34)
+</code></pre>
+
+<p>But if we pass an iterator we would receive an error instead:</p>
+
+<pre><code class="python">lst = [5, 2, 10, 34, 0]
+min_and_max(iter(lst))
+
+Traceback (most recent call last):
+  File "&lt;pyshell#65&gt;", line 1, in &lt;module&gt;
+    min_and_max(iter(lst))
+  File "&lt;pyshell#57&gt;", line 2, in min_and_max
+    return min(seq), max(seq)
+ValueError: max() arg is an empty sequence
+</code></pre>
+
+<p>This is because the <strong>seq</strong> at first is iterated by the <strong>min</strong> function that iterates over all items in it. After that when it is passed to the <strong>max</strong> function, there is no more elements to return.</p>
+
+<p>The correct way to solve this issue would be to store all items from an iterator to a list that can be traversed multiple times:</p>
+
+<pre><code class="python">&gt;&gt;&gt; def min_and_max(seq):
+  seq = list(seq)
+  return min(seq), max(seq)
+</code></pre>
+
+<p>This works because if <strong>list</strong> function is applied to a list it create a copy of a list and if it is applied to an iterator it copies all items from an iterator to a list.</p>
+
+<p>Now it works as expected:</p>
+
+<pre><code class="python">&gt;&gt;&gt; min_and_max((i for i in range(100)))
+(0, 99)
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>

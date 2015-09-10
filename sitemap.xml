@@ -82,4 +82,13 @@
   <url>
     <loc>http://mushketyk.github.io/blog/categories/trick/</loc>
   </url>
+  <url>
+    <loc>http://mushketyk.github.io/blog/categories/iterator/</loc>
+  </url>
+  <url>
+    <loc>http://mushketyk.github.io/blog/categories/iter/</loc>
+  </url>
+  <url>
+    <loc>http://mushketyk.github.io/blog/categories/internals/</loc>
+  </url>
 </urlset>
