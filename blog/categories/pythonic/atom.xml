@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: pythonic | Software Developer's diary]]></title>
+  <title><![CDATA[Category: Pythonic | Software Developer's diary]]></title>
   <link href="http://mushketyk.github.io/blog/categories/pythonic/atom.xml" rel="self"/>
   <link href="http://mushketyk.github.io/"/>
-  <updated>2015-09-11T08:18:39+01:00</updated>
+  <updated>2015-09-11T08:55:15+01:00</updated>
   <id>http://mushketyk.github.io/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Idiomatic way to count in Python]]></title>
+    <title type="html"><![CDATA[Idiomatic Way to Count in Python]]></title>
     <link href="http://mushketyk.github.io/blog/2015/08/27/idiomatic-way-to-count-in-python/"/>
     <updated>2015-08-27T20:07:29+01:00</updated>
     <id>http://mushketyk.github.io/blog/2015/08/27/idiomatic-way-to-count-in-python</id>

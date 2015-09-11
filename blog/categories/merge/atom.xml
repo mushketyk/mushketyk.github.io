@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: merge | Software Developer's diary]]></title>
+  <title><![CDATA[Category: Merge | Software Developer's diary]]></title>
   <link href="http://mushketyk.github.io/blog/categories/merge/atom.xml" rel="self"/>
   <link href="http://mushketyk.github.io/"/>
-  <updated>2015-09-11T08:18:39+01:00</updated>
+  <updated>2015-09-11T08:55:15+01:00</updated>
   <id>http://mushketyk.github.io/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Git productivity tip]]></title>
+    <title type="html"><![CDATA[Git Productivity Tip]]></title>
     <link href="http://mushketyk.github.io/blog/2015/08/24/git-productivity-tip/"/>
     <updated>2015-08-24T21:48:32+01:00</updated>
     <id>http://mushketyk.github.io/blog/2015/08/24/git-productivity-tip</id>

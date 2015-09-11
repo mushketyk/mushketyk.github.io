@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: python | Software Developer's diary]]></title>
+  <title><![CDATA[Category: Python | Software Developer's diary]]></title>
   <link href="http://mushketyk.github.io/blog/categories/python/atom.xml" rel="self"/>
   <link href="http://mushketyk.github.io/"/>
-  <updated>2015-09-11T08:18:39+01:00</updated>
+  <updated>2015-09-11T08:55:15+01:00</updated>
   <id>http://mushketyk.github.io/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -365,7 +365,7 @@ min_and_max(iter(lst))
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[How to implement string interpolation in Python]]></title>
+    <title type="html"><![CDATA[How to Implement String Interpolation in Python]]></title>
     <link href="http://mushketyk.github.io/blog/2015/09/05/string-interpolation-in-python/"/>
     <updated>2015-09-05T15:32:28+01:00</updated>
     <id>http://mushketyk.github.io/blog/2015/09/05/string-interpolation-in-python</id>
@@ -538,7 +538,7 @@ print inter("Hi, I am {name} and I am {age} years old")
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Sorting trick in Python]]></title>
+    <title type="html"><![CDATA[Sorting Trick in Python]]></title>
     <link href="http://mushketyk.github.io/blog/2015/09/01/sorting-trick-in-python/"/>
     <updated>2015-09-01T08:28:07+01:00</updated>
     <id>http://mushketyk.github.io/blog/2015/09/01/sorting-trick-in-python</id>
@@ -703,7 +703,7 @@ sorted(lst, key=itemgetter('key'))
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Idiomatic way to count in Python]]></title>
+    <title type="html"><![CDATA[Idiomatic Way to Count in Python]]></title>
     <link href="http://mushketyk.github.io/blog/2015/08/27/idiomatic-way-to-count-in-python/"/>
     <updated>2015-08-27T20:07:29+01:00</updated>
     <id>http://mushketyk.github.io/blog/2015/08/27/idiomatic-way-to-count-in-python</id>
@@ -795,7 +795,7 @@ sorted(lst, key=itemgetter('key'))
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Wrong Python decorator and how to fix it]]></title>
+    <title type="html"><![CDATA[Wrong Python Decorator and How to Fix It]]></title>
     <link href="http://mushketyk.github.io/blog/2015/08/25/wrong-python-decorator-and-how-to-fix-it/"/>
     <updated>2015-08-25T20:19:02+01:00</updated>
     <id>http://mushketyk.github.io/blog/2015/08/25/wrong-python-decorator-and-how-to-fix-it</id>
