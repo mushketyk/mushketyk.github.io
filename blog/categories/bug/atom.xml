@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Bug | Software Developer's diary]]></title>
+  <title><![CDATA[Category: bug | Software Developer's diary]]></title>
   <link href="http://mushketyk.github.io/blog/categories/bug/atom.xml" rel="self"/>
   <link href="http://mushketyk.github.io/"/>
-  <updated>2015-09-11T07:24:51+01:00</updated>
+  <updated>2015-09-11T08:03:28+01:00</updated>
   <id>http://mushketyk.github.io/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Wrong Python Decorator and How to Fix It]]></title>
+    <title type="html"><![CDATA[Wrong Python decorator and how to fix it]]></title>
     <link href="http://mushketyk.github.io/blog/2015/08/25/wrong-python-decorator-and-how-to-fix-it/"/>
     <updated>2015-08-25T20:19:02+01:00</updated>
     <id>http://mushketyk.github.io/blog/2015/08/25/wrong-python-decorator-and-how-to-fix-it</id>
