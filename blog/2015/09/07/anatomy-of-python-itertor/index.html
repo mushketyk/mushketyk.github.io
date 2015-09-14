@@ -132,7 +132,7 @@
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 </pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]:</span>
-</span><span class='line'>  <span class="k">print</span> <span class="n">i</span>
+</span><span class='line'>    <span class="k">print</span> <span class="n">i</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -222,7 +222,7 @@
 <span class='line-number'>3</span>
 </pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">lst</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
 </span><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
-</span><span class='line'>  <span class="k">print</span> <span class="n">i</span>
+</span><span class='line'>    <span class="k">print</span> <span class="n">i</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -239,23 +239,17 @@
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
 </pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># Get iterator for the list</span>
 </span><span class='line'><span class="n">it</span> <span class="o">=</span> <span class="n">lst</span><span class="o">.</span><span class="n">__iter__</span><span class="p">()</span>
-</span><span class='line'><span class="k">try</span><span class="p">:</span>
-</span><span class='line'>  <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
-</span><span class='line'>    <span class="c"># Get next element the list</span>
-</span><span class='line'>    <span class="n">i</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+</span><span class='line'><span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+</span><span class='line'>    <span class="k">try</span><span class="p">:</span>
+</span><span class='line'>        <span class="c"># Get next element of the list</span>
+</span><span class='line'>        <span class="n">i</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="c"># This is a user-defined code that is written in a &quot;for&quot; loop</span>
-</span><span class='line'>    <span class="k">print</span> <span class="n">i</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
-</span><span class='line'>  <span class="c"># We were expecting this exception so we just ignore it and do nothing</span>
-</span><span class='line'>  <span class="c"># If an exception of any other type is raised it will propagate further</span>
-</span><span class='line'>  <span class="k">pass</span>
+</span><span class='line'>        <span class="c"># This is a user-defined code that is written in a &quot;for&quot; loop</span>
+</span><span class='line'>        <span class="k">print</span> <span class="n">i</span>
+</span><span class='line'>    <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+</span><span class='line'>        <span class="k">break</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -643,8 +637,8 @@
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 </pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">min_and_max</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>
-</span><span class='line'>  <span class="n">seq</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">seq</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">seq</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">seq</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
