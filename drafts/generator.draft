@@ -1,0 +1,141 @@
+## How to generate an iterator
+
+An even more concise way to write iterators is using generator expressions:
+
+```python
+>>> gen = (i for i in range(3))
+
+```
+
+While it looks like a regular list comprehension it behaves in a completely different way. Instead of returning a list of numbers it creates an iterator that can be used to get values one-by-one:
+
+```python
+>>> gen
+<generator object <genexpr> at 0x7f4faa870960>
+>>> gen.next()
+0
+>>> gen.next()
+1
+>>> gen.next()
+2
+>>> gen.next()
+
+Traceback (most recent call last):
+  File "<pyshell#14>", line 1, in <module>
+    gen.next()
+StopIteration
+```
+
+This may be especially useful if it requires extensive amount of computation to generate each next value.
+
+Let's say we have want to generate first few Fibonacci numbers.
+
+At first we need to implement a function that will calculate n-th Fibonacci number:
+
+```python
+
+def fib(n):
+    # Print arguments so we know when a function is called
+    print "fib({})".format(n)
+
+    # Regular Fibonacci number calculation
+    if n < 0:
+        raise ValueError("Input should be non-negative")
+    if n == 0 or n == 1:
+        return n
+    a, b = 0, 1
+    for i in range(1, n+1):
+        a, b = b, a + b
+    return b
+
+>>> fib(2)
+fib(2)
+2
+>>> fib(11)
+fib(11)
+144
+
+```
+
+Now we can create an iterator for the first 100 Fibonacci numbers.
+
+```python
+
+>>> it = (fib(i) for i in range(100))
+>>> it
+<generator object <genexpr> at 0x7f4faa870370>
+
+```
+
+Since we don't see any output from the **fib** function it was not executed. We only have an iterator expression that will call the **fib** function every time the **next** function is called:
+
+```python
+
+>>> it.next()
+fib(0)
+0
+>>> it.next()
+fib(1)
+1
+
+```
+
+In contrast, if we use list comprehension all 100 calls too the fib function would be performed before the result list is created:
+
+
+```python
+>>> lst = [fib(i) for i in range(100)]
+fib(0)
+fib(1)
+fib(2)
+...
+fib(98)
+fib(99)
+>>> lst
+[0, 1, 2, 3, 5, 8, ..., 218922995834555169026L, 354224848179261915075L]
+>>>
+```
+As you can see all numbers were created in advance.
+The fact that not all values are generated in advance is useful if don't necessarily need to generate all values and may need only a subset of values.
+
+We can build more complicated generators using the same constructions we can use for list comprehensions:
+
+```python
+
+it = (x for x in ... if cond)
+
+```
+
+This is similar to the previous examples of generators, but instead of returning every single value it would only return values if condition **cond** specified at the end of the expression is true.
+
+We can see how it works with a simple example. Let's say we need to find all users in a system that are using "/bin/false" shell. To do it we just need to read "/etc/passwd" file line by line:
+
+```python
+>>> it = (line for line in open('/etc/passwd') if '/bin/false' in line)
+>>> it.next()
+'syslog:x:101:104::/home/syslog:/bin/false\n'
+>>> it.next()
+'messagebus:x:102:106::/var/run/dbus:/bin/false\n'
+```
+
+We can also combine multiple loops in one generator using the following construction:
+
+```python
+it = (expression for i in a if cond1
+      j for j in b if cond2
+      ...
+      final_condition)
+
+```
+
+Which is equivalent to the following code:
+
+```python
+    for i in a:
+        if cond1:
+            for j in b:
+                if cond2:
+                    ...
+                    if final_condition:
+                        yield expression
+```

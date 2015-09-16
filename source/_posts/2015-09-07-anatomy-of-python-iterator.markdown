@@ -12,7 +12,7 @@ Python also implements this pattern providing a pithy and concise syntax to iter
 
 ```python
 for i in [1, 2, 3, 4]:
-  print i
+    print i
 
 ```
 
@@ -74,7 +74,7 @@ So when we write the following code:
 ```python
 lst = [1, 2, 3, 4]
 for i in lst:
-  print i
+    print i
 
 ```
 
@@ -84,19 +84,15 @@ Python actually executes something like this:
 
 # Get iterator for the list
 it = lst.__iter__()
-try:
-  while True:
-    # Get next element the list
-    i = it.next()
+while True:
+    try:
+        # Get next element of the list
+        i = it.next()
 
-    # This is a user-defined code that is written in a "for" loop
-    print i
-
-except StopIteration:
-  # We were expecting this exception so we just ignore it and do nothing
-  # If an exception of any other type is raised it will propagate further
-  pass
-
+        # This is a user-defined code that is written in a "for" loop
+        print i
+    except StopIteration:
+        break
 ```
 
 With this knowledge we are ready to implement our own iterator.
@@ -372,8 +368,8 @@ The correct way to solve this issue would be to store all items from an iterator
 
 ```python
 def min_and_max(seq):
-  seq = list(seq)
-  return min(seq), max(seq)
+    seq = list(seq)
+    return min(seq), max(seq)
 ```
 
 This works because if **list** function is applied to a list it create a copy of a list and if it is applied to an iterator it copies all items from an iterator to a list.
