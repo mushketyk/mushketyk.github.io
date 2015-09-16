@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Bug | Software Developer's diary]]></title>
   <link href="http://mushketyk.github.io/blog/categories/bug/atom.xml" rel="self"/>
   <link href="http://mushketyk.github.io/"/>
-  <updated>2015-09-14T08:30:27+01:00</updated>
+  <updated>2015-09-16T22:00:08+01:00</updated>
   <id>http://mushketyk.github.io/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -18,86 +18,132 @@
     <link href="http://mushketyk.github.io/blog/2015/08/25/wrong-python-decorator-and-how-to-fix-it/"/>
     <updated>2015-08-25T20:19:02+01:00</updated>
     <id>http://mushketyk.github.io/blog/2015/08/25/wrong-python-decorator-and-how-to-fix-it</id>
-    <content type="html"><![CDATA[<p>Let&rsquo;s say you need to write a decorator that measures how long does it take to execute a function. For this task you may write something like this:</p>
+    <content type="html"><![CDATA[Let's say you need to write a decorator that measures how long does it take to execute a function. For this task you may write something like this:
 
 <!--more-->
 
 
-<pre><code class="python">def timeit(func):
-    def inner(*args, **kwargs):
-        before = datetime.now()
-        result = func(*args, **kwargs)
-        after = datetime.now()
-        diff = after.microsecond - before.microsecond
-        print "It took {} ms to execute {}".format(diff, func.__name__)
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">timeit</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+</span><span class='line'>	<span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span class='line'>		<span class="n">before</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+</span><span class='line'>		<span class="n">result</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span><span class='line'>		<span class="n">after</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+</span><span class='line'>		<span class="n">diff</span> <span class="o">=</span> <span class="n">after</span><span class="o">.</span><span class="n">microsecond</span> <span class="o">-</span> <span class="n">before</span><span class="o">.</span><span class="n">microsecond</span>
+</span><span class='line'>		<span class="k">print</span> <span class="s">&quot;It took {} ms to execute {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">diff</span><span class="p">,</span> <span class="n">func</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>		<span class="k">return</span> <span class="n">result</span>
+</span><span class='line'>	<span class="k">return</span> <span class="n">inner</span>
+</span></code></pre></td></tr></table></div></figure>
 
-        return result
-    return inner
-</code></pre>
+So now you can apply this decorator:
 
-<p>So now you can apply this decorator:</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="nd">@timeit</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+</span><span class='line'>	<span class="sd">&quot;&quot;&quot;Returns n-th fibonachi number&quot;&quot;&quot;</span>
+</span><span class='line'>	<span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+</span><span class='line'>		<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Input should be non-negative&quot;</span><span class="p">)</span>
+</span><span class='line'>	<span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+</span><span class='line'>		<span class="k">return</span> <span class="n">n</span>
+</span><span class='line'>	<span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
+</span><span class='line'>	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+</span><span class='line'>		<span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+</span><span class='line'>	<span class="k">return</span> <span class="n">b</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<pre><code class="python">@timeit
-def fib(n):
-    """Returns n-th fibonachi number"""
-    if n &lt; 0:
-        raise ValueError("Input should be non-negative")
-    if n == 0 or n == 1:
-        return n
-    a, b = 0, 1
-    for i in range(1, n+1):
-        a, b = b, a + b
-    return b
-</code></pre>
+Which seems to work:
 
-<p>Which seems to work:</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">fib</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+</span><span class='line'><span class="n">It</span> <span class="n">took</span> <span class="mi">156</span> <span class="n">ms</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">fib</span>
+</span><span class='line'><span class="il">573147844013817084101L</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<pre><code class="python">&gt;&gt;&gt; fib(100)
-It took 156 ms to execute fib
-573147844013817084101L
-</code></pre>
+Looks fine, but let's try to poke our function in the interpreter:
 
-<p>Looks fine, but let&rsquo;s try to poke our function in the interpreter:</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">fib</span><span class="o">.</span><span class="n">__name__</span>
+</span><span class='line'><span class="s">&#39;inner&#39;</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">fib</span><span class="o">.</span><span class="n">__doc__</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<pre><code class="python">&gt;&gt;&gt; fib.__name__
-'inner'
-&gt;&gt;&gt; fib.__doc__
-&gt;&gt;&gt;
-</code></pre>
+It doesn't make sense! This function is "fib" and not "inner" and it definitely has a docstring.
 
-<p>It doesn&rsquo;t make sense! This function is &ldquo;fib&rdquo; and not &ldquo;inner&rdquo; and it definitely has a docstring.</p>
+Luckily we can easily fix it. We can copy necessary fields from a decorated function:
 
-<p>Luckily we can easily fix it. We can copy necessary fields from a decorated function:</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">timeit</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+</span><span class='line'>	<span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span class='line'>    <span class="o">...</span>
+</span><span class='line'>	<span class="n">inner</span><span class="o">.</span><span class="n">__name__</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">__name__</span>
+</span><span class='line'>	<span class="n">inner</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">__doc__</span>
+</span><span class='line'>	<span class="n">inner</span><span class="o">.</span><span class="n">__module__</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">__module__</span>
+</span><span class='line'>	<span class="k">return</span> <span class="n">inner</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<pre><code class="python">def timeit(func):
-    def inner(*args, **kwargs):
-    ...
-    inner.__name__ = func.__name__
-    inner.__doc__ = func.__doc__
-    inner.__module__ = func.__module__
-    return inner
-</code></pre>
+Now it works as expected:
 
-<p>Now it works as expected:</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">fib</span><span class="o">.</span><span class="n">__doc__</span>
+</span><span class='line'><span class="s">&#39;Returns n-th fibonachi number&#39;</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">fib</span><span class="o">.</span><span class="n">__module__</span>
+</span><span class='line'><span class="s">&#39;__main__&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<pre><code class="python">&gt;&gt;&gt; fib.__doc__
-'Returns n-th fibonachi number'
-&gt;&gt;&gt; fib.__module__
-'__main__'
-</code></pre>
+Alternatively we can use [wraps](https://docs.python.org/2/library/functools.html#functools.wraps) function from [functools](https://docs.python.org/2/library/functools.html) module:
 
-<p>Alternatively we can use <a href="https://docs.python.org/2/library/functools.html#functools.wraps">wraps</a> function from <a href="https://docs.python.org/2/library/functools.html">functools</a> module:</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">timeit</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+</span><span class='line'>  <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+</span><span class='line'>	<span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span class='line'>    <span class="o">...</span>
+</span><span class='line'>	<span class="k">return</span> <span class="n">inner</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<pre><code class="python">from functools import wraps
-
-def timeit(func):
-  @wraps(func)
-    def inner(*args, **kwargs):
-    ...
-    return inner
-</code></pre>
-
-<p>Which provides the same result.</p>
+Which provides the same result.
 ]]></content>
   </entry>
   

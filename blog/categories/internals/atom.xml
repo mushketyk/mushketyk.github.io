@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Internals | Software Developer's diary]]></title>
   <link href="http://mushketyk.github.io/blog/categories/internals/atom.xml" rel="self"/>
   <link href="http://mushketyk.github.io/"/>
-  <updated>2015-09-14T08:30:27+01:00</updated>
+  <updated>2015-09-16T22:00:08+01:00</updated>
   <id>http://mushketyk.github.io/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -15,349 +15,505 @@
   
   <entry>
     <title type="html"><![CDATA[Anatomy of a Python Iterator]]></title>
-    <link href="http://mushketyk.github.io/blog/2015/09/07/anatomy-of-python-itertor/"/>
+    <link href="http://mushketyk.github.io/blog/2015/09/07/anatomy-of-python-iterator/"/>
     <updated>2015-09-07T21:52:41+01:00</updated>
-    <id>http://mushketyk.github.io/blog/2015/09/07/anatomy-of-python-itertor</id>
-    <content type="html"><![CDATA[<p>Iterator is a powerful pattern that was recognized at least as early as 1994 and since then it was incorporated in syntax of almost every modern programming language.</p>
+    <id>http://mushketyk.github.io/blog/2015/09/07/anatomy-of-python-iterator</id>
+    <content type="html"><![CDATA[Iterator is a powerful pattern that was recognized at least as early as 1994 and since then it was incorporated in syntax of almost every modern programming language.
 
-<p>Python also implements this pattern providing a pithy and concise syntax to iterate over lists, maps, dictionaries and other data structures:</p>
+Python also implements this pattern providing a pithy and concise syntax to iterate over lists, maps, dictionaries and other data structures:
 
-<pre><code class="python">for i in [1, 2, 3, 4]:
-    print i
-</code></pre>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]:</span>
+</span><span class='line'>    <span class="k">print</span> <span class="n">i</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>In this article I will write about how an iterator is used in Python, how to implement your own iterator and what types of iterators exist in Python.</p>
+
+In this article I will write about how an iterator is used in Python, how to implement your own iterator and what types of iterators exist in Python.
 
 <!--more-->
 
-
-<h2>How iterator works</h2>
-
-<p>Iterable types in Python are not limited to built-ins. Any object can be iterated over but it needs to obey a special protocol.</p>
-
-<p>This means the following:</p>
-
-<ul>
-<li>An object should define the <strong>__iter__</strong> method that should return an iterator object that will be used to obtain items of a collection one by one</li>
-</ul>
-
-
-<p>We can use <strong>list</strong> type to illustrate this:</p>
-
-<pre><code class="python">l = [1, 2, 3, 4]
-l.__iter__()
-&gt;&gt;&gt; &lt;listiterator at 0x7fb685954cd0&gt;
-</code></pre>
-
-<ul>
-<li>An iterator (returned by the <strong>__iter__</strong> method) should implement the <strong>next</strong> method. Each call to the <strong>next</strong> method should return the next element in a collection</li>
-</ul>
-
-
-<p>Let&rsquo;s see how it works with a list in Python:</p>
-
-<pre><code class="python">it.next()
-&gt;&gt;&gt; 1
-
-it.next()
-&gt;&gt;&gt; 2
-
-it.next()
-&gt;&gt;&gt; 3
-
- it.next()
-&gt;&gt;&gt; 4
-</code></pre>
-
-<ul>
-<li>When there are no more items to return the <strong>next</strong> method should raise a <strong>StopIteration</strong> exception.</li>
-</ul>
-
-
-<p>Let&rsquo;s see if <strong>list</strong> obeys this protocol:</p>
-
-<pre><code class="python">it.next()
----------------------------------------------------------------------------
-StopIteration                             Traceback (most recent call last)
-&lt;ipython-input-11-54f0920595b2&gt; in &lt;module&gt;()
-----&gt;
-</code></pre>
-
-<p>So when we write the following code:</p>
-
-<pre><code class="python">lst = [1, 2, 3, 4]
-for i in lst:
-    print i
-</code></pre>
-
-<p>Python actually executes something like this:</p>
-
-<pre><code class="python">
-# Get iterator for the list
-it = lst.__iter__()
-while True:
-    try:
-        # Get next element of the list
-        i = it.next()
-
-        # This is a user-defined code that is written in a "for" loop
-        print i
-    except StopIteration:
-        break
-</code></pre>
-
-<p>With this knowledge we are ready to implement our own iterator.</p>
-
-<h2>How to implement an iterator</h2>
-
-<p>To make this palpable, let&rsquo;s implement our own simplistic data structure. For simplicity it would be just a wrapper around Python&rsquo;s list:</p>
-
-<pre><code class="python">class MyList(object):
-     def __init__(self, lst):
-         self.lst = lst
-</code></pre>
-
-<p>Now, let&rsquo;s implement the first part of Python&rsquo;s iterator protocol: define the <strong>__iter__</strong> method:</p>
-
-<pre><code class="python">class MyList(object):
-     def __init__(self, lst):
-         self.lst = lst
-
-     def __iter__(self):
-         return MyIterator(self.lst)
-</code></pre>
-
-<p>We return an instance of iterator via the <strong>__iter__</strong> method. Now let&rsquo;s implement the second part of the iterator protocol: define <strong>MyIterator</strong> with the <strong>next</strong> method:</p>
-
-<pre><code class="python">
-class MyIterator(object):
-    def __init__(self, lst):
-        self.lst = lst
-        self.pos = 0
-
-    def next(self):
-        item = self.lst[self.pos]
-        self.pos += 1
-        return item
-</code></pre>
-
-<p>Now we are almost done. The only thing that we still need to do is to raise the <strong>StopIteration</strong> exception if there are no more elements to return:</p>
-
-<pre><code class="python">
-class MyIterator(object):
-    def __init__(self, lst):
-        self.lst = lst
-        self.pos = 0
-
-    def next(self):
-        if self.pos == len(self.lst):
-            raise StopIteration()
-        item = self.lst[self.pos]
-        self.pos += 1
-        return item
-</code></pre>
-
-<p>Let&rsquo;s check if it works as expected:</p>
-
-<pre><code class="python">
-for i in MyList([1, 2, 3, 4]):
-    print i
-   ....:
-1
-2
-3
-4
-</code></pre>
-
-<h2>Are we done?</h2>
-
-<p>It looks like our iterator is done, but let&rsquo;s try another example with a list:</p>
-
-<pre><code class="python">
-for i in iter([1, 2, 3, 4]):
-    print i
-
-1
-2
-3
-4
-</code></pre>
-
-<p>In this example we get an iterator for a list using <strong>iter</strong> function (that just calls <strong>__iter__</strong> method) and iterate over it. If we try to do the same with the data structure that was written in the previous section it would not work:</p>
-
-<pre><code class="python">for i in iter(MyList([1, 2, 3, 4])):
-    print i
-
-
-Traceback (most recent call last):
-  File "&lt;pyshell#43&gt;", line 1, in &lt;module&gt;
-    for i in iter(MyList([1, 2, 3, 4])):
-TypeError: 'MyList' object is not iterable
-</code></pre>
-
-<p>Why doesn&rsquo;t it work? Let&rsquo;s see what happens.</p>
-
-<p>First of all the <strong>iter</strong> function calls the <strong>__iter__</strong> method to get an instance of <strong>MyIterator</strong>. After this Python attempts to execute something like:</p>
-
-<pre><code class="python">for i in MyIterator([1, 2, 3, 4]):
-    print i
-</code></pre>
-
-<p>And as we know when Python executes &ldquo;<strong>for</strong> &hellip; <strong>in</strong> &hellip;&rdquo; it tries to call method <strong>__iter__</strong> on an object that is placed on the right side of the <strong>in</strong> operator. So the issue is that <strong>MyIterator</strong> does not define <strong>__iter__</strong> method.</p>
-
-<p>To make our iterator work like a built-in type we need to add <strong>__iter__</strong> method to it that would return&hellip; itself:</p>
-
-<pre><code class="python">
-class MyIterator(object):
-    def __init__(self, lst):
-        self.lst = lst;
-        self.pos = 0
-
-    def __iter__(self):
-        return self
-    ...
-</code></pre>
-
-<p>Now it should work just as built-in type:</p>
-
-<pre><code class="python">
-for i in iter(MyList([1, 2, 3, 4])):
-    print i
-
-1
-2
-3
-4
-</code></pre>
-
-<h2>Reverse iterator</h2>
-
-<p>If you need to iterate over a collection in the reverse order an idiomatic way would be to use the <strong>reversed</strong> function:</p>
-
-<pre><code class="python">
-for i in reversed([1, 2, 3, 4]):
-    print i
-   ....:
-4
-3
-2
-1
-</code></pre>
-
-<p>The <strong>reversed</strong> function would work with any implementation of an iterator, but since an iterator can be used to traverse collection only in one direction, the <strong>reversed</strong> function would need to store all items from the iterator before it would be able to return the first element (which is the last element in the original collection). This is very inefficient especially if we need to iterate over a long collection.</p>
-
-<p>Fortunately in addition to the <strong>__iter__</strong> function Python provides the <strong>__reversed__</strong> function that should return a reversed iterator to go through a collections in the opposite way:</p>
-
-<pre><code class="python">
-l = [1, 2, 3, 4]
-it = l.__reversed__()
-
-it.next()
-&gt;&gt;&gt; 4
-it.next()
-&gt;&gt;&gt; 3
-it.next()
-&gt;&gt;&gt; 2
-it.next()
-&gt;&gt;&gt; 1
-it.next()
----------------------------------------------------------------------------
-StopIteration                             Traceback (most recent call last)
-&lt;ipython-input-21-54f0920595b2&gt; in &lt;module&gt;()
-----&gt; 1 it.next()
-
-StopIteration:
-</code></pre>
-
-<p>The implementation of the reversed iterator looks very similar. Lets update existing collection to return a reversed iterator:</p>
-
-<pre><code class="python">
-class MyList(object):
-    def __init__(self, lst):
-        self.lst = lst
-    ...
-    def __reversed__(self):
-        return MyReversedIterator(self.lst)
-</code></pre>
-
-<p>Iterator implementation is almost the same. The only difference is that we start from the end of the list and go to the first element:</p>
-
-<pre><code class="python">class MyReversedIterator(object):
-    def __init__(self, lst):
-        self.lst = lst
-        self.pos = len(lst) - 1
-
-    def __iter__(self):
-        return self
-
-    def next(self):
-        if self.pos &lt; 0:
-            raise StopIteration()
-        elem = self.lst[self.pos]
-        self.pos -= 1
-        return elem
-</code></pre>
-
-<p>Now we can use our object with the <strong>reversed</strong> function:</p>
-
-<pre><code class="python">
-for i in reversed(MyList([1, 2, 3, 4])):
-    print i
-
-4
-3
-2
-1
-</code></pre>
-
-<h2>An iterator is a one-time thing</h2>
-
-<p>Beware that usually you can use an iterator only once and generally there is no way to reset it. This can be a problem especially if you pass an iterator to a function that needs to traverse a collection more than once.</p>
-
-<p>To illustrate it let&rsquo;s say we need to calculate a minimum and a maximum numbers in a sequence:</p>
-
-<pre><code class="python">def min_and_max(seq):
-    return min(seq), max(seq)
-</code></pre>
-
-<p>Now if we pass a list to this function it will work as expected:</p>
-
-<pre><code class="python">
-lst = [5, 2, 10, 34, 0]
-min_and_max(lst)
-&gt;&gt;&gt; (0, 34)
-</code></pre>
-
-<p>But if we pass an iterator we would receive an error instead:</p>
-
-<pre><code class="python">lst = [5, 2, 10, 34, 0]
-min_and_max(iter(lst))
-
-Traceback (most recent call last):
-  File "&lt;pyshell#65&gt;", line 1, in &lt;module&gt;
-    min_and_max(iter(lst))
-  File "&lt;pyshell#57&gt;", line 2, in min_and_max
-    return min(seq), max(seq)
-ValueError: max() arg is an empty sequence
-</code></pre>
-
-<p>This is because the <strong>seq</strong> at first is iterated by the <strong>min</strong> function that iterates over all items in it. After that when it is passed to the <strong>max</strong> function, there is no more elements to return.</p>
-
-<p>The correct way to solve this issue would be to store all items from an iterator to a list that can be traversed multiple times:</p>
-
-<pre><code class="python">def min_and_max(seq):
-    seq = list(seq)
-    return min(seq), max(seq)
-</code></pre>
-
-<p>This works because if <strong>list</strong> function is applied to a list it create a copy of a list and if it is applied to an iterator it copies all items from an iterator to a list.</p>
-
-<p>Now it works as expected:</p>
-
-<pre><code class="python">lst = [5, 2, 10, 34, 0]
-min_and_max(iter(lst))
-(0, 34)
-</code></pre>
+## How iterator works
+
+Iterable types in Python are not limited to built-ins. Any object can be iterated over but it needs to obey a special protocol.
+
+This means the following:
+
+* An object should define the **\_\_iter\_\_** method that should return an iterator object that will be used to obtain items of a collection one by one
+
+We can use **list** type to illustrate this:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+</span><span class='line'><span class="n">l</span><span class="o">.</span><span class="n">__iter__</span><span class="p">()</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="o">&lt;</span><span class="n">listiterator</span> <span class="n">at</span> <span class="mh">0x7fb685954cd0</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+* An iterator (returned by the **\_\_iter\_\_** method) should implement the **next** method. Each call to the **next** method should return the next element in a collection
+
+Let's see how it works with a list in Python:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="mi">1</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="mi">2</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="mi">3</span>
+</span><span class='line'>
+</span><span class='line'> <span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="mi">4</span>
+</span></code></pre></td></tr></table></div></figure>
+
+* When there are no more items to return the **next** method should raise a **StopIteration** exception.
+
+Let's see if **list** obeys this protocol:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+</span><span class='line'><span class="o">---------------------------------------------------------------------------</span>
+</span><span class='line'><span class="ne">StopIteration</span>                             <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">)</span>
+</span><span class='line'><span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">54</span><span class="n">f0920595b2</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="p">()</span>
+</span><span class='line'><span class="o">----&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+So when we write the following code:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">lst</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+</span><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
+</span><span class='line'>    <span class="k">print</span> <span class="n">i</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Python actually executes something like this:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># Get iterator for the list</span>
+</span><span class='line'><span class="n">it</span> <span class="o">=</span> <span class="n">lst</span><span class="o">.</span><span class="n">__iter__</span><span class="p">()</span>
+</span><span class='line'><span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+</span><span class='line'>    <span class="k">try</span><span class="p">:</span>
+</span><span class='line'>        <span class="c"># Get next element of the list</span>
+</span><span class='line'>        <span class="n">i</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c"># This is a user-defined code that is written in a &quot;for&quot; loop</span>
+</span><span class='line'>        <span class="k">print</span> <span class="n">i</span>
+</span><span class='line'>    <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+</span><span class='line'>        <span class="k">break</span>
+</span></code></pre></td></tr></table></div></figure>
+
+With this knowledge we are ready to implement our own iterator.
+
+## How to implement an iterator
+
+To make this palpable, let's implement our own simplistic data structure. For simplicity it would be just a wrapper around Python's list:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">MyList</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+</span><span class='line'>     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lst</span><span class="p">):</span>
+</span><span class='line'>         <span class="bp">self</span><span class="o">.</span><span class="n">lst</span> <span class="o">=</span> <span class="n">lst</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Now, let's implement the first part of Python's iterator protocol: define the **\_\_iter\_\_** method:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">MyList</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+</span><span class='line'>     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lst</span><span class="p">):</span>
+</span><span class='line'>         <span class="bp">self</span><span class="o">.</span><span class="n">lst</span> <span class="o">=</span> <span class="n">lst</span>
+</span><span class='line'>
+</span><span class='line'>     <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>         <span class="k">return</span> <span class="n">MyIterator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lst</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+We return an instance of iterator via the **\_\_iter\_\_** method. Now let's implement the second part of the iterator protocol: define **MyIterator** with the **next** method:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">MyIterator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lst</span><span class="p">):</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">lst</span> <span class="o">=</span> <span class="n">lst</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lst</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">]</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">item</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Now we are almost done. The only thing that we still need to do is to raise the **StopIteration** exception if there are no more elements to return:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">MyIterator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lst</span><span class="p">):</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">lst</span> <span class="o">=</span> <span class="n">lst</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lst</span><span class="p">):</span>
+</span><span class='line'>            <span class="k">raise</span> <span class="ne">StopIteration</span><span class="p">()</span>
+</span><span class='line'>        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lst</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">]</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">item</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+Let's check if it works as expected:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">MyList</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]):</span>
+</span><span class='line'>    <span class="k">print</span> <span class="n">i</span>
+</span><span class='line'>   <span class="o">....</span><span class="p">:</span>
+</span><span class='line'><span class="mi">1</span>
+</span><span class='line'><span class="mi">2</span>
+</span><span class='line'><span class="mi">3</span>
+</span><span class='line'><span class="mi">4</span>
+</span></code></pre></td></tr></table></div></figure>
+
+## Are we done?
+
+It looks like our iterator is done, but let's try another example with a list:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]):</span>
+</span><span class='line'>    <span class="k">print</span> <span class="n">i</span>
+</span><span class='line'>
+</span><span class='line'><span class="mi">1</span>
+</span><span class='line'><span class="mi">2</span>
+</span><span class='line'><span class="mi">3</span>
+</span><span class='line'><span class="mi">4</span>
+</span></code></pre></td></tr></table></div></figure>
+
+In this example we get an iterator for a list using **iter** function (that just calls **\_\_iter\_\_** method) and iterate over it. If we try to do the same with the data structure that was written in the previous section it would not work:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">MyList</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])):</span>
+</span><span class='line'>    <span class="k">print</span> <span class="n">i</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+</span><span class='line'>  <span class="n">File</span> <span class="s">&quot;&lt;pyshell#43&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">MyList</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])):</span>
+</span><span class='line'><span class="ne">TypeError</span><span class="p">:</span> <span class="s">&#39;MyList&#39;</span> <span class="nb">object</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">iterable</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Why doesn't it work? Let's see what happens.
+
+First of all the **iter** function calls the **\_\_iter\_\_** method to get an instance of **MyIterator**. After this Python attempts to execute something like:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">MyIterator</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]):</span>
+</span><span class='line'>    <span class="k">print</span> <span class="n">i</span>
+</span></code></pre></td></tr></table></div></figure>
+
+And as we know when Python executes "**for** ... **in** ..." it tries to call method **\_\_iter\_\_** on an object that is placed on the right side of the **in** operator. So the issue is that **MyIterator** does not define **\_\_iter\_\_** method.
+
+To make our iterator work like a built-in type we need to add **\_\_iter\_\_** method to it that would return... itself:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">MyIterator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lst</span><span class="p">):</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">lst</span> <span class="o">=</span> <span class="n">lst</span><span class="p">;</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="k">return</span> <span class="bp">self</span>
+</span><span class='line'>    <span class="o">...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Now it should work just as built-in type:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">MyList</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])):</span>
+</span><span class='line'>	<span class="k">print</span> <span class="n">i</span>
+</span><span class='line'>
+</span><span class='line'><span class="mi">1</span>
+</span><span class='line'><span class="mi">2</span>
+</span><span class='line'><span class="mi">3</span>
+</span><span class='line'><span class="mi">4</span>
+</span></code></pre></td></tr></table></div></figure>
+
+## Reverse iterator
+
+If you need to iterate over a collection in the reverse order an idiomatic way would be to use the **reversed** function:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]):</span>
+</span><span class='line'>    <span class="k">print</span> <span class="n">i</span>
+</span><span class='line'>   <span class="o">....</span><span class="p">:</span>
+</span><span class='line'><span class="mi">4</span>
+</span><span class='line'><span class="mi">3</span>
+</span><span class='line'><span class="mi">2</span>
+</span><span class='line'><span class="mi">1</span>
+</span></code></pre></td></tr></table></div></figure>
+
+The **reversed** function would work with any implementation of an iterator, but since an iterator can be used to traverse collection only in one direction, the **reversed** function would need to store all items from the iterator before it would be able to return the first element (which is the last element in the original collection). This is very inefficient especially if we need to iterate over a long collection.
+
+Fortunately in addition to the **\_\_iter\_\_** function Python provides the **\_\_reversed\_\_** function that should return a reversed iterator to go through a collections in the opposite way:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+</span><span class='line'><span class="n">it</span> <span class="o">=</span> <span class="n">l</span><span class="o">.</span><span class="n">__reversed__</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="mi">4</span>
+</span><span class='line'><span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="mi">3</span>
+</span><span class='line'><span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="mi">2</span>
+</span><span class='line'><span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="mi">1</span>
+</span><span class='line'><span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+</span><span class='line'><span class="o">---------------------------------------------------------------------------</span>
+</span><span class='line'><span class="ne">StopIteration</span>                             <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">)</span>
+</span><span class='line'><span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">21</span><span class="o">-</span><span class="mi">54</span><span class="n">f0920595b2</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="p">()</span>
+</span><span class='line'><span class="o">----&gt;</span> <span class="mi">1</span> <span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'><span class="ne">StopIteration</span><span class="p">:</span>
+</span></code></pre></td></tr></table></div></figure>
+
+The implementation of the reversed iterator looks very similar. Lets update existing collection to return a reversed iterator:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">MyList</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lst</span><span class="p">):</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">lst</span> <span class="o">=</span> <span class="n">lst</span>
+</span><span class='line'>    <span class="o">...</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">__reversed__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">MyReversedIterator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lst</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Iterator implementation is almost the same. The only difference is that we start from the end of the list and go to the first element:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">MyReversedIterator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lst</span><span class="p">):</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">lst</span> <span class="o">=</span> <span class="n">lst</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="k">return</span> <span class="bp">self</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+</span><span class='line'>            <span class="k">raise</span> <span class="ne">StopIteration</span><span class="p">()</span>
+</span><span class='line'>        <span class="n">elem</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lst</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">]</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">-=</span> <span class="mi">1</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">elem</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Now we can use our object with the **reversed** function:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">MyList</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])):</span>
+</span><span class='line'>    <span class="k">print</span> <span class="n">i</span>
+</span><span class='line'>
+</span><span class='line'><span class="mi">4</span>
+</span><span class='line'><span class="mi">3</span>
+</span><span class='line'><span class="mi">2</span>
+</span><span class='line'><span class="mi">1</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+## An iterator is a one-time thing
+
+Beware that usually you can use an iterator only once and generally there is no way to reset it. This can be a problem especially if you pass an iterator to a function that needs to traverse a collection more than once.
+
+To illustrate it let's say we need to calculate a minimum and a maximum numbers in a sequence:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">min_and_max</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">seq</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Now if we pass a list to this function it will work as expected:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">lst</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+</span><span class='line'><span class="n">min_and_max</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">34</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+But if we pass an iterator we would receive an error instead:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">lst</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+</span><span class='line'><span class="n">min_and_max</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">lst</span><span class="p">))</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+</span><span class='line'>  <span class="n">File</span> <span class="s">&quot;&lt;pyshell#65&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="n">min_and_max</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">lst</span><span class="p">))</span>
+</span><span class='line'>  <span class="n">File</span> <span class="s">&quot;&lt;pyshell#57&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">2</span><span class="p">,</span> <span class="ow">in</span> <span class="n">min_and_max</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">seq</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
+</span><span class='line'><span class="ne">ValueError</span><span class="p">:</span> <span class="nb">max</span><span class="p">()</span> <span class="n">arg</span> <span class="ow">is</span> <span class="n">an</span> <span class="n">empty</span> <span class="n">sequence</span>
+</span></code></pre></td></tr></table></div></figure>
+
+This is because the **seq** at first is iterated by the **min** function that iterates over all items in it. After that when it is passed to the **max** function, there is no more elements to return.
+
+The correct way to solve this issue would be to store all items from an iterator to a list that can be traversed multiple times:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">min_and_max</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>
+</span><span class='line'>    <span class="n">seq</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">seq</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+This works because if **list** function is applied to a list it create a copy of a list and if it is applied to an iterator it copies all items from an iterator to a list.
+
+Now it works as expected:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">lst</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+</span><span class='line'><span class="n">min_and_max</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">lst</span><span class="p">))</span>
+</span><span class='line'><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">34</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
 ]]></content>
   </entry>
   

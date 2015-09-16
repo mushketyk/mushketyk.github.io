@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Productivity | Software Developer's diary]]></title>
   <link href="http://mushketyk.github.io/blog/categories/productivity/atom.xml" rel="self"/>
   <link href="http://mushketyk.github.io/"/>
-  <updated>2015-09-14T08:30:27+01:00</updated>
+  <updated>2015-09-16T22:00:08+01:00</updated>
   <id>http://mushketyk.github.io/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -18,31 +18,34 @@
     <link href="http://mushketyk.github.io/blog/2015/08/24/git-productivity-tip/"/>
     <updated>2015-08-24T21:48:32+01:00</updated>
     <id>http://mushketyk.github.io/blog/2015/08/24/git-productivity-tip</id>
-    <content type="html"><![CDATA[<p>git provides an efficient shortcut to refer to a previous branch: &ldquo;-&rdquo;. It can be used to quickly switch to a previous branch or to merge current branch.</p>
+    <content type="html"><![CDATA[git provides an efficient shortcut to refer to a previous branch: "-". It can be used to quickly switch to a previous branch or to merge current branch.
 
 <!--more-->
 
+For example if you switched from "master" branch to "feature" branch and now you want to switch back, just type:
 
-<p>For example if you switched from &ldquo;master&rdquo; branch to &ldquo;feature&rdquo; branch and now you want to switch back, just type:</p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git checkout -</span></code></pre></td></tr></table></div></figure>
 
-<pre><code>git checkout -
-</code></pre>
+and git will switch back to the "master" branch.
 
-<p>and git will switch back to the &ldquo;master&rdquo; branch.</p>
+This is also useful for merging. If you want to merge "feature" branch in to the "master"  you can just do the following:
 
-<p>This is also useful for merging. If you want to merge &ldquo;feature&rdquo; branch in to the &ldquo;master&rdquo;  you can just do the following:</p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># switch to from "feature" branch to "master" branch
+</span><span class='line'>git checkout master
+</span><span class='line'># merge "feature" branch in "master"
+</span><span class='line'>git merge -</span></code></pre></td></tr></table></div></figure>
 
-<pre><code># switch to from "feature" branch to "master" branch
-git checkout master
-# merge "feature" branch in "master"
-git merge -
-</code></pre>
+This can require even less typing if you use <a href="https://github.com/robbyrussell/oh-my-zsh">oh-my-zsh</a> extension for zsh shell:
 
-<p>This can require even less typing if you use <a href="https://github.com/robbyrussell/oh-my-zsh">oh-my-zsh</a> extension for zsh shell:</p>
-
-<pre><code>gco master
-gm -
-</code></pre>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gco master
+</span><span class='line'>gm -</span></code></pre></td></tr></table></div></figure>
 ]]></content>
   </entry>
   
