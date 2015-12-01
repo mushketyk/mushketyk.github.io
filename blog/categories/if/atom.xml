@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: If | Software Developer's diary]]></title>
+  <link href="http://mushketyk.com/blog/categories/if/atom.xml" rel="self"/>
+  <link href="http://mushketyk.com/"/>
+  <updated>2015-12-01T09:38:27+00:00</updated>
+  <id>http://mushketyk.com/</id>
+  <author>
+    <name><![CDATA[Ivan Mushketyk]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Avoid Comparisons in if Statements]]></title>
+    <link href="http://mushketyk.com/blog/2015/11/30/avoid-comparisons-in-if-statements/"/>
+    <updated>2015-11-30T22:10:25+00:00</updated>
+    <id>http://mushketyk.com/blog/2015/11/30/avoid-comparisons-in-if-statements</id>
+    <content type="html"><![CDATA[If you come from Java or C# background, your instincts may tell you to write a code like this:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">is_list_empty</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+</span><span class='line'>  <span class="sd">&quot;&quot;&quot;</span>
+</span><span class='line'><span class="sd">  Check if a linked list is empty.</span>
+</span><span class='line'><span class="sd">  &quot;&quot;&quot;</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">node</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+</span><span class='line'>    <span class="k">return</span> <span class="bp">False</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="bp">True</span>
+</span></code></pre></td></tr></table></div></figure>
+<!--more-->
+
+While this would be a perfectly valid code in other languages it looks non-idiomatic in Python and it can be rewritten as:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">is_list_empty</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">node</span><span class="p">:</span>
+</span><span class='line'>    <span class="k">return</span> <span class="bp">False</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="bp">True</span>
+</span></code></pre></td></tr></table></div></figure>
+
+It turns out that in Python an object can be evaluated as True or False depending on it's value. None is evaluated as False in if/while statements, while an object (a non-null reference) is evaluated as True.
+
+Python has simple rules about what values are considered to be False in if statements:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="bp">None</span>    <span class="c"># None reference</span>
+</span><span class='line'><span class="bp">False</span>   <span class="c"># False boolean value</span>
+</span><span class='line'><span class="s">&#39;&#39;</span>      <span class="c"># empty string</span>
+</span><span class='line'><span class="mi">0</span><span class="p">,</span> <span class="mf">0.0</span>  <span class="c"># zero</span>
+</span><span class='line'><span class="p">[]</span>      <span class="c"># empty array</span>
+</span><span class='line'><span class="p">()</span>      <span class="c"># empty tuple</span>
+</span><span class='line'><span class="p">{}</span>      <span class="c"># empty dictionary</span>
+</span><span class='line'><span class="nb">set</span><span class="p">()</span>   <span class="c"># empty set</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Everything else is considered to be True.
+
+
+## Determine how custom object is evaluated in a boolean context
+
+Default Python rules are good for built-in types, but what if we need to define how an instance of our class is evaluated in a boolean context?
+
+Let's say we have a matrix class that can be created with a set height and width and two methods to get and set values from it:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">Matrix</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+</span><span class='line'>	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">):</span>
+</span><span class='line'>		<span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">height</span>
+</span><span class='line'>		<span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">width</span>
+</span><span class='line'>    <span class="c"># Create table height x width and fill it with zeros</span>
+</span><span class='line'>		<span class="bp">self</span><span class="o">.</span><span class="n">matrix</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">width</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">height</span><span class="p">)]</span>
+</span><span class='line'>
+</span><span class='line'>	<span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
+</span><span class='line'>		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>	<span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+</span><span class='line'>		<span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+</span></code></pre></td></tr></table></div></figure>
+
+It would be nice if an empty matrix would be treated as False in a boolean context, but as we know by default all object are treated as True in Python.
+
+To change this behavior we need to implement **\_\_nonzero\_\_** method in our class. This method will be called by the Python interpretor when an object is used in boolean context in if/while statements:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">Matrix</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+</span><span class='line'>  <span class="o">...</span>
+</span><span class='line'>	<span class="k">def</span> <span class="nf">__nonzero__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>    <span class="c"># This will return True only if both &quot;height&quot; and &quot;width&quot; are non-zero</span>
+</span><span class='line'>		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Now it should work as expected:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">m</span> <span class="o">=</span> <span class="n">Matrix</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="nb">bool</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</span><span class='line'><span class="bp">False</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">m</span><span class="p">:</span>
+</span><span class='line'>	<span class="k">print</span> <span class="s">&quot;False&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="bp">False</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">if</span> <span class="n">Matrix</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+</span><span class='line'>	<span class="k">print</span> <span class="s">&quot;True&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="bp">True</span>
+</span></code></pre></td></tr></table></div></figure>
+]]></content>
+  </entry>
+  
+</feed>
