@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Python | Software Developer's diary]]></title>
   <link href="http://mushketyk.com/blog/categories/python/atom.xml" rel="self"/>
   <link href="http://mushketyk.com/"/>
-  <updated>2015-12-01T09:42:14+00:00</updated>
+  <updated>2015-12-12T21:22:00+00:00</updated>
   <id>http://mushketyk.com/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -12,6 +12,207 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Else: Block in Python Loops]]></title>
+    <link href="http://mushketyk.com/blog/2015/12/10/else-block-in-loops/"/>
+    <updated>2015-12-10T22:11:12+00:00</updated>
+    <id>http://mushketyk.com/blog/2015/12/10/else-block-in-loops</id>
+    <content type="html"><![CDATA[In most of programming languages **else** keyword can only be used in **if/else** constructs. But what even some seasoned Python programmers do not know is that Python supports **else** blocks in **for** and **while** loops.
+
+<!--more-->
+
+**else** block after a loop may be misleading but it's simply a block that is being called if execution of a loop was not interrupted by a **break** statement.
+
+Let's take a look at an example:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+</span><span class='line'>	<span class="k">print</span> <span class="n">i</span>
+</span><span class='line'><span class="k">else</span><span class="p">:</span>
+</span><span class='line'>	<span class="k">print</span> <span class="s">&quot;in else&quot;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="mi">0</span>
+</span><span class='line'><span class="mi">1</span>
+</span><span class='line'><span class="mi">2</span>
+</span><span class='line'><span class="ow">in</span> <span class="k">else</span>
+</span></code></pre></td></tr></table></div></figure>
+
+In this case since **for** loop was not interrupted and the **else** block was executed.
+
+Now let's add a break statement in a for loop and see if **else** block is being executed:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+</span><span class='line'>	<span class="k">print</span> <span class="n">i</span>
+</span><span class='line'>	<span class="k">break</span>
+</span><span class='line'><span class="k">else</span><span class="p">:</span>
+</span><span class='line'>	<span class="k">print</span> <span class="s">&quot;in else&quot;</span>
+</span><span class='line'><span class="k">print</span> <span class="s">&quot;after loop&quot;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="mi">0</span>
+</span><span class='line'><span class="n">after</span> <span class="n">loop</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Beware that **else** block will be executed even if a loop was not executed at all:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[]:</span>
+</span><span class='line'>	<span class="k">print</span> <span class="s">&quot;Never ever&quot;</span>
+</span><span class='line'><span class="k">else</span><span class="p">:</span>
+</span><span class='line'>	<span class="k">print</span> <span class="s">&quot;In else&quot;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="n">In</span> <span class="k">else</span>
+</span></code></pre></td></tr></table></div></figure>
+
+## More realistic example
+
+Usually **else** blocks are used after loops that are searching for a specific element in a sequence and should be called if an element was not found.
+
+Let's say we have a function that iterates over a list and check if all items match a regex. If one of the items does not match the regex a function would display a message and return. If all items comply with a regex the function would print a different message. We can implement this using conventional constructions:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">check_items</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">regex</span><span class="p">):</span>
+</span><span class='line'>	<span class="n">found</span> <span class="o">=</span> <span class="bp">False</span>
+</span><span class='line'>	<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
+</span><span class='line'>		<span class="k">if</span> <span class="ow">not</span> <span class="n">regex</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+</span><span class='line'>			<span class="k">print</span> <span class="s">&quot;&#39;{}&#39; does not match regex&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</span><span class='line'>			<span class="n">found</span> <span class="o">=</span> <span class="bp">True</span>
+</span><span class='line'>			<span class="k">break</span>
+</span><span class='line'>	<span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+</span><span class='line'>		<span class="k">print</span> <span class="s">&quot;all strings match the regex&quot;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">check_items</span><span class="p">([</span><span class="s">&quot;1&quot;</span><span class="p">,</span> <span class="s">&quot;23&quot;</span><span class="p">,</span> <span class="s">&quot;abc&quot;</span><span class="p">],</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&quot;[0-9]+&quot;</span><span class="p">))</span>
+</span><span class='line'><span class="s">&#39;abc&#39;</span> <span class="n">does</span> <span class="ow">not</span> <span class="n">match</span> <span class="n">regex</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">check_items</span><span class="p">([</span><span class="s">&quot;1&quot;</span><span class="p">,</span> <span class="s">&quot;23&quot;</span><span class="p">,</span> <span class="s">&quot;1234&quot;</span><span class="p">],</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&quot;[0-9]+&quot;</span><span class="p">))</span>
+</span><span class='line'><span class="nb">all</span> <span class="n">strings</span> <span class="n">match</span> <span class="n">the</span> <span class="n">regex</span>
+</span></code></pre></td></tr></table></div></figure>
+
+In this case we need a flag to track if an element was found in a list. If **else** block is used there would be no need for a flag and this would make this function a bit shorter:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">check_items</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">regex</span><span class="p">):</span>
+</span><span class='line'>	<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
+</span><span class='line'>		<span class="k">if</span> <span class="ow">not</span> <span class="n">regex</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+</span><span class='line'>			<span class="k">print</span> <span class="s">&quot;&#39;{}&#39; does not match regex&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</span><span class='line'>			<span class="k">break</span>
+</span><span class='line'>	<span class="k">else</span><span class="p">:</span>
+</span><span class='line'>		<span class="k">print</span> <span class="s">&quot;all strings match the regex&quot;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">check_items</span><span class="p">([</span><span class="s">&quot;1&quot;</span><span class="p">,</span> <span class="s">&quot;23&quot;</span><span class="p">,</span> <span class="s">&quot;abc&quot;</span><span class="p">],</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&quot;[0-9]+&quot;</span><span class="p">))</span>
+</span><span class='line'><span class="s">&#39;abc&#39;</span> <span class="n">does</span> <span class="ow">not</span> <span class="n">match</span> <span class="n">regex</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">check_items</span><span class="p">([</span><span class="s">&quot;1&quot;</span><span class="p">,</span> <span class="s">&quot;23&quot;</span><span class="p">,</span> <span class="s">&quot;1234&quot;</span><span class="p">],</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&quot;[0-9]+&quot;</span><span class="p">))</span>
+</span><span class='line'><span class="nb">all</span> <span class="n">strings</span> <span class="n">match</span> <span class="n">the</span> <span class="n">regex</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+## A bit of history
+
+**else** block in loops was invented by Donald Knuth, who suggested that it can be used to avoid some GOTO statements.
+
+The name **else** for the block was selected because when a loop is executed it has an implicit condition that is checked before every iteration. If this condition is not satisfied, Python interpretor would not execute loop's body and will execute **else** block if it exists, hence the weird name.
+
+Nowadays Python community agrees that the name is not intuitive and that it would be better to name it **nobreak**, but it's too late to change it, since it will break backward compatibility.
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Do Not Assign to Built-ins]]></title>
+    <link href="http://mushketyk.com/blog/2015/12/07/do-not-assign-to-built-ins/"/>
+    <updated>2015-12-07T08:48:58+00:00</updated>
+    <id>http://mushketyk.com/blog/2015/12/07/do-not-assign-to-built-ins</id>
+    <content type="html"><![CDATA[A common mistake in Python is to assign a value to a built-in function.
+
+Python allows you to assign a value to a variable with any name, and if you choose one of the names of Python built-in functions, this function won't be available anymore:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</span><span class='line'><span class="mi">3</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span> <span class="o">=</span> <span class="mi">5</span>
+</span><span class='line'><span class="c"># &quot;len&quot; function is no longer available</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+</span><span class='line'>  <span class="n">File</span> <span class="s">&quot;&lt;pyshell#2&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="nb">len</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</span><span class='line'><span class="ne">TypeError</span><span class="p">:</span> <span class="s">&#39;int&#39;</span> <span class="nb">object</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">callable</span>
+</span></code></pre></td></tr></table></div></figure>
+
+A similar issue can arise without explicitly using an assignment. If you use a name of a built-in function for a function's argument a built-in function won't be available:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">split</span><span class="p">(</span><span class="nb">str</span><span class="p">):</span>
+</span><span class='line'>  <span class="c"># &quot;str&quot; function is no longer available in this function</span>
+</span><span class='line'>  <span class="o">...</span>
+</span></code></pre></td></tr></table></div></figure>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Avoid Comparisons in if Statements]]></title>
@@ -626,771 +827,6 @@ With the **yield** it is incredibly simple to write an iterator for this travers
 </span></code></pre></td></tr></table></div></figure>
 
 As an exercise, try to implement this iterator using low-level iterator protocol.
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Anatomy of a Python Iterator]]></title>
-    <link href="http://mushketyk.com/blog/2015/09/07/anatomy-of-python-iterator/"/>
-    <updated>2015-09-07T21:52:41+01:00</updated>
-    <id>http://mushketyk.com/blog/2015/09/07/anatomy-of-python-iterator</id>
-    <content type="html"><![CDATA[Iterator is a powerful pattern that was recognized at least as early as 1994 and since then it was incorporated in syntax of almost every modern programming language.
-
-Python also implements this pattern providing a pithy and concise syntax to iterate over lists, maps, dictionaries and other data structures:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]:</span>
-</span><span class='line'>    <span class="k">print</span> <span class="n">i</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-In this article I will write about how an iterator is used in Python, how to implement your own iterator and what types of iterators exist in Python.
-
-<!--more-->
-
-## How iterator works
-
-Iterable types in Python are not limited to built-ins. Any object can be iterated over but it needs to obey a special protocol.
-
-This means the following:
-
-* An object should define the **\_\_iter\_\_** method that should return an iterator object that will be used to obtain items of a collection one by one
-
-We can use **list** type to illustrate this:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
-</span><span class='line'><span class="n">l</span><span class="o">.</span><span class="n">__iter__</span><span class="p">()</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="o">&lt;</span><span class="n">listiterator</span> <span class="n">at</span> <span class="mh">0x7fb685954cd0</span><span class="o">&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-* An iterator (returned by the **\_\_iter\_\_** method) should implement the **next** method. Each call to the **next** method should return the next element in a collection
-
-Let's see how it works with a list in Python:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="mi">1</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="mi">2</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="mi">3</span>
-</span><span class='line'>
-</span><span class='line'> <span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="mi">4</span>
-</span></code></pre></td></tr></table></div></figure>
-
-* When there are no more items to return the **next** method should raise a **StopIteration** exception.
-
-Let's see if **list** obeys this protocol:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'><span class="o">---------------------------------------------------------------------------</span>
-</span><span class='line'><span class="ne">StopIteration</span>                             <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">)</span>
-</span><span class='line'><span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">54</span><span class="n">f0920595b2</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="p">()</span>
-</span><span class='line'><span class="o">----&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-So when we write the following code:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">lst</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
-</span><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
-</span><span class='line'>    <span class="k">print</span> <span class="n">i</span>
-</span></code></pre></td></tr></table></div></figure>
-
-Python actually executes something like this:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># Get iterator for the list</span>
-</span><span class='line'><span class="n">it</span> <span class="o">=</span> <span class="n">lst</span><span class="o">.</span><span class="n">__iter__</span><span class="p">()</span>
-</span><span class='line'><span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
-</span><span class='line'>    <span class="k">try</span><span class="p">:</span>
-</span><span class='line'>        <span class="c"># Get next element of the list</span>
-</span><span class='line'>        <span class="n">i</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="c"># This is a user-defined code that is written in a &quot;for&quot; loop</span>
-</span><span class='line'>        <span class="k">print</span> <span class="n">i</span>
-</span><span class='line'>    <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
-</span><span class='line'>        <span class="k">break</span>
-</span></code></pre></td></tr></table></div></figure>
-
-With this knowledge we are ready to implement our own iterator.
-
-## How to implement an iterator
-
-To make this palpable, let's implement our own simplistic data structure. For simplicity it would be just a wrapper around Python's list:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">MyList</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-</span><span class='line'>     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lst</span><span class="p">):</span>
-</span><span class='line'>         <span class="bp">self</span><span class="o">.</span><span class="n">lst</span> <span class="o">=</span> <span class="n">lst</span>
-</span></code></pre></td></tr></table></div></figure>
-
-Now, let's implement the first part of Python's iterator protocol: define the **\_\_iter\_\_** method:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">MyList</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-</span><span class='line'>     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lst</span><span class="p">):</span>
-</span><span class='line'>         <span class="bp">self</span><span class="o">.</span><span class="n">lst</span> <span class="o">=</span> <span class="n">lst</span>
-</span><span class='line'>
-</span><span class='line'>     <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span class='line'>         <span class="k">return</span> <span class="n">MyIterator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lst</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-We return an instance of iterator via the **\_\_iter\_\_** method. Now let's implement the second part of the iterator protocol: define **MyIterator** with the **next** method:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">MyIterator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lst</span><span class="p">):</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">lst</span> <span class="o">=</span> <span class="n">lst</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="mi">0</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span class='line'>        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lst</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">]</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span class='line'>        <span class="k">return</span> <span class="n">item</span>
-</span></code></pre></td></tr></table></div></figure>
-
-Now we are almost done. The only thing that we still need to do is to raise the **StopIteration** exception if there are no more elements to return:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">MyIterator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lst</span><span class="p">):</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">lst</span> <span class="o">=</span> <span class="n">lst</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="mi">0</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span class='line'>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lst</span><span class="p">):</span>
-</span><span class='line'>            <span class="k">raise</span> <span class="ne">StopIteration</span><span class="p">()</span>
-</span><span class='line'>        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lst</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">]</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span class='line'>        <span class="k">return</span> <span class="n">item</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-Let's check if it works as expected:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">MyList</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]):</span>
-</span><span class='line'>    <span class="k">print</span> <span class="n">i</span>
-</span><span class='line'>   <span class="o">....</span><span class="p">:</span>
-</span><span class='line'><span class="mi">1</span>
-</span><span class='line'><span class="mi">2</span>
-</span><span class='line'><span class="mi">3</span>
-</span><span class='line'><span class="mi">4</span>
-</span></code></pre></td></tr></table></div></figure>
-
-## Are we done?
-
-It looks like our iterator is done, but let's try another example with a list:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]):</span>
-</span><span class='line'>    <span class="k">print</span> <span class="n">i</span>
-</span><span class='line'>
-</span><span class='line'><span class="mi">1</span>
-</span><span class='line'><span class="mi">2</span>
-</span><span class='line'><span class="mi">3</span>
-</span><span class='line'><span class="mi">4</span>
-</span></code></pre></td></tr></table></div></figure>
-
-In this example we get an iterator for a list using **iter** function (that just calls **\_\_iter\_\_** method) and iterate over it. If we try to do the same with the data structure that was written in the previous section it would not work:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">MyList</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])):</span>
-</span><span class='line'>    <span class="k">print</span> <span class="n">i</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
-</span><span class='line'>  <span class="n">File</span> <span class="s">&quot;&lt;pyshell#43&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-</span><span class='line'>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">MyList</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])):</span>
-</span><span class='line'><span class="ne">TypeError</span><span class="p">:</span> <span class="s">&#39;MyList&#39;</span> <span class="nb">object</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">iterable</span>
-</span></code></pre></td></tr></table></div></figure>
-
-Why doesn't it work? Let's see what happens.
-
-First of all the **iter** function calls the **\_\_iter\_\_** method to get an instance of **MyIterator**. After this Python attempts to execute something like:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">MyIterator</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]):</span>
-</span><span class='line'>    <span class="k">print</span> <span class="n">i</span>
-</span></code></pre></td></tr></table></div></figure>
-
-And as we know when Python executes "**for** ... **in** ..." it tries to call method **\_\_iter\_\_** on an object that is placed on the right side of the **in** operator. So the issue is that **MyIterator** does not define **\_\_iter\_\_** method.
-
-To make our iterator work like a built-in type we need to add **\_\_iter\_\_** method to it that would return... itself:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">MyIterator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lst</span><span class="p">):</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">lst</span> <span class="o">=</span> <span class="n">lst</span><span class="p">;</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="mi">0</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span class='line'>        <span class="k">return</span> <span class="bp">self</span>
-</span><span class='line'>    <span class="o">...</span>
-</span></code></pre></td></tr></table></div></figure>
-
-Now it should work just as built-in type:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">MyList</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])):</span>
-</span><span class='line'>	<span class="k">print</span> <span class="n">i</span>
-</span><span class='line'>
-</span><span class='line'><span class="mi">1</span>
-</span><span class='line'><span class="mi">2</span>
-</span><span class='line'><span class="mi">3</span>
-</span><span class='line'><span class="mi">4</span>
-</span></code></pre></td></tr></table></div></figure>
-
-## Reverse iterator
-
-If you need to iterate over a collection in the reverse order an idiomatic way would be to use the **reversed** function:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]):</span>
-</span><span class='line'>    <span class="k">print</span> <span class="n">i</span>
-</span><span class='line'>   <span class="o">....</span><span class="p">:</span>
-</span><span class='line'><span class="mi">4</span>
-</span><span class='line'><span class="mi">3</span>
-</span><span class='line'><span class="mi">2</span>
-</span><span class='line'><span class="mi">1</span>
-</span></code></pre></td></tr></table></div></figure>
-
-The **reversed** function would work with any implementation of an iterator, but since an iterator can be used to traverse collection only in one direction, the **reversed** function would need to store all items from the iterator before it would be able to return the first element (which is the last element in the original collection). This is very inefficient especially if we need to iterate over a long collection.
-
-Fortunately in addition to the **\_\_iter\_\_** function Python provides the **\_\_reversed\_\_** function that should return a reversed iterator to go through a collections in the opposite way:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
-</span><span class='line'><span class="n">it</span> <span class="o">=</span> <span class="n">l</span><span class="o">.</span><span class="n">__reversed__</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="mi">4</span>
-</span><span class='line'><span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="mi">3</span>
-</span><span class='line'><span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="mi">2</span>
-</span><span class='line'><span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="mi">1</span>
-</span><span class='line'><span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'><span class="o">---------------------------------------------------------------------------</span>
-</span><span class='line'><span class="ne">StopIteration</span>                             <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">)</span>
-</span><span class='line'><span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">21</span><span class="o">-</span><span class="mi">54</span><span class="n">f0920595b2</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="p">()</span>
-</span><span class='line'><span class="o">----&gt;</span> <span class="mi">1</span> <span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'><span class="ne">StopIteration</span><span class="p">:</span>
-</span></code></pre></td></tr></table></div></figure>
-
-The implementation of the reversed iterator looks very similar. Lets update existing collection to return a reversed iterator:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">MyList</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lst</span><span class="p">):</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">lst</span> <span class="o">=</span> <span class="n">lst</span>
-</span><span class='line'>    <span class="o">...</span>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">__reversed__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span class='line'>        <span class="k">return</span> <span class="n">MyReversedIterator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lst</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-Iterator implementation is almost the same. The only difference is that we start from the end of the list and go to the first element:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">MyReversedIterator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lst</span><span class="p">):</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">lst</span> <span class="o">=</span> <span class="n">lst</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span class='line'>        <span class="k">return</span> <span class="bp">self</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span class='line'>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-</span><span class='line'>            <span class="k">raise</span> <span class="ne">StopIteration</span><span class="p">()</span>
-</span><span class='line'>        <span class="n">elem</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lst</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">]</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">-=</span> <span class="mi">1</span>
-</span><span class='line'>        <span class="k">return</span> <span class="n">elem</span>
-</span></code></pre></td></tr></table></div></figure>
-
-Now we can use our object with the **reversed** function:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">MyList</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])):</span>
-</span><span class='line'>    <span class="k">print</span> <span class="n">i</span>
-</span><span class='line'>
-</span><span class='line'><span class="mi">4</span>
-</span><span class='line'><span class="mi">3</span>
-</span><span class='line'><span class="mi">2</span>
-</span><span class='line'><span class="mi">1</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-## An iterator is a one-time thing
-
-Beware that usually you can use an iterator only once and generally there is no way to reset it. This can be a problem especially if you pass an iterator to a function that needs to traverse a collection more than once.
-
-To illustrate it let's say we need to calculate a minimum and a maximum numbers in a sequence:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">min_and_max</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>
-</span><span class='line'>    <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">seq</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-Now if we pass a list to this function it will work as expected:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">lst</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-</span><span class='line'><span class="n">min_and_max</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">34</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-But if we pass an iterator we would receive an error instead:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">lst</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-</span><span class='line'><span class="n">min_and_max</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">lst</span><span class="p">))</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
-</span><span class='line'>  <span class="n">File</span> <span class="s">&quot;&lt;pyshell#65&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-</span><span class='line'>    <span class="n">min_and_max</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">lst</span><span class="p">))</span>
-</span><span class='line'>  <span class="n">File</span> <span class="s">&quot;&lt;pyshell#57&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">2</span><span class="p">,</span> <span class="ow">in</span> <span class="n">min_and_max</span>
-</span><span class='line'>    <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">seq</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
-</span><span class='line'><span class="ne">ValueError</span><span class="p">:</span> <span class="nb">max</span><span class="p">()</span> <span class="n">arg</span> <span class="ow">is</span> <span class="n">an</span> <span class="n">empty</span> <span class="n">sequence</span>
-</span></code></pre></td></tr></table></div></figure>
-
-This is because the **seq** at first is iterated by the **min** function that iterates over all items in it. After that when it is passed to the **max** function, there is no more elements to return.
-
-The correct way to solve this issue would be to store all items from an iterator to a list that can be traversed multiple times:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">min_and_max</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>
-</span><span class='line'>    <span class="n">seq</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
-</span><span class='line'>    <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">seq</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-This works because if **list** function is applied to a list it create a copy of a list and if it is applied to an iterator it copies all items from an iterator to a list.
-
-Now it works as expected:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">lst</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-</span><span class='line'><span class="n">min_and_max</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">lst</span><span class="p">))</span>
-</span><span class='line'><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">34</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[How to Implement String Interpolation in Python]]></title>
-    <link href="http://mushketyk.com/blog/2015/09/05/string-interpolation-in-python/"/>
-    <updated>2015-09-05T15:32:28+01:00</updated>
-    <id>http://mushketyk.com/blog/2015/09/05/string-interpolation-in-python</id>
-    <content type="html"><![CDATA[String interpolation is a process of substituting values of local variables into placeholders in a string.
-
-It is implemented in many programming languages such as Scala:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="c1">//Scala 2.10+</span>
-</span><span class='line'><span class="k">var</span> <span class="n">name</span> <span class="k">=</span> <span class="s">&quot;John&quot;</span><span class="o">;</span>
-</span><span class='line'><span class="n">println</span><span class="o">(</span><span class="n">s</span><span class="s">&quot;My name is $name&quot;</span><span class="o">)</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="nc">My</span> <span class="n">name</span> <span class="n">is</span> <span class="nc">John</span>
-</span></code></pre></td></tr></table></div></figure>
-
-Perl:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="k">my</span> <span class="nv">$name</span> <span class="o">=</span> <span class="s">&quot;John&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="k">print</span> <span class="s">&quot;My name is $name&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">My</span> <span class="n">name</span> <span class="n">is</span> <span class="n">John</span>
-</span></code></pre></td></tr></table></div></figure>
-
-CoffeeScript:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">name = </span><span class="s">&quot;John&quot;</span>
-</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;My name is </span><span class="si">#{</span><span class="nx">name</span><span class="si">}</span><span class="s">&quot;</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="nx">My</span> <span class="nx">name</span> <span class="o">is</span> <span class="nx">John</span>
-</span></code></pre></td></tr></table></div></figure>
-
-and many others.
-
-On the first sight, it doesn't seem that it's possible to use string interpolation in Python. However, we can implement it with just 2 lines of Python code.
-
-<!--more-->
-
-But let's start with basics. An idiomatic way to build a complex string in Python is to use the "format" function:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">print</span> <span class="s">&quot;Hi, I am {} and I am {} years old&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">)</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">Hi</span><span class="p">,</span> <span class="n">I</span> <span class="n">am</span> <span class="n">John</span> <span class="ow">and</span> <span class="n">I</span> <span class="n">am</span> <span class="mi">26</span> <span class="n">years</span> <span class="n">old</span>
-</span></code></pre></td></tr></table></div></figure>
-
-Which is much cleaner than using string concatenation:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">print</span> <span class="s">&quot;Hi, I am &quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s">&quot; and I am &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">age</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; years old&quot;</span>
-</span><span class='line'><span class="n">Hi</span><span class="p">,</span> <span class="n">I</span> <span class="n">am</span> <span class="n">John</span> <span class="ow">and</span> <span class="n">I</span> <span class="n">am</span> <span class="mi">26</span> <span class="n">years</span> <span class="n">old</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-But if you use the "format" function in this way the output depends on the order of arguments:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">print</span> <span class="s">&quot;Hi, I am {} and I am {} years old&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">age</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-</span><span class='line'><span class="n">Hi</span><span class="p">,</span> <span class="n">I</span> <span class="n">am</span> <span class="mi">26</span> <span class="ow">and</span> <span class="n">I</span> <span class="n">am</span> <span class="n">John</span> <span class="n">years</span> <span class="n">old</span>
-</span></code></pre></td></tr></table></div></figure>
-
-To avoid that we can pass key-value arguments to the "format" function:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">print</span> <span class="s">&quot;Hi, I am {name} and I am {age} years old&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;John&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">26</span><span class="p">)</span>
-</span><span class='line'><span class="n">Hi</span><span class="p">,</span> <span class="n">I</span> <span class="n">am</span> <span class="n">John</span> <span class="ow">and</span> <span class="n">I</span> <span class="n">am</span> <span class="mi">26</span> <span class="n">years</span> <span class="n">old</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">print</span> <span class="s">&quot;Hi, I am {name} and I am {age} years old&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">age</span><span class="o">=</span><span class="mi">26</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;John&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="n">Hi</span><span class="p">,</span> <span class="n">I</span> <span class="n">am</span> <span class="n">John</span> <span class="ow">and</span> <span class="n">I</span> <span class="n">am</span> <span class="mi">26</span> <span class="n">years</span> <span class="n">old</span>
-</span></code></pre></td></tr></table></div></figure>
-
-Here we had to pass all variables for string interpolation to the "format" function, but still we have not achieved what we wanted, because "name" and "age" are not local variables. Can "format" somehow access local variables?
-
-To do it we can get a dictionary with all local variables using the "locals" function:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;John&quot;</span>
-</span><span class='line'><span class="n">age</span> <span class="o">=</span> <span class="mi">26</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">locals</span><span class="p">()</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="p">{</span>
-</span><span class='line'> <span class="o">...</span>
-</span><span class='line'> <span class="s">&#39;age&#39;</span><span class="p">:</span> <span class="mi">26</span><span class="p">,</span>
-</span><span class='line'> <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;John&#39;</span><span class="p">,</span>
-</span><span class='line'> <span class="o">...</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-Now we just need to somehow pass it to the "format" function. Unfortunately we cannot just call it as "s.format(locals())":
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">print</span> <span class="s">&quot;Hi, I am {name} and I am {age} years old&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
-</span><span class='line'><span class="o">---------------------------------------------------------------------------</span>
-</span><span class='line'><span class="ne">KeyError</span>                                  <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">)</span>
-</span><span class='line'><span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">5</span><span class="o">-</span><span class="mi">0</span><span class="n">fb983071eb8</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="p">()</span>
-</span><span class='line'><span class="o">----&gt;</span> <span class="mi">1</span> <span class="k">print</span> <span class="s">&quot;Hi, I am {name} and I am {age} years old&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
-</span><span class='line'>
-</span><span class='line'><span class="ne">KeyError</span><span class="p">:</span> <span class="s">&#39;name&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-This is because "locals()" returns a dictionary, while "format" expects key-value parameters.
-
-Luckily we can convert a dictionary into key-value parameters using "\*\*" opeartor. If we have a function that expects key-value arguments:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">arg1</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">arg2</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-</span><span class='line'>    <span class="k">print</span> <span class="s">&quot;arg1 = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">arg1</span><span class="p">)</span>
-</span><span class='line'>    <span class="k">print</span> <span class="s">&quot;arg2 = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">arg2</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-We can pass parameters packed in a dictionary:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
-</span><span class='line'>    <span class="s">&#39;arg1&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-</span><span class='line'>    <span class="s">&#39;arg2&#39;</span><span class="p">:</span> <span class="mi">42</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">foo</span><span class="p">(</span><span class="o">**</span><span class="n">d</span><span class="p">)</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">arg1</span> <span class="o">=</span> <span class="mi">1</span>
-</span><span class='line'><span class="n">arg2</span> <span class="o">=</span> <span class="mi">42</span>
-</span></code></pre></td></tr></table></div></figure>
-
-Now we can use this technique to implement our first version of string interpolation:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">print</span> <span class="s">&quot;Hi, I am {name} and I am {age} years old&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="nb">locals</span><span class="p">())</span>
-</span><span class='line'><span class="n">Hi</span><span class="p">,</span> <span class="n">I</span> <span class="n">am</span> <span class="n">John</span> <span class="ow">and</span> <span class="n">I</span> <span class="n">am</span> <span class="mi">26</span> <span class="n">years</span> <span class="n">old</span>
-</span></code></pre></td></tr></table></div></figure>
-
-It works, but looks cumbersome. With this approach every time we need to interpolate our string we would need to write "format(\*\*locals())".
-It would be great if we could write a function that would interpolate a string like this:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># Can we implement inter() function in Python?</span>
-</span><span class='line'><span class="k">print</span> <span class="n">inter</span><span class="p">(</span><span class="s">&quot;Hi, I am {name} and I am {age} years old&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">Hi</span><span class="p">,</span> <span class="n">I</span> <span class="n">am</span> <span class="n">John</span> <span class="ow">and</span> <span class="n">I</span> <span class="n">am</span> <span class="mi">26</span> <span class="n">years</span> <span class="n">old</span>
-</span></code></pre></td></tr></table></div></figure>
-
- At first it seems impossible, since if we move interpolation code to another function it would not be able to access local variables from a scope where it was called from:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;John&quot;</span>
-</span><span class='line'><span class="k">print</span> <span class="n">inter</span><span class="p">(</span><span class="s">&quot;My name is {name}&quot;</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">...</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">inter</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
-</span><span class='line'>  <span class="c"># How can we access &quot;name&quot; variable from here?</span>
-</span><span class='line'>  <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-And yet, it is possible. Python provides a way to inspect current stack with sys.\_getframe function:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">sys</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">foo</span><span class="p">():</span>
-</span><span class='line'>     <span class="n">foo_var</span> <span class="o">=</span> <span class="s">&#39;foo&#39;</span>
-</span><span class='line'>     <span class="n">bar</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'> <span class="k">def</span> <span class="nf">bar</span><span class="p">():</span>
-</span><span class='line'>     <span class="c"># sys._getframe(0) would return frame for function &quot;bar&quot;</span>
-</span><span class='line'>     <span class="c"># so we need to to access 1-st frame</span>
-</span><span class='line'>     <span class="c"># to get local variables from &quot;foo&quot; function</span>
-</span><span class='line'>     <span class="n">previous_frame</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-</span><span class='line'>     <span class="n">previous_frame_locals</span> <span class="o">=</span> <span class="n">previous_frame</span><span class="o">.</span><span class="n">f_locals</span>
-</span><span class='line'>     <span class="k">print</span> <span class="n">previous_frame_locals</span><span class="p">[</span><span class="s">&#39;foo_var&#39;</span><span class="p">]</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="n">foo</span><span class="p">()</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span>
-</span></code></pre></td></tr></table></div></figure>
-
-So the only thing that is left is to combine frames introspection with "format" function. Here are 2 lines of code that would do the trick:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">inter</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
-</span><span class='line'>    <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">f_locals</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;John&quot;</span>
-</span><span class='line'><span class="n">age</span> <span class="o">=</span> <span class="mi">26</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">print</span> <span class="n">inter</span><span class="p">(</span><span class="s">&quot;Hi, I am {name} and I am {age} years old&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">Hi</span><span class="p">,</span> <span class="n">I</span> <span class="n">am</span> <span class="n">John</span> <span class="ow">and</span> <span class="n">I</span> <span class="n">am</span> <span class="mi">26</span> <span class="n">years</span> <span class="n">old</span>
-</span></code></pre></td></tr></table></div></figure>
 ]]></content>
   </entry>
   

@@ -9,15 +9,7 @@
   <meta name="author" content="Ivan Mushketyk">
 
   
-  <meta name="description" content="If you come from Java or C# background, your instincts may tell you to write a code like this: 1
-2
-3
-4
-5
-6
-7
-8
-def is_list_empty(node): &quot;&quot;& &hellip;">
+  <meta name="description" content="In most of programming languages else keyword can only be used in if/else constructs. But what even some seasoned Python programmers do not know is &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -111,6 +103,107 @@ def is_list_empty(node): &quot;&quot;& &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/12/10/else-block-in-loops/">Else: Block in Python Loops</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-12-10T22:11:12+00:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:11 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In most of programming languages <strong>else</strong> keyword can only be used in <strong>if/else</strong> constructs. But what even some seasoned Python programmers do not know is that Python supports <strong>else</strong> blocks in <strong>for</strong> and <strong>while</strong> loops.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/12/10/else-block-in-loops/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/12/07/do-not-assign-to-built-ins/">Do Not Assign to Built-ins</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-12-07T08:48:58+00:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>8:48 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>A common mistake in Python is to assign a value to a built-in function.</p>
+
+<p>Python allows you to assign a value to a variable with any name, and if you choose one of the names of Python built-in functions, this function won&rsquo;t be available anymore:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</span><span class='line'><span class="mi">3</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span> <span class="o">=</span> <span class="mi">5</span>
+</span><span class='line'><span class="c"># &quot;len&quot; function is no longer available</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+</span><span class='line'>  <span class="n">File</span> <span class="s">&quot;&lt;pyshell#2&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="nb">len</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</span><span class='line'><span class="ne">TypeError</span><span class="p">:</span> <span class="s">&#39;int&#39;</span> <span class="nb">object</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">callable</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A similar issue can arise without explicitly using an assignment. If you use a name of a built-in function for a function&rsquo;s argument a built-in function won&rsquo;t be available:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">split</span><span class="p">(</span><span class="nb">str</span><span class="p">):</span>
+</span><span class='line'>  <span class="c"># &quot;str&quot; function is no longer available in this function</span>
+</span><span class='line'>  <span class="o">...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -494,77 +587,9 @@ def is_list_empty(node): &quot;&quot;& &hellip;">
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/08/25/wrong-python-decorator-and-how-to-fix-it/">Wrong Python Decorator and How to Fix It</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-08-25T20:19:02+01:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>8:19 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Let&rsquo;s say you need to write a decorator that measures how long does it take to execute a function. For this task you may write something like this:</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/08/25/wrong-python-decorator-and-how-to-fix-it/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/08/24/git-productivity-tip/">Git Productivity Tip</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-08-24T21:48:32+01:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>9:48 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>git provides an efficient shortcut to refer to a previous branch: &ldquo;-&rdquo;. It can be used to quickly switch to a previous branch or to merge current branch.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/08/24/git-productivity-tip/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
+    
+      <a class="prev" href="/posts/2">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     

@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: Python - Software Developer's diary</title>
+  <title>Do Not Assign to Built-ins - Software Developer's diary</title>
   <meta name="author" content="Ivan Mushketyk">
 
   
-  <meta name="description" content="Category: python">
+  <meta name="description" content="A common mistake in Python is to assign a value to a built-in function. Python allows you to assign a value to a variable with any name, and if you &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://mushketyk.com/blog/categories/python">
+  <link rel="canonical" href="http://mushketyk.com/blog/2015/12/07/do-not-assign-to-built-ins">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Software Developer's diary" type="application/atom+xml">
@@ -102,172 +102,133 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: Python</h1>
+    
+      
+        <h1 class="entry-title">Do Not Assign to Built-ins</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-12-07T08:48:58+00:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>8:48 am</span></time>
+        
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p>A common mistake in Python is to assign a value to a built-in function.</p>
 
-  
-  <h2>2015</h2>
+<p>Python allows you to assign a value to a variable with any name, and if you choose one of the names of Python built-in functions, this function won&rsquo;t be available anymore:</p>
 
-<article>
-  
-<h1><a href="/blog/2015/12/10/else-block-in-loops/">Else: Block in Python Loops</a></h1>
-<time datetime="2015-12-10T22:11:12+00:00" pubdate><span class='month'>Dec</span> <span class='day'>10</span> <span class='year'>2015</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/python/'>python</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2015/12/07/do-not-assign-to-built-ins/">Do Not Assign to Built-ins</a></h1>
-<time datetime="2015-12-07T08:48:58+00:00" pubdate><span class='month'>Dec</span> <span class='day'>07</span> <span class='year'>2015</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/python/'>python</a></span>
-</footer>
-
-
-</article>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</span><span class='line'><span class="mi">3</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span> <span class="o">=</span> <span class="mi">5</span>
+</span><span class='line'><span class="c"># &quot;len&quot; function is no longer available</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+</span><span class='line'>  <span class="n">File</span> <span class="s">&quot;&lt;pyshell#2&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="nb">len</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</span><span class='line'><span class="ne">TypeError</span><span class="p">:</span> <span class="s">&#39;int&#39;</span> <span class="nb">object</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">callable</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
+<p>A similar issue can arise without explicitly using an assignment. If you use a name of a built-in function for a function&rsquo;s argument a built-in function won&rsquo;t be available:</p>
 
-<article>
-  
-<h1><a href="/blog/2015/11/30/avoid-comparisons-in-if-statements/">Avoid Comparisons in if Statements</a></h1>
-<time datetime="2015-11-30T22:10:25+00:00" pubdate><span class='month'>Nov</span> <span class='day'>30</span> <span class='year'>2015</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/idiom/'>idiom</a>, <a class='category' href='/blog/categories/if/'>if</a>, <a class='category' href='/blog/categories/python/'>python</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2015/09/21/generators-in-python/">Generators in Python</a></h1>
-<time datetime="2015-09-21T21:03:13+01:00" pubdate><span class='month'>Sep</span> <span class='day'>21</span> <span class='year'>2015</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/generator/'>generator</a>, <a class='category' href='/blog/categories/iterator/'>iterator</a>, <a class='category' href='/blog/categories/python/'>python</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2015/09/10/efficient-iterators-in-python-with-yield/">Efficient Iterators in Python With "Yield"</a></h1>
-<time datetime="2015-09-10T08:43:18+01:00" pubdate><span class='month'>Sep</span> <span class='day'>10</span> <span class='year'>2015</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/generator/'>generator</a>, <a class='category' href='/blog/categories/iterator/'>iterator</a>, <a class='category' href='/blog/categories/python/'>python</a>, <a class='category' href='/blog/categories/yield/'>yield</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2015/09/07/anatomy-of-python-iterator/">Anatomy of a Python Iterator</a></h1>
-<time datetime="2015-09-07T21:52:41+01:00" pubdate><span class='month'>Sep</span> <span class='day'>07</span> <span class='year'>2015</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/iter/'>__iter__</a>, <a class='category' href='/blog/categories/internals/'>internals</a>, <a class='category' href='/blog/categories/iterator/'>iterator</a>, <a class='category' href='/blog/categories/python/'>python</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2015/09/05/string-interpolation-in-python/">How to Implement String Interpolation in Python</a></h1>
-<time datetime="2015-09-05T15:32:28+01:00" pubdate><span class='month'>Sep</span> <span class='day'>05</span> <span class='year'>2015</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/interpolation/'>interpolation</a>, <a class='category' href='/blog/categories/python/'>python</a>, <a class='category' href='/blog/categories/string/'>string</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2015/09/01/sorting-trick-in-python/">Sorting Trick in Python</a></h1>
-<time datetime="2015-09-01T08:28:07+01:00" pubdate><span class='month'>Sep</span> <span class='day'>01</span> <span class='year'>2015</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/python/'>python</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2015/08/27/idiomatic-way-to-count-in-python/">Idiomatic Way to Count in Python</a></h1>
-<time datetime="2015-08-27T20:07:29+01:00" pubdate><span class='month'>Aug</span> <span class='day'>27</span> <span class='year'>2015</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/count/'>count</a>, <a class='category' href='/blog/categories/idiom/'>idiom</a>, <a class='category' href='/blog/categories/idiomatic/'>idiomatic</a>, <a class='category' href='/blog/categories/python/'>python</a>, <a class='category' href='/blog/categories/pythonic/'>pythonic</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2015/08/25/wrong-python-decorator-and-how-to-fix-it/">Wrong Python Decorator and How to Fix It</a></h1>
-<time datetime="2015-08-25T20:19:02+01:00" pubdate><span class='month'>Aug</span> <span class='day'>25</span> <span class='year'>2015</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/bug/'>bug</a>, <a class='category' href='/blog/categories/decorator/'>decorator</a>, <a class='category' href='/blog/categories/python/'>python</a></span>
-</footer>
-
-
-</article>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">split</span><span class="p">(</span><span class="nb">str</span><span class="p">):</span>
+</span><span class='line'>  <span class="c"># &quot;str&quot; function is no longer available in this function</span>
+</span><span class='line'>  <span class="o">...</span>
+</span></code></pre></td></tr></table></div></figure>
 
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
-</article>
 
 
-</div>
 
-<aside class="sidebar">
+  <span class="byline author vcard">Authored by <span class="fn">
   
+    Ivan Mushketyk
+  
+  </span></span>
+
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-12-07T08:48:58+00:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>8:48 am</span></time>
+      
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/python/'>python</a>
+  
+</span>
+
+
+    </p>
     
+      <div class="sharing">
   
-</aside>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://mushketyk.com/blog/2015/12/07/do-not-assign-to-built-ins/" data-via="mushkety" data-counturl="http://mushketyk.com/blog/2015/12/07/do-not-assign-to-built-ins/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-layout="button_count" data-send="false" data-width="300" data-show-faces="false"></div>
+  
+</div>
 
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/11/30/avoid-comparisons-in-if-statements/" title="Previous Post: Avoid comparisons in if statements">&laquo; Avoid comparisons in if statements</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2015/12/10/else-block-in-loops/" title="Next Post: else: block in Python loops">else: block in Python loops &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+
+</div>
 
     </div>
   </div>
@@ -283,7 +244,10 @@
       var disqus_shortname = 'mushketykgithubcom';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://mushketyk.com/blog/2015/12/07/do-not-assign-to-built-ins/';
+        var disqus_url = 'http://mushketyk.com/blog/2015/12/07/do-not-assign-to-built-ins/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

@@ -4,7 +4,7 @@
   <title><![CDATA[Software Developer's diary]]></title>
   <link href="http://mushketyk.com/atom.xml" rel="self"/>
   <link href="http://mushketyk.com/"/>
-  <updated>2015-12-01T09:42:14+00:00</updated>
+  <updated>2015-12-12T21:22:00+00:00</updated>
   <id>http://mushketyk.com/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -12,6 +12,214 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Else: Block in Python Loops]]></title>
+    <link href="http://mushketyk.com/blog/2015/12/10/else-block-in-loops/"/>
+    <updated>2015-12-10T22:11:12+00:00</updated>
+    <id>http://mushketyk.com/blog/2015/12/10/else-block-in-loops</id>
+    <content type="html"><![CDATA[<p>In most of programming languages <strong>else</strong> keyword can only be used in <strong>if/else</strong> constructs. But what even some seasoned Python programmers do not know is that Python supports <strong>else</strong> blocks in <strong>for</strong> and <strong>while</strong> loops.</p>
+
+<!--more-->
+
+
+<p><strong>else</strong> block after a loop may be misleading but it&rsquo;s simply a block that is being called if execution of a loop was not interrupted by a <strong>break</strong> statement.</p>
+
+<p>Let&rsquo;s take a look at an example:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+</span><span class='line'>  <span class="k">print</span> <span class="n">i</span>
+</span><span class='line'><span class="k">else</span><span class="p">:</span>
+</span><span class='line'>  <span class="k">print</span> <span class="s">&quot;in else&quot;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="mi">0</span>
+</span><span class='line'><span class="mi">1</span>
+</span><span class='line'><span class="mi">2</span>
+</span><span class='line'><span class="ow">in</span> <span class="k">else</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In this case since <strong>for</strong> loop was not interrupted and the <strong>else</strong> block was executed.</p>
+
+<p>Now let&rsquo;s add a break statement in a for loop and see if <strong>else</strong> block is being executed:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+</span><span class='line'>  <span class="k">print</span> <span class="n">i</span>
+</span><span class='line'>  <span class="k">break</span>
+</span><span class='line'><span class="k">else</span><span class="p">:</span>
+</span><span class='line'>  <span class="k">print</span> <span class="s">&quot;in else&quot;</span>
+</span><span class='line'><span class="k">print</span> <span class="s">&quot;after loop&quot;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="mi">0</span>
+</span><span class='line'><span class="n">after</span> <span class="n">loop</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Beware that <strong>else</strong> block will be executed even if a loop was not executed at all:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[]:</span>
+</span><span class='line'>  <span class="k">print</span> <span class="s">&quot;Never ever&quot;</span>
+</span><span class='line'><span class="k">else</span><span class="p">:</span>
+</span><span class='line'>  <span class="k">print</span> <span class="s">&quot;In else&quot;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="n">In</span> <span class="k">else</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>More realistic example</h2>
+
+<p>Usually <strong>else</strong> blocks are used after loops that are searching for a specific element in a sequence and should be called if an element was not found.</p>
+
+<p>Let&rsquo;s say we have a function that iterates over a list and check if all items match a regex. If one of the items does not match the regex a function would display a message and return. If all items comply with a regex the function would print a different message. We can implement this using conventional constructions:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">check_items</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">regex</span><span class="p">):</span>
+</span><span class='line'>  <span class="n">found</span> <span class="o">=</span> <span class="bp">False</span>
+</span><span class='line'>  <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
+</span><span class='line'>      <span class="k">if</span> <span class="ow">not</span> <span class="n">regex</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+</span><span class='line'>          <span class="k">print</span> <span class="s">&quot;&#39;{}&#39; does not match regex&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</span><span class='line'>          <span class="n">found</span> <span class="o">=</span> <span class="bp">True</span>
+</span><span class='line'>          <span class="k">break</span>
+</span><span class='line'>  <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+</span><span class='line'>      <span class="k">print</span> <span class="s">&quot;all strings match the regex&quot;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">check_items</span><span class="p">([</span><span class="s">&quot;1&quot;</span><span class="p">,</span> <span class="s">&quot;23&quot;</span><span class="p">,</span> <span class="s">&quot;abc&quot;</span><span class="p">],</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&quot;[0-9]+&quot;</span><span class="p">))</span>
+</span><span class='line'><span class="s">&#39;abc&#39;</span> <span class="n">does</span> <span class="ow">not</span> <span class="n">match</span> <span class="n">regex</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">check_items</span><span class="p">([</span><span class="s">&quot;1&quot;</span><span class="p">,</span> <span class="s">&quot;23&quot;</span><span class="p">,</span> <span class="s">&quot;1234&quot;</span><span class="p">],</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&quot;[0-9]+&quot;</span><span class="p">))</span>
+</span><span class='line'><span class="nb">all</span> <span class="n">strings</span> <span class="n">match</span> <span class="n">the</span> <span class="n">regex</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In this case we need a flag to track if an element was found in a list. If <strong>else</strong> block is used there would be no need for a flag and this would make this function a bit shorter:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">check_items</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">regex</span><span class="p">):</span>
+</span><span class='line'>  <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
+</span><span class='line'>      <span class="k">if</span> <span class="ow">not</span> <span class="n">regex</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+</span><span class='line'>          <span class="k">print</span> <span class="s">&quot;&#39;{}&#39; does not match regex&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</span><span class='line'>          <span class="k">break</span>
+</span><span class='line'>  <span class="k">else</span><span class="p">:</span>
+</span><span class='line'>      <span class="k">print</span> <span class="s">&quot;all strings match the regex&quot;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">check_items</span><span class="p">([</span><span class="s">&quot;1&quot;</span><span class="p">,</span> <span class="s">&quot;23&quot;</span><span class="p">,</span> <span class="s">&quot;abc&quot;</span><span class="p">],</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&quot;[0-9]+&quot;</span><span class="p">))</span>
+</span><span class='line'><span class="s">&#39;abc&#39;</span> <span class="n">does</span> <span class="ow">not</span> <span class="n">match</span> <span class="n">regex</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">check_items</span><span class="p">([</span><span class="s">&quot;1&quot;</span><span class="p">,</span> <span class="s">&quot;23&quot;</span><span class="p">,</span> <span class="s">&quot;1234&quot;</span><span class="p">],</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&quot;[0-9]+&quot;</span><span class="p">))</span>
+</span><span class='line'><span class="nb">all</span> <span class="n">strings</span> <span class="n">match</span> <span class="n">the</span> <span class="n">regex</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>A bit of history</h2>
+
+<p><strong>else</strong> block in loops was invented by Donald Knuth, who suggested that it can be used to avoid some GOTO statements.</p>
+
+<p>The name <strong>else</strong> for the block was selected because when a loop is executed it has an implicit condition that is checked before every iteration. If this condition is not satisfied, Python interpretor would not execute loop&rsquo;s body and will execute <strong>else</strong> block if it exists, hence the weird name.</p>
+
+<p>Nowadays Python community agrees that the name is not intuitive and that it would be better to name it <strong>nobreak</strong>, but it&rsquo;s too late to change it, since it will break backward compatibility.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Do Not Assign to Built-ins]]></title>
+    <link href="http://mushketyk.com/blog/2015/12/07/do-not-assign-to-built-ins/"/>
+    <updated>2015-12-07T08:48:58+00:00</updated>
+    <id>http://mushketyk.com/blog/2015/12/07/do-not-assign-to-built-ins</id>
+    <content type="html"><![CDATA[<p>A common mistake in Python is to assign a value to a built-in function.</p>
+
+<p>Python allows you to assign a value to a variable with any name, and if you choose one of the names of Python built-in functions, this function won&rsquo;t be available anymore:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</span><span class='line'><span class="mi">3</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span> <span class="o">=</span> <span class="mi">5</span>
+</span><span class='line'><span class="c"># &quot;len&quot; function is no longer available</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+</span><span class='line'>  <span class="n">File</span> <span class="s">&quot;&lt;pyshell#2&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="nb">len</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</span><span class='line'><span class="ne">TypeError</span><span class="p">:</span> <span class="s">&#39;int&#39;</span> <span class="nb">object</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">callable</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A similar issue can arise without explicitly using an assignment. If you use a name of a built-in function for a function&rsquo;s argument a built-in function won&rsquo;t be available:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">split</span><span class="p">(</span><span class="nb">str</span><span class="p">):</span>
+</span><span class='line'>  <span class="c"># &quot;str&quot; function is no longer available in this function</span>
+</span><span class='line'>  <span class="o">...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Avoid Comparisons in if Statements]]></title>
