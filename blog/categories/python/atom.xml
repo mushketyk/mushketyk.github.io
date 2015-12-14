@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Python | Software Developer's diary]]></title>
   <link href="http://mushketyk.com/blog/categories/python/atom.xml" rel="self"/>
   <link href="http://mushketyk.com/"/>
-  <updated>2015-12-12T21:22:00+00:00</updated>
+  <updated>2015-12-14T22:21:44+00:00</updated>
   <id>http://mushketyk.com/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -12,6 +12,251 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Sequence Unpacking in Python]]></title>
+    <link href="http://mushketyk.com/blog/2015/12/14/sequence-unpacking-in-python/"/>
+    <updated>2015-12-14T20:44:26+00:00</updated>
+    <id>http://mushketyk.com/blog/2015/12/14/sequence-unpacking-in-python</id>
+    <content type="html"><![CDATA[One of the unusual features of Python that other programming languages usually don't have is sequence unpacking. Not only using it makes code more Pythonic it also makes it shorter, safer and easier to understand.
+
+
+<!--more-->
+
+
+Let's say we have a sequence of variables that represent information about a person and we would like to unpack it to a set of variables, such as "name", "surname", etc.
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">person</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;John&quot;</span><span class="p">,</span> <span class="s">&quot;Doe&quot;</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+One way to do it would be to assign values from a list to other variables one by one:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">name</span> <span class="o">=</span> <span class="n">person</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span><span class='line'><span class="n">surname</span> <span class="o">=</span> <span class="n">person</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</span><span class='line'><span class="n">age</span> <span class="o">=</span> <span class="n">person</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+</span><span class='line'><span class="n">male</span> <span class="o">=</span> <span class="n">person</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+But Python has a special syntax specifically for this case. It's called "sequence unpacking" and lets us assign all values from a tuple to a set of variables:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">name</span><span class="p">,</span> <span class="n">surname</span><span class="p">,</span> <span class="n">age</span><span class="p">,</span> <span class="n">male</span> <span class="o">=</span> <span class="n">person</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">name</span>
+</span><span class='line'><span class="s">&#39;John&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+It works with lists, deques and strings too:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span>
+</span><span class='line'><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">deque</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</span><span class='line'><span class="n">deque</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="s">&#39;abc&#39;</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span>
+</span><span class='line'><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="s">&#39;c&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+If a number of elements on the left and right sides of an assignment are different, Python does not attempt to assign anything and just raises an exception:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+</span><span class='line'>  <span class="n">File</span> <span class="s">&quot;&lt;pyshell#11&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</span><span class='line'><span class="ne">ValueError</span><span class="p">:</span> <span class="n">too</span> <span class="n">many</span> <span class="n">values</span> <span class="n">to</span> <span class="n">unpack</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+</span><span class='line'>  <span class="n">File</span> <span class="s">&quot;&lt;pyshell#12&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span><span class='line'><span class="ne">ValueError</span><span class="p">:</span> <span class="n">need</span> <span class="n">more</span> <span class="n">than</span> <span class="mi">2</span> <span class="n">values</span> <span class="n">to</span> <span class="n">unpack</span>
+</span></code></pre></td></tr></table></div></figure>
+
+## Other usages
+
+Sequence unpacking can not only be used to extract values from a sequence. It can be used to swap values of two variables:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span>
+</span></code></pre></td></tr></table></div></figure>
+
+See how simple it is comparing to a common way of swapping values of two variables using a temporary one:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">t</span> <span class="o">=</span> <span class="n">x</span>
+</span><span class='line'><span class="n">x</span> <span class="o">=</span> <span class="n">y</span>
+</span><span class='line'><span class="n">y</span> <span class="o">=</span> <span class="n">t</span>
+</span></code></pre></td></tr></table></div></figure>
+
+It also can be used to assign new values to a set of variables
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span>
+</span></code></pre></td></tr></table></div></figure>
+
+This is especially handy if we have a multi-step algorithm where on every step we should calculate a new set of values using values received from a previous step. For example this technique can be used to calculate n-th number of [Fibonacci sequence](https://en.wikipedia.org/wiki/Fibonacci_number):
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+</span><span class='line'>	<span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
+</span><span class='line'>	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+</span><span class='line'>		<span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+</span><span class='line'>	<span class="k">return</span> <span class="n">b</span>
+</span></code></pre></td></tr></table></div></figure>
+
+## Sequence unpacking of a custom type
+
+To implement sequence unpacking in your own custom type, all you need to do is to implement an **__iter__** method that would return an iterator for your object:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">List</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+</span><span class='line'>
+</span><span class='line'>	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lst</span><span class="p">):</span>
+</span><span class='line'>		<span class="bp">self</span><span class="o">.</span><span class="n">lst</span> <span class="o">=</span> <span class="n">lst</span>
+</span><span class='line'>
+</span><span class='line'>	<span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>		<span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lst</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Now our custom type can behave just as built-in types:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">List</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span>
+</span><span class='line'><span class="mi">1</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">b</span>
+</span><span class='line'><span class="mi">2</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">c</span>
+</span><span class='line'><span class="mi">3</span>
+</span></code></pre></td></tr></table></div></figure>
+
+You can read more about iterators in Python [here](/blog/2015/09/07/anatomy-of-python-iterator/).
+
+## Changes in Python 3
+
+Python 3 brings a new feature called "Extended Iterable Unpacking" defined in [PEP 3132](https://www.python.org/dev/peps/pep-3132/).
+
+Python 3 introduced a "catch-all" syntax that can be used to assign a part of sequence to a new sequence. It allows for example to separate a first element of a list from other elements:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">first</span><span class="p">,</span> <span class="o">*</span><span class="n">rest</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">first</span>
+</span><span class='line'><span class="mi">0</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">rest</span>
+</span><span class='line'><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Last element of a list:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span>
+</span><span class='line'><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">b</span>
+</span><span class='line'><span class="mi">4</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Or both:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">,</span> <span class="o">*</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span>
+</span><span class='line'><span class="mi">0</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">b</span>
+</span><span class='line'><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">c</span>
+</span><span class='line'><span class="mi">4</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+You can see how much simpler it is comparing to Python 2:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">first</span><span class="p">,</span> <span class="n">rest</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">l</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">first</span>
+</span><span class='line'><span class="mi">1</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">rest</span>
+</span><span class='line'><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Else: Block in Python Loops]]></title>
@@ -564,269 +809,6 @@ Which is equivalent to the following code:
 ## References
 
 [Generator Tricks for Systems Programmers](http://www.dabeaz.com/generators/)
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Efficient Iterators in Python With "Yield"]]></title>
-    <link href="http://mushketyk.com/blog/2015/09/10/efficient-iterators-in-python-with-yield/"/>
-    <updated>2015-09-10T08:43:18+01:00</updated>
-    <id>http://mushketyk.com/blog/2015/09/10/efficient-iterators-in-python-with-yield</id>
-    <content type="html"><![CDATA[While you can write iterators in Python by implementing [iterator protocol](/blog/2015/09/07/anatomy-of-python-iterator/) it usually requires a lot of code and looks cumbersome. To facilitate this task Python provides a powerful syntax to create iterators. By using these constructions we can write complex iterators using just few lines of code.
-
-<!--more-->
-
-## The power of yield
-
-The first Python feature that can be used to create iterators is the **yield** keyword. **yieled** can be used in a function similarly to the **return** keyword.
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">create_generator</span><span class="p">():</span>
-</span><span class='line'>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
-</span><span class='line'>        <span class="k">yield</span> <span class="n">i</span>
-</span></code></pre></td></tr></table></div></figure>
-
-But while it looks like a regular function it behaves in a completely different way.
-If we call this function it won't return 0 or any of number at all. Instead it returns an an iterator:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span> <span class="o">=</span> <span class="n">create_generator</span><span class="p">()</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span>
-</span><span class='line'><span class="o">&lt;</span><span class="n">generator</span> <span class="nb">object</span> <span class="n">create_generator</span> <span class="n">at</span> <span class="mh">0x7f4faa870370</span><span class="o">&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-If we call the **next** method on the result iterator it would return all values generated in the loop one by one:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'><span class="mi">0</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'><span class="mi">1</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'><span class="mi">2</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'><span class="mi">3</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'><span class="mi">4</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
-</span><span class='line'>  <span class="n">File</span> <span class="s">&quot;&lt;pyshell#44&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-</span><span class='line'>    <span class="n">gen</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'><span class="ne">StopIteration</span>
-</span></code></pre></td></tr></table></div></figure>
-
-So instead of return a value directly the **yield** statement determines what values will be returned by the **next** method in the created iterator.
-
-Using **yield** in this case is already beneficial at least in terms of the number of lines of code we need to write to implement this task. Here is an example of a class that implement the same iterator using low-level iterator protocol:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">Iter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">):</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">num</span> <span class="o">=</span> <span class="n">num</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">curr</span> <span class="o">=</span> <span class="mi">0</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span class='line'>        <span class="k">return</span> <span class="bp">self</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span class='line'>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">curr</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">num</span><span class="p">:</span>
-</span><span class='line'>            <span class="k">raise</span> <span class="ne">StopIteration</span><span class="p">()</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">curr</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span class='line'>        <span class="c"># Return previous value</span>
-</span><span class='line'>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">curr</span> <span class="o">-</span> <span class="mi">1</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">it</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">Iter</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'><span class="mi">0</span>
-</span></code></pre></td></tr></table></div></figure>
-
-An important feature of a function that is written using **yield** is that when it's called it is not executed till completion. It behaves like if after an execution the **yield** statement a value on the right of **yield** is returned and execution of a function is paused.
-Let's write a small example to verify it.
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">create_generator</span><span class="p">():</span>
-</span><span class='line'>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
-</span><span class='line'>        <span class="c"># These &quot;print&quot; statements will help us to find out what statements in</span>
-</span><span class='line'>        <span class="c"># this function were executed so far</span>
-</span><span class='line'>        <span class="k">print</span> <span class="s">&quot;Creating first number&quot;</span>
-</span><span class='line'>        <span class="k">yield</span> <span class="n">i</span>
-</span><span class='line'>        <span class="k">print</span> <span class="s">&quot;Creating second number&quot;</span>
-</span><span class='line'>        <span class="k">yield</span> <span class="n">i</span> <span class="o">*</span> <span class="mi">10</span>
-</span><span class='line'>        <span class="k">print</span> <span class="s">&quot;Creating third number&quot;</span>
-</span><span class='line'>        <span class="k">yield</span> <span class="mi">1</span> <span class="o">*</span> <span class="mi">100</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span> <span class="o">=</span> <span class="n">create_generator</span><span class="p">()</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'><span class="n">Creating</span> <span class="n">first</span> <span class="n">number</span>
-</span><span class='line'><span class="mi">1</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'><span class="n">Creating</span> <span class="n">second</span> <span class="n">number</span>
-</span><span class='line'><span class="mi">10</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'><span class="n">Creating</span> <span class="n">third</span> <span class="n">number</span>
-</span><span class='line'><span class="mi">100</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'><span class="n">Creating</span> <span class="n">first</span> <span class="n">number</span>
-</span><span class='line'><span class="mi">2</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-As we can see when we call the **next** method for the first time only the first **print** statement and the first **yield** statements were executed. The execution of the rest of the function was postponed until we execute the **next** method again.
-
-## More complex iterator using "yield"
-
-The previous example shows that by using **yield** statement we can write iterators that require state management almost effortlessly. So lets try to write a more complex iterator for a binary tree.
-Few words about what we are about to do. A [binary tree](https://en.wikipedia.org/wiki/Binary_tree), is a simple recursive data structure. It consists of nodes pointing to other nodes. Every node has a data item associated with it, and pointers to the left and right nodes that have the same structure. The top most node in the tree is called a "root node". Nodes that current node is pointing too are called children or sub-trees.
-An important feature of a tree is that nodes pointers should not form a cycle.
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">Node</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-</span><span class='line'>    <span class="c"># left/right pointers are optional since a tree should end somewhere</span>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
-</span><span class='line'>        <span class="c"># Pointer to a left sub-tree</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">left</span>
-</span><span class='line'>        <span class="c"># Pointer to a right sub-tree</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">right</span>
-</span></code></pre></td></tr></table></div></figure>
-
-To implement an iterator for a binary tree we first need to decide in which order we want to go though all nodes. In this article we will implement [in-order traversal](https://en.wikipedia.org/wiki/Tree_traversal#In-order_.28symmetric.29). While there are few others possible orders for the purpose of this article the selection is arbitrary.
-In the in-order traversal our iterator should at first return data items from the left sub-tree, then an item from the root node and then all items from the right sub-tree.
-
-This mean that for the following tree:
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">Node</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="n">Node</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">right</span><span class="o">=</span><span class="n">Node</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
-</span></code></pre></td></tr></table></div></figure>
-
-our iterator should first return data item from left subtree: 1, then it should return data point from the root node and return 2. At the end it should process the right subtree and return 3.
-
-In a more complex case when left or right sub-tree have own child:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">left_sub_tree</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="n">Node</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">right</span><span class="o">=</span><span class="n">Node</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
-</span><span class='line'><span class="n">right_sub_tree</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="n">Node</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="n">right</span><span class="o">=</span><span class="n">Node</span><span class="p">(</span><span class="mi">7</span><span class="p">))</span>
-</span><span class='line'><span class="n">Node</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="n">left_sub_tree</span><span class="p">,</span> <span class="n">right_sub_tree</span><span class="o">=</span><span class="n">right_sub_tree</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-the in-order traversal should at first return all data items from the left sub-tree just as in the previous example: 1, 2, 3. Then it should return data item from the root node: 4, and then it should return elements for the right sub-tree, which should result in the following sequence: 5, 6, 7.
-
-With the **yield** it is incredibly simple to write an iterator for this traversal. It directly follows the description of the algorithm:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">inorder</span><span class="p">(</span><span class="n">tree</span><span class="p">):</span>
-</span><span class='line'>    <span class="k">if</span> <span class="n">tree</span><span class="p">:</span>
-</span><span class='line'>        <span class="c"># Recursively iterate over elements in the left sub-tree</span>
-</span><span class='line'>        <span class="k">for</span> <span class="n">l_child</span> <span class="ow">in</span> <span class="n">inorder</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">left</span><span class="p">):</span>
-</span><span class='line'>            <span class="c"># Return left sub-tree data elements one-by-one</span>
-</span><span class='line'>            <span class="k">yield</span> <span class="n">l_child</span>
-</span><span class='line'>        <span class="c"># Return data element from current node</span>
-</span><span class='line'>        <span class="k">yield</span> <span class="n">tree</span><span class="o">.</span><span class="n">data</span>
-</span><span class='line'>        <span class="c"># Recursively iterate over elements in the right sub-tree</span>
-</span><span class='line'>        <span class="k">for</span> <span class="n">r_child</span> <span class="ow">in</span> <span class="n">inorder</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">right</span><span class="p">):</span>
-</span><span class='line'>            <span class="c"># Return right sub-tree data elements one-by-one</span>
-</span><span class='line'>            <span class="k">yield</span> <span class="n">r_child</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">tree</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="n">Node</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">right</span><span class="o">=</span><span class="n">Node</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="nb">list</span><span class="p">(</span><span class="n">inorder</span><span class="p">(</span><span class="n">tree</span><span class="p">))</span>
-</span><span class='line'><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">tree</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="n">Node</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="n">Node</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">right</span><span class="o">=</span><span class="n">Node</span><span class="p">(</span><span class="mi">3</span><span class="p">)),</span> <span class="n">right</span><span class="o">=</span><span class="n">Node</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="n">Node</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="n">right</span><span class="o">=</span><span class="n">Node</span><span class="p">(</span><span class="mi">7</span><span class="p">)))</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="nb">list</span><span class="p">(</span><span class="n">inorder</span><span class="p">(</span><span class="n">tree</span><span class="p">))</span>
-</span><span class='line'><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-As an exercise, try to implement this iterator using low-level iterator protocol.
 ]]></content>
   </entry>
   
