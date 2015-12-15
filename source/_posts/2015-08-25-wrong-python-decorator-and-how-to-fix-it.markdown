@@ -3,7 +3,9 @@ layout: post
 title: "Wrong Python decorator and how to fix it"
 date: 2015-08-25 20:19:02 +0100
 comments: true
-categories: [python, decorator, bug]
+categories: [python]
+description: ""
+keywords: "python, decorator, bug"
 ---
 
 Let's say you need to write a decorator that measures how long does it take to execute a function. For this task you may write something like this:

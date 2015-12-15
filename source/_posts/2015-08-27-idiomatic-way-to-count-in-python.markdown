@@ -3,7 +3,9 @@ layout: post
 title: "Idiomatic way to count in Python"
 date: 2015-08-27 20:07:29 +0100
 comments: true
-categories: [python, idiomatic, idiom, count, pythonic]
+categories: [python]
+description: ""
+keywords: "python, idiomatic, idiom, count, pythonic"
 ---
 
 Let's say we want to count how many time each item appears in a Python list:

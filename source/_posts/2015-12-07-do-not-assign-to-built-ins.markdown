@@ -4,6 +4,8 @@ title: "Do not assign to built-ins"
 date: 2015-12-07 08:48:58 +0000
 comments: true
 categories: [python]
+description: ""
+categories: "python, built-in"
 ---
 
 A common mistake in Python is to assign a value to a built-in function.

@@ -3,7 +3,9 @@ layout: post
 title: "Anatomy of a Python Iterator"
 date: 2015-09-07 21:52:41 +0100
 comments: true
-categories: [python, iterator, __iter__, internals]
+categories: [python]
+description: ""
+categories: "python, iterator, __iter__, internals"
 ---
 
 Iterator is a powerful pattern that was recognized at least as early as 1994 and since then it was incorporated in syntax of almost every modern programming language.

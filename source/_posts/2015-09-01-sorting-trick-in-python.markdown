@@ -3,7 +3,9 @@ layout: post
 title: "Sorting trick in Python"
 date: 2015-09-01 08:28:07 +0100
 comments: true
-categories: [Python]
+categories: [python]
+description: ""
+keywords: "python, sorting, trick"
 ---
 
 How would we sort a list of instances of a class like this?

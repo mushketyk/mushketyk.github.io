@@ -3,7 +3,9 @@ layout: post
 title: "Git productivity tip"
 date: 2015-08-24 21:48:32 +0100
 comments: true
-categories: [git, productivity, merge]
+categories: [git]
+description: ""
+keywords: "git, productivity, merge"
 ---
 
 git provides an efficient shortcut to refer to a previous branch: "-". It can be used to quickly switch to a previous branch or to merge current branch.

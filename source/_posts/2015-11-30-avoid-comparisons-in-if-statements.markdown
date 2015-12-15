@@ -3,7 +3,9 @@ layout: post
 title: "Avoid comparisons in if statements"
 date: 2015-11-30 22:10:25 +0000
 comments: true
-categories: [python, idiom, if]
+categories: [python]
+description: ""
+categories: "python, idiom, if"
 ---
 
 

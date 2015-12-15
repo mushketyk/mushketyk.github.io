@@ -3,7 +3,9 @@ layout: post
 title: "Generators in Python"
 date: 2015-09-21 21:03:13 +0100
 comments: true
-categories: [python, iterator, generator]
+categories: [python]
+description: ""
+categories: "python, iterator, generator"
 ---
 
 

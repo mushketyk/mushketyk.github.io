@@ -3,7 +3,9 @@ layout: post
 title: "Hot deployment with Gradle and Jetty"
 date: 2015-08-30 21:35:05 +0100
 comments: true
-categories: [gradle, jetty, java, deployment]
+categories: [java]
+description: ""
+keywords: "gradle, jetty, java, deployment"
 ---
 
 In web development it's very handy to see updates to static content immediately, without a server restart.

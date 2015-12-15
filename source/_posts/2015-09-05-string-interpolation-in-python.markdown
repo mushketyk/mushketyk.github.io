@@ -3,7 +3,9 @@ layout: post
 title: "How to implement string interpolation in Python"
 date: 2015-09-05 15:32:28 +0100
 comments: true
-categories: [python, string, interpolation]
+categories: [python]
+description: "This post describes how to implement string interpolation one in Python"
+categories: "python, string, interpolation"
 ---
 
 String interpolation is a process of substituting values of local variables into placeholders in a string.
