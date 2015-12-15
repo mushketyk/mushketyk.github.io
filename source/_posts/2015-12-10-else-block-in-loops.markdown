@@ -5,7 +5,7 @@ date: 2015-12-10 22:11:12 +0000
 comments: true
 categories: [python]
 description: "Even some seasoned Python programmers do not know is that Python supports else blocks in for and while loops."
-categories: "python, idiom, else"
+keywords: "python, idiom, else"
 ---
 
 In most of programming languages **else** keyword can only be used in **if/else** constructs. But what even some seasoned Python programmers do not know is that Python supports **else** blocks in **for** and **while** loops.

@@ -5,7 +5,7 @@ date: 2015-12-14 20:44:26 +0000
 comments: true
 categories: [python]
 description: "One of the unusual features of Python that other programming languages usually don't have is sequence unpacking."
-categories: "python, idiomatic, sequence, unpacking"
+keywords: "python, idiomatic, sequence, unpacking"
 ---
 
 

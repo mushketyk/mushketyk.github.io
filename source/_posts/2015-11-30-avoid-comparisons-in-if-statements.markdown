@@ -5,7 +5,7 @@ date: 2015-11-30 22:10:25 +0000
 comments: true
 categories: [python]
 description: ""
-categories: "python, idiom, if"
+keywords: "python, idiom, if"
 ---
 
 

@@ -5,7 +5,7 @@ date: 2015-09-10 08:43:18 +0100
 comments: true
 categories: [python]
 description: ""
-categories: "python, generator, iterator, yield"
+keywords: "python, generator, iterator, yield"
 ---
 
 While you can write iterators in Python by implementing [iterator protocol]({% post_url 2015-09-07-anatomy-of-python-iterator %}) it usually requires a lot of code and looks cumbersome. To facilitate this task Python provides a powerful syntax to create iterators. By using these constructions we can write complex iterators using just few lines of code.

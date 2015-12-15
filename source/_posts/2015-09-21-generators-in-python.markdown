@@ -5,7 +5,7 @@ date: 2015-09-21 21:03:13 +0100
 comments: true
 categories: [python]
 description: ""
-categories: "python, iterator, generator"
+keywords: "python, iterator, generator"
 ---
 
 
