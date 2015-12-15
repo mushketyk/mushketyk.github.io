@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Python | Software Developer's diary]]></title>
+  <title><![CDATA[Category: Python, | Software Developer's diary]]></title>
   <link href="http://mushketyk.com/blog/categories/python/atom.xml" rel="self"/>
   <link href="http://mushketyk.com/"/>
-  <updated>2015-12-14T22:21:44+00:00</updated>
+  <updated>2015-12-15T22:49:15+00:00</updated>
   <id>http://mushketyk.com/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Sequence Unpacking in Python]]></title>
-    <link href="http://mushketyk.com/blog/2015/12/14/sequence-unpacking-in-python/"/>
+    <link href="http://mushketyk.com/2015/12/14/sequence-unpacking-in-python/"/>
     <updated>2015-12-14T20:44:26+00:00</updated>
-    <id>http://mushketyk.com/blog/2015/12/14/sequence-unpacking-in-python</id>
+    <id>http://mushketyk.com/2015/12/14/sequence-unpacking-in-python</id>
     <content type="html"><![CDATA[One of the unusual features of Python that other programming languages usually don't have is sequence unpacking. Not only using it makes code more Pythonic it also makes it shorter, safer and easier to understand.
 
 
@@ -184,7 +184,7 @@ Now our custom type can behave just as built-in types:
 </span><span class='line'><span class="mi">3</span>
 </span></code></pre></td></tr></table></div></figure>
 
-You can read more about iterators in Python [here](/blog/2015/09/07/anatomy-of-python-iterator/).
+You can read more about iterators in Python [here](/2015/09/07/anatomy-of-python-iterator/).
 
 ## Changes in Python 3
 
@@ -260,9 +260,9 @@ You can see how much simpler it is comparing to Python 2:
   
   <entry>
     <title type="html"><![CDATA[Else: Block in Python Loops]]></title>
-    <link href="http://mushketyk.com/blog/2015/12/10/else-block-in-loops/"/>
+    <link href="http://mushketyk.com/2015/12/10/else-block-in-loops/"/>
     <updated>2015-12-10T22:11:12+00:00</updated>
-    <id>http://mushketyk.com/blog/2015/12/10/else-block-in-loops</id>
+    <id>http://mushketyk.com/2015/12/10/else-block-in-loops</id>
     <content type="html"><![CDATA[In most of programming languages **else** keyword can only be used in **if/else** constructs. But what even some seasoned Python programmers do not know is that Python supports **else** blocks in **for** and **while** loops.
 
 <!--more-->
@@ -418,9 +418,9 @@ Nowadays Python community agrees that the name is not intuitive and that it woul
   
   <entry>
     <title type="html"><![CDATA[Do Not Assign to Built-ins]]></title>
-    <link href="http://mushketyk.com/blog/2015/12/07/do-not-assign-to-built-ins/"/>
+    <link href="http://mushketyk.com/2015/12/07/do-not-assign-to-built-ins/"/>
     <updated>2015-12-07T08:48:58+00:00</updated>
-    <id>http://mushketyk.com/blog/2015/12/07/do-not-assign-to-built-ins</id>
+    <id>http://mushketyk.com/2015/12/07/do-not-assign-to-built-ins</id>
     <content type="html"><![CDATA[A common mistake in Python is to assign a value to a built-in function.
 
 Python allows you to assign a value to a variable with any name, and if you choose one of the names of Python built-in functions, this function won't be available anymore:
@@ -461,9 +461,9 @@ A similar issue can arise without explicitly using an assignment. If you use a n
   
   <entry>
     <title type="html"><![CDATA[Avoid Comparisons in if Statements]]></title>
-    <link href="http://mushketyk.com/blog/2015/11/30/avoid-comparisons-in-if-statements/"/>
+    <link href="http://mushketyk.com/2015/11/30/avoid-comparisons-in-if-statements/"/>
     <updated>2015-11-30T22:10:25+00:00</updated>
-    <id>http://mushketyk.com/blog/2015/11/30/avoid-comparisons-in-if-statements</id>
+    <id>http://mushketyk.com/2015/11/30/avoid-comparisons-in-if-statements</id>
     <content type="html"><![CDATA[If you come from Java or C# background, your instincts may tell you to write a code like this:
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -606,10 +606,10 @@ Now it should work as expected:
   
   <entry>
     <title type="html"><![CDATA[Generators in Python]]></title>
-    <link href="http://mushketyk.com/blog/2015/09/21/generators-in-python/"/>
+    <link href="http://mushketyk.com/2015/09/21/generators-in-python/"/>
     <updated>2015-09-21T21:03:13+01:00</updated>
-    <id>http://mushketyk.com/blog/2015/09/21/generators-in-python</id>
-    <content type="html"><![CDATA[In previous articles I've wrote about how to create an iterator in Python by implementing [iterator protocol](/blog/2015/09/07/anatomy-of-python-iterator/) or using [**yield** keyword](/blog/2015/09/10/efficient-iterators-in-python-with-yield/). In this article I'll describe generators: a piece of Python syntax that can turn many iterators into one-liners.
+    <id>http://mushketyk.com/2015/09/21/generators-in-python</id>
+    <content type="html"><![CDATA[In previous articles I've wrote about how to create an iterator in Python by implementing [iterator protocol](/2015/09/07/anatomy-of-python-iterator/) or using [**yield** keyword](/2015/09/10/efficient-iterators-in-python-with-yield/). In this article I'll describe generators: a piece of Python syntax that can turn many iterators into one-liners.
 
 <!--more-->
 

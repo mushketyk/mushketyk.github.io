@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Interpolation | Software Developer's diary]]></title>
   <link href="http://mushketyk.com/blog/categories/interpolation/atom.xml" rel="self"/>
   <link href="http://mushketyk.com/"/>
-  <updated>2015-12-14T22:21:44+00:00</updated>
+  <updated>2015-12-15T22:49:15+00:00</updated>
   <id>http://mushketyk.com/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[How to Implement String Interpolation in Python]]></title>
-    <link href="http://mushketyk.com/blog/2015/09/05/string-interpolation-in-python/"/>
+    <link href="http://mushketyk.com/2015/09/05/string-interpolation-in-python/"/>
     <updated>2015-09-05T15:32:28+01:00</updated>
-    <id>http://mushketyk.com/blog/2015/09/05/string-interpolation-in-python</id>
+    <id>http://mushketyk.com/2015/09/05/string-interpolation-in-python</id>
     <content type="html"><![CDATA[String interpolation is a process of substituting values of local variables into placeholders in a string.
 
 It is implemented in many programming languages such as Scala:

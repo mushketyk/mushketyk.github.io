@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Java | Software Developer's diary]]></title>
   <link href="http://mushketyk.com/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://mushketyk.com/"/>
-  <updated>2015-12-14T22:21:44+00:00</updated>
+  <updated>2015-12-15T22:49:15+00:00</updated>
   <id>http://mushketyk.com/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Hot Deployment With Gradle and Jetty]]></title>
-    <link href="http://mushketyk.com/blog/2015/08/30/hot-deployment-with-gradle-and-jetty/"/>
+    <link href="http://mushketyk.com/2015/08/30/hot-deployment-with-gradle-and-jetty/"/>
     <updated>2015-08-30T21:35:05+01:00</updated>
-    <id>http://mushketyk.com/blog/2015/08/30/hot-deployment-with-gradle-and-jetty</id>
+    <id>http://mushketyk.com/2015/08/30/hot-deployment-with-gradle-and-jetty</id>
     <content type="html"><![CDATA[In web development it's very handy to see updates to static content immediately, without a server restart.
 
 In this blog post I'll write how to configure Gradle to support hot deployment with Jetty web server.

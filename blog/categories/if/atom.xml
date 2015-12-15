@@ -4,7 +4,7 @@
   <title><![CDATA[Category: If | Software Developer's diary]]></title>
   <link href="http://mushketyk.com/blog/categories/if/atom.xml" rel="self"/>
   <link href="http://mushketyk.com/"/>
-  <updated>2015-12-14T22:21:44+00:00</updated>
+  <updated>2015-12-15T22:49:15+00:00</updated>
   <id>http://mushketyk.com/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Avoid Comparisons in if Statements]]></title>
-    <link href="http://mushketyk.com/blog/2015/11/30/avoid-comparisons-in-if-statements/"/>
+    <link href="http://mushketyk.com/2015/11/30/avoid-comparisons-in-if-statements/"/>
     <updated>2015-11-30T22:10:25+00:00</updated>
-    <id>http://mushketyk.com/blog/2015/11/30/avoid-comparisons-in-if-statements</id>
+    <id>http://mushketyk.com/2015/11/30/avoid-comparisons-in-if-statements</id>
     <content type="html"><![CDATA[If you come from Java or C# background, your instincts may tell you to write a code like this:
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>

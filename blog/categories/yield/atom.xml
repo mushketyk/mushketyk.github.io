@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Yield | Software Developer's diary]]></title>
   <link href="http://mushketyk.com/blog/categories/yield/atom.xml" rel="self"/>
   <link href="http://mushketyk.com/"/>
-  <updated>2015-12-14T22:21:44+00:00</updated>
+  <updated>2015-12-15T22:49:15+00:00</updated>
   <id>http://mushketyk.com/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -15,10 +15,10 @@
   
   <entry>
     <title type="html"><![CDATA[Efficient Iterators in Python With "Yield"]]></title>
-    <link href="http://mushketyk.com/blog/2015/09/10/efficient-iterators-in-python-with-yield/"/>
+    <link href="http://mushketyk.com/2015/09/10/efficient-iterators-in-python-with-yield/"/>
     <updated>2015-09-10T08:43:18+01:00</updated>
-    <id>http://mushketyk.com/blog/2015/09/10/efficient-iterators-in-python-with-yield</id>
-    <content type="html"><![CDATA[While you can write iterators in Python by implementing [iterator protocol](/blog/2015/09/07/anatomy-of-python-iterator/) it usually requires a lot of code and looks cumbersome. To facilitate this task Python provides a powerful syntax to create iterators. By using these constructions we can write complex iterators using just few lines of code.
+    <id>http://mushketyk.com/2015/09/10/efficient-iterators-in-python-with-yield</id>
+    <content type="html"><![CDATA[While you can write iterators in Python by implementing [iterator protocol](/2015/09/07/anatomy-of-python-iterator/) it usually requires a lot of code and looks cumbersome. To facilitate this task Python provides a powerful syntax to create iterators. By using these constructions we can write complex iterators using just few lines of code.
 
 <!--more-->
 

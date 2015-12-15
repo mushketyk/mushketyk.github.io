@@ -4,7 +4,7 @@
   <title><![CDATA[Software Developer's diary]]></title>
   <link href="http://mushketyk.com/atom.xml" rel="self"/>
   <link href="http://mushketyk.com/"/>
-  <updated>2015-12-14T22:21:44+00:00</updated>
+  <updated>2015-12-15T22:49:15+00:00</updated>
   <id>http://mushketyk.com/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Sequence Unpacking in Python]]></title>
-    <link href="http://mushketyk.com/blog/2015/12/14/sequence-unpacking-in-python/"/>
+    <link href="http://mushketyk.com/2015/12/14/sequence-unpacking-in-python/"/>
     <updated>2015-12-14T20:44:26+00:00</updated>
-    <id>http://mushketyk.com/blog/2015/12/14/sequence-unpacking-in-python</id>
+    <id>http://mushketyk.com/2015/12/14/sequence-unpacking-in-python</id>
     <content type="html"><![CDATA[<p>One of the unusual features of Python that other programming languages usually don&rsquo;t have is sequence unpacking. Not only using it makes code more Pythonic it also makes it shorter, safer and easier to understand.</p>
 
 <!--more-->
@@ -194,7 +194,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>You can read more about iterators in Python <a href="http://mushketyk.com/blog/2015/09/07/anatomy-of-python-iterator/">here</a>.</p>
+<p>You can read more about iterators in Python <a href="http://mushketyk.com/2015/09/07/anatomy-of-python-iterator/">here</a>.</p>
 
 <h2>Changes in Python 3</h2>
 
@@ -274,9 +274,9 @@
   
   <entry>
     <title type="html"><![CDATA[Else: Block in Python Loops]]></title>
-    <link href="http://mushketyk.com/blog/2015/12/10/else-block-in-loops/"/>
+    <link href="http://mushketyk.com/2015/12/10/else-block-in-loops/"/>
     <updated>2015-12-10T22:11:12+00:00</updated>
-    <id>http://mushketyk.com/blog/2015/12/10/else-block-in-loops</id>
+    <id>http://mushketyk.com/2015/12/10/else-block-in-loops</id>
     <content type="html"><![CDATA[<p>In most of programming languages <strong>else</strong> keyword can only be used in <strong>if/else</strong> constructs. But what even some seasoned Python programmers do not know is that Python supports <strong>else</strong> blocks in <strong>for</strong> and <strong>while</strong> loops.</p>
 
 <!--more-->
@@ -437,9 +437,9 @@
   
   <entry>
     <title type="html"><![CDATA[Do Not Assign to Built-ins]]></title>
-    <link href="http://mushketyk.com/blog/2015/12/07/do-not-assign-to-built-ins/"/>
+    <link href="http://mushketyk.com/2015/12/07/do-not-assign-to-built-ins/"/>
     <updated>2015-12-07T08:48:58+00:00</updated>
-    <id>http://mushketyk.com/blog/2015/12/07/do-not-assign-to-built-ins</id>
+    <id>http://mushketyk.com/2015/12/07/do-not-assign-to-built-ins</id>
     <content type="html"><![CDATA[<p>A common mistake in Python is to assign a value to a built-in function.</p>
 
 <p>Python allows you to assign a value to a variable with any name, and if you choose one of the names of Python built-in functions, this function won&rsquo;t be available anymore:</p>
@@ -482,9 +482,9 @@
   
   <entry>
     <title type="html"><![CDATA[Avoid Comparisons in if Statements]]></title>
-    <link href="http://mushketyk.com/blog/2015/11/30/avoid-comparisons-in-if-statements/"/>
+    <link href="http://mushketyk.com/2015/11/30/avoid-comparisons-in-if-statements/"/>
     <updated>2015-11-30T22:10:25+00:00</updated>
-    <id>http://mushketyk.com/blog/2015/11/30/avoid-comparisons-in-if-statements</id>
+    <id>http://mushketyk.com/2015/11/30/avoid-comparisons-in-if-statements</id>
     <content type="html"><![CDATA[<p>If you come from Java or C# background, your instincts may tell you to write a code like this:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -634,10 +634,10 @@
   
   <entry>
     <title type="html"><![CDATA[Generators in Python]]></title>
-    <link href="http://mushketyk.com/blog/2015/09/21/generators-in-python/"/>
+    <link href="http://mushketyk.com/2015/09/21/generators-in-python/"/>
     <updated>2015-09-21T21:03:13+01:00</updated>
-    <id>http://mushketyk.com/blog/2015/09/21/generators-in-python</id>
-    <content type="html"><![CDATA[<p>In previous articles I&rsquo;ve wrote about how to create an iterator in Python by implementing <a href="http://mushketyk.com/blog/2015/09/07/anatomy-of-python-iterator/">iterator protocol</a> or using <a href="http://mushketyk.com/blog/2015/09/10/efficient-iterators-in-python-with-yield/"><strong>yield</strong> keyword</a>. In this article I&rsquo;ll describe generators: a piece of Python syntax that can turn many iterators into one-liners.</p>
+    <id>http://mushketyk.com/2015/09/21/generators-in-python</id>
+    <content type="html"><![CDATA[<p>In previous articles I&rsquo;ve wrote about how to create an iterator in Python by implementing <a href="http://mushketyk.com/2015/09/07/anatomy-of-python-iterator/">iterator protocol</a> or using <a href="http://mushketyk.com/2015/09/10/efficient-iterators-in-python-with-yield/"><strong>yield</strong> keyword</a>. In this article I&rsquo;ll describe generators: a piece of Python syntax that can turn many iterators into one-liners.</p>
 
 <!--more-->
 
@@ -852,10 +852,10 @@
   
   <entry>
     <title type="html"><![CDATA[Efficient Iterators in Python With "Yield"]]></title>
-    <link href="http://mushketyk.com/blog/2015/09/10/efficient-iterators-in-python-with-yield/"/>
+    <link href="http://mushketyk.com/2015/09/10/efficient-iterators-in-python-with-yield/"/>
     <updated>2015-09-10T08:43:18+01:00</updated>
-    <id>http://mushketyk.com/blog/2015/09/10/efficient-iterators-in-python-with-yield</id>
-    <content type="html"><![CDATA[<p>While you can write iterators in Python by implementing <a href="http://mushketyk.com/blog/2015/09/07/anatomy-of-python-iterator/">iterator protocol</a> it usually requires a lot of code and looks cumbersome. To facilitate this task Python provides a powerful syntax to create iterators. By using these constructions we can write complex iterators using just few lines of code.</p>
+    <id>http://mushketyk.com/2015/09/10/efficient-iterators-in-python-with-yield</id>
+    <content type="html"><![CDATA[<p>While you can write iterators in Python by implementing <a href="http://mushketyk.com/2015/09/07/anatomy-of-python-iterator/">iterator protocol</a> it usually requires a lot of code and looks cumbersome. To facilitate this task Python provides a powerful syntax to create iterators. By using these constructions we can write complex iterators using just few lines of code.</p>
 
 <!--more-->
 
@@ -1126,9 +1126,9 @@ In the in-order traversal our iterator should at first return data items from th
   
   <entry>
     <title type="html"><![CDATA[Anatomy of a Python Iterator]]></title>
-    <link href="http://mushketyk.com/blog/2015/09/07/anatomy-of-python-iterator/"/>
+    <link href="http://mushketyk.com/2015/09/07/anatomy-of-python-iterator/"/>
     <updated>2015-09-07T21:52:41+01:00</updated>
-    <id>http://mushketyk.com/blog/2015/09/07/anatomy-of-python-iterator</id>
+    <id>http://mushketyk.com/2015/09/07/anatomy-of-python-iterator</id>
     <content type="html"><![CDATA[<p>Iterator is a powerful pattern that was recognized at least as early as 1994 and since then it was incorporated in syntax of almost every modern programming language.</p>
 
 <p>Python also implements this pattern providing a pithy and concise syntax to iterate over lists, maps, dictionaries and other data structures:</p>
@@ -1663,9 +1663,9 @@ In the in-order traversal our iterator should at first return data items from th
   
   <entry>
     <title type="html"><![CDATA[How to Implement String Interpolation in Python]]></title>
-    <link href="http://mushketyk.com/blog/2015/09/05/string-interpolation-in-python/"/>
+    <link href="http://mushketyk.com/2015/09/05/string-interpolation-in-python/"/>
     <updated>2015-09-05T15:32:28+01:00</updated>
-    <id>http://mushketyk.com/blog/2015/09/05/string-interpolation-in-python</id>
+    <id>http://mushketyk.com/2015/09/05/string-interpolation-in-python</id>
     <content type="html"><![CDATA[<p>String interpolation is a process of substituting values of local variables into placeholders in a string.</p>
 
 <p>It is implemented in many programming languages such as Scala:</p>
@@ -1940,9 +1940,9 @@ It would be great if we could write a function that would interpolate a string l
   
   <entry>
     <title type="html"><![CDATA[Sorting Trick in Python]]></title>
-    <link href="http://mushketyk.com/blog/2015/09/01/sorting-trick-in-python/"/>
+    <link href="http://mushketyk.com/2015/09/01/sorting-trick-in-python/"/>
     <updated>2015-09-01T08:28:07+01:00</updated>
-    <id>http://mushketyk.com/blog/2015/09/01/sorting-trick-in-python</id>
+    <id>http://mushketyk.com/2015/09/01/sorting-trick-in-python</id>
     <content type="html"><![CDATA[<p>How would we sort a list of instances of a class like this?</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -2201,9 +2201,9 @@ It would be great if we could write a function that would interpolate a string l
   
   <entry>
     <title type="html"><![CDATA[Hot Deployment With Gradle and Jetty]]></title>
-    <link href="http://mushketyk.com/blog/2015/08/30/hot-deployment-with-gradle-and-jetty/"/>
+    <link href="http://mushketyk.com/2015/08/30/hot-deployment-with-gradle-and-jetty/"/>
     <updated>2015-08-30T21:35:05+01:00</updated>
-    <id>http://mushketyk.com/blog/2015/08/30/hot-deployment-with-gradle-and-jetty</id>
+    <id>http://mushketyk.com/2015/08/30/hot-deployment-with-gradle-and-jetty</id>
     <content type="html"><![CDATA[<p>In web development it&rsquo;s very handy to see updates to static content immediately, without a server restart.</p>
 
 <p>In this blog post I&rsquo;ll write how to configure Gradle to support hot deployment with Jetty web server.</p>
@@ -2348,9 +2348,9 @@ It would be great if we could write a function that would interpolate a string l
   
   <entry>
     <title type="html"><![CDATA[Idiomatic Way to Count in Python]]></title>
-    <link href="http://mushketyk.com/blog/2015/08/27/idiomatic-way-to-count-in-python/"/>
+    <link href="http://mushketyk.com/2015/08/27/idiomatic-way-to-count-in-python/"/>
     <updated>2015-08-27T20:07:29+01:00</updated>
-    <id>http://mushketyk.com/blog/2015/08/27/idiomatic-way-to-count-in-python</id>
+    <id>http://mushketyk.com/2015/08/27/idiomatic-way-to-count-in-python</id>
     <content type="html"><![CDATA[<p>Let&rsquo;s say we want to count how many time each item appears in a Python list:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -2496,9 +2496,9 @@ It would be great if we could write a function that would interpolate a string l
   
   <entry>
     <title type="html"><![CDATA[Wrong Python Decorator and How to Fix It]]></title>
-    <link href="http://mushketyk.com/blog/2015/08/25/wrong-python-decorator-and-how-to-fix-it/"/>
+    <link href="http://mushketyk.com/2015/08/25/wrong-python-decorator-and-how-to-fix-it/"/>
     <updated>2015-08-25T20:19:02+01:00</updated>
-    <id>http://mushketyk.com/blog/2015/08/25/wrong-python-decorator-and-how-to-fix-it</id>
+    <id>http://mushketyk.com/2015/08/25/wrong-python-decorator-and-how-to-fix-it</id>
     <content type="html"><![CDATA[<p>Let&rsquo;s say you need to write a decorator that measures how long does it take to execute a function. For this task you may write something like this:</p>
 
 <!--more-->
@@ -2639,9 +2639,9 @@ It would be great if we could write a function that would interpolate a string l
   
   <entry>
     <title type="html"><![CDATA[Git Productivity Tip]]></title>
-    <link href="http://mushketyk.com/blog/2015/08/24/git-productivity-tip/"/>
+    <link href="http://mushketyk.com/2015/08/24/git-productivity-tip/"/>
     <updated>2015-08-24T21:48:32+01:00</updated>
-    <id>http://mushketyk.com/blog/2015/08/24/git-productivity-tip</id>
+    <id>http://mushketyk.com/2015/08/24/git-productivity-tip</id>
     <content type="html"><![CDATA[<p>git provides an efficient shortcut to refer to a previous branch: &ldquo;-&rdquo;. It can be used to quickly switch to a previous branch or to merge current branch.</p>
 
 <!--more-->

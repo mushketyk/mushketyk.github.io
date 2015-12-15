@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Idiom | Software Developer's diary]]></title>
+  <title><![CDATA[Category: Idiom, | Software Developer's diary]]></title>
   <link href="http://mushketyk.com/blog/categories/idiom/atom.xml" rel="self"/>
   <link href="http://mushketyk.com/"/>
-  <updated>2015-12-14T22:21:44+00:00</updated>
+  <updated>2015-12-15T22:49:15+00:00</updated>
   <id>http://mushketyk.com/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -14,10 +14,168 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Else: Block in Python Loops]]></title>
+    <link href="http://mushketyk.com/2015/12/10/else-block-in-loops/"/>
+    <updated>2015-12-10T22:11:12+00:00</updated>
+    <id>http://mushketyk.com/2015/12/10/else-block-in-loops</id>
+    <content type="html"><![CDATA[In most of programming languages **else** keyword can only be used in **if/else** constructs. But what even some seasoned Python programmers do not know is that Python supports **else** blocks in **for** and **while** loops.
+
+<!--more-->
+
+**else** block after a loop may be misleading but it's simply a block that is being called if execution of a loop was not interrupted by a **break** statement.
+
+Let's take a look at an example:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+</span><span class='line'>	<span class="k">print</span> <span class="n">i</span>
+</span><span class='line'><span class="k">else</span><span class="p">:</span>
+</span><span class='line'>	<span class="k">print</span> <span class="s">&quot;in else&quot;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="mi">0</span>
+</span><span class='line'><span class="mi">1</span>
+</span><span class='line'><span class="mi">2</span>
+</span><span class='line'><span class="ow">in</span> <span class="k">else</span>
+</span></code></pre></td></tr></table></div></figure>
+
+In this case since **for** loop was not interrupted and the **else** block was executed.
+
+Now let's add a break statement in a for loop and see if **else** block is being executed:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+</span><span class='line'>	<span class="k">print</span> <span class="n">i</span>
+</span><span class='line'>	<span class="k">break</span>
+</span><span class='line'><span class="k">else</span><span class="p">:</span>
+</span><span class='line'>	<span class="k">print</span> <span class="s">&quot;in else&quot;</span>
+</span><span class='line'><span class="k">print</span> <span class="s">&quot;after loop&quot;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="mi">0</span>
+</span><span class='line'><span class="n">after</span> <span class="n">loop</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Beware that **else** block will be executed even if a loop was not executed at all:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[]:</span>
+</span><span class='line'>	<span class="k">print</span> <span class="s">&quot;Never ever&quot;</span>
+</span><span class='line'><span class="k">else</span><span class="p">:</span>
+</span><span class='line'>	<span class="k">print</span> <span class="s">&quot;In else&quot;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="n">In</span> <span class="k">else</span>
+</span></code></pre></td></tr></table></div></figure>
+
+## More realistic example
+
+Usually **else** blocks are used after loops that are searching for a specific element in a sequence and should be called if an element was not found.
+
+Let's say we have a function that iterates over a list and check if all items match a regex. If one of the items does not match the regex a function would display a message and return. If all items comply with a regex the function would print a different message. We can implement this using conventional constructions:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">check_items</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">regex</span><span class="p">):</span>
+</span><span class='line'>	<span class="n">found</span> <span class="o">=</span> <span class="bp">False</span>
+</span><span class='line'>	<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
+</span><span class='line'>		<span class="k">if</span> <span class="ow">not</span> <span class="n">regex</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+</span><span class='line'>			<span class="k">print</span> <span class="s">&quot;&#39;{}&#39; does not match regex&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</span><span class='line'>			<span class="n">found</span> <span class="o">=</span> <span class="bp">True</span>
+</span><span class='line'>			<span class="k">break</span>
+</span><span class='line'>	<span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+</span><span class='line'>		<span class="k">print</span> <span class="s">&quot;all strings match the regex&quot;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">check_items</span><span class="p">([</span><span class="s">&quot;1&quot;</span><span class="p">,</span> <span class="s">&quot;23&quot;</span><span class="p">,</span> <span class="s">&quot;abc&quot;</span><span class="p">],</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&quot;[0-9]+&quot;</span><span class="p">))</span>
+</span><span class='line'><span class="s">&#39;abc&#39;</span> <span class="n">does</span> <span class="ow">not</span> <span class="n">match</span> <span class="n">regex</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">check_items</span><span class="p">([</span><span class="s">&quot;1&quot;</span><span class="p">,</span> <span class="s">&quot;23&quot;</span><span class="p">,</span> <span class="s">&quot;1234&quot;</span><span class="p">],</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&quot;[0-9]+&quot;</span><span class="p">))</span>
+</span><span class='line'><span class="nb">all</span> <span class="n">strings</span> <span class="n">match</span> <span class="n">the</span> <span class="n">regex</span>
+</span></code></pre></td></tr></table></div></figure>
+
+In this case we need a flag to track if an element was found in a list. If **else** block is used there would be no need for a flag and this would make this function a bit shorter:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">check_items</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">regex</span><span class="p">):</span>
+</span><span class='line'>	<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
+</span><span class='line'>		<span class="k">if</span> <span class="ow">not</span> <span class="n">regex</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+</span><span class='line'>			<span class="k">print</span> <span class="s">&quot;&#39;{}&#39; does not match regex&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</span><span class='line'>			<span class="k">break</span>
+</span><span class='line'>	<span class="k">else</span><span class="p">:</span>
+</span><span class='line'>		<span class="k">print</span> <span class="s">&quot;all strings match the regex&quot;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">check_items</span><span class="p">([</span><span class="s">&quot;1&quot;</span><span class="p">,</span> <span class="s">&quot;23&quot;</span><span class="p">,</span> <span class="s">&quot;abc&quot;</span><span class="p">],</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&quot;[0-9]+&quot;</span><span class="p">))</span>
+</span><span class='line'><span class="s">&#39;abc&#39;</span> <span class="n">does</span> <span class="ow">not</span> <span class="n">match</span> <span class="n">regex</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">check_items</span><span class="p">([</span><span class="s">&quot;1&quot;</span><span class="p">,</span> <span class="s">&quot;23&quot;</span><span class="p">,</span> <span class="s">&quot;1234&quot;</span><span class="p">],</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&quot;[0-9]+&quot;</span><span class="p">))</span>
+</span><span class='line'><span class="nb">all</span> <span class="n">strings</span> <span class="n">match</span> <span class="n">the</span> <span class="n">regex</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+## A bit of history
+
+**else** block in loops was invented by Donald Knuth, who suggested that it can be used to avoid some GOTO statements.
+
+The name **else** for the block was selected because when a loop is executed it has an implicit condition that is checked before every iteration. If this condition is not satisfied, Python interpretor would not execute loop's body and will execute **else** block if it exists, hence the weird name.
+
+Nowadays Python community agrees that the name is not intuitive and that it would be better to name it **nobreak**, but it's too late to change it, since it will break backward compatibility.
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Avoid Comparisons in if Statements]]></title>
-    <link href="http://mushketyk.com/blog/2015/11/30/avoid-comparisons-in-if-statements/"/>
+    <link href="http://mushketyk.com/2015/11/30/avoid-comparisons-in-if-statements/"/>
     <updated>2015-11-30T22:10:25+00:00</updated>
-    <id>http://mushketyk.com/blog/2015/11/30/avoid-comparisons-in-if-statements</id>
+    <id>http://mushketyk.com/2015/11/30/avoid-comparisons-in-if-statements</id>
     <content type="html"><![CDATA[If you come from Java or C# background, your instincts may tell you to write a code like this:
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -155,143 +313,6 @@ Now it should work as expected:
 </span><span class='line'>
 </span><span class='line'><span class="bp">True</span>
 </span></code></pre></td></tr></table></div></figure>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Idiomatic Way to Count in Python]]></title>
-    <link href="http://mushketyk.com/blog/2015/08/27/idiomatic-way-to-count-in-python/"/>
-    <updated>2015-08-27T20:07:29+01:00</updated>
-    <id>http://mushketyk.com/blog/2015/08/27/idiomatic-way-to-count-in-python</id>
-    <content type="html"><![CDATA[Let's say we want to count how many time each item appears in a Python list:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">lst</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;fred&#39;</span><span class="p">,</span> <span class="s">&#39;john&#39;</span><span class="p">,</span> <span class="s">&#39;mike&#39;</span><span class="p">,</span> <span class="s">&#39;fred&#39;</span><span class="p">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-and we expect the following result:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="p">{</span><span class="s">&#39;mike&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;john&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;fred&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-Here is a simple but not idiomatic solution:
-
-<!--more-->
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">count_1</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
-</span><span class='line'>	<span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
-</span><span class='line'>	<span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
-</span><span class='line'>		<span class="c"># if this is the first time we see this value</span>
-</span><span class='line'>		<span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
-</span><span class='line'>			<span class="c"># set count to 1</span>
-</span><span class='line'>			<span class="n">res</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-</span><span class='line'>		<span class="k">else</span><span class="p">:</span>
-</span><span class='line'>			<span class="c"># increment existing counter</span>
-</span><span class='line'>			<span class="n">res</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span class='line'>	<span class="k">return</span> <span class="n">res</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">count_1</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span><span class="s">&#39;mike&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;john&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;fred&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-This solution works, but it is so unPythonic. There should be a way to get rid of this ugly if statement inside the loop.
-
-One way would be to use dict.get() method that can return a specified value if a requested key is not presented in a dictionary:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="s">&#39;val&#39;</span><span class="p">}</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;key&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="s">&#39;val&#39;</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;non-existing&#39;</span><span class="p">,</span> <span class="mi">42</span><span class="p">)</span>
-</span><span class='line'><span class="mi">42</span>
-</span></code></pre></td></tr></table></div></figure>
-
-Now we can use is to rewrite our function:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">count_2</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
-</span><span class='line'>	<span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
-</span><span class='line'>	<span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
-</span><span class='line'>		<span class="n">res</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-</span><span class='line'>	<span class="k">return</span> <span class="n">res</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">count_2</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span><span class="s">&#39;mike&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;john&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;fred&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-This seems to be much better, but we are not done yet. Python has a specialized type of a dictionary that can return a default value for a non existing key. To specify what default value should be returned we can optionally pass a function:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">42</span><span class="p">)</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">d</span><span class="p">[</span><span class="s">&#39;key&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;value&#39;</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">d</span><span class="p">[</span><span class="s">&#39;non-existing&#39;</span><span class="p">]</span>
-</span><span class='line'><span class="mi">42</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">d</span><span class="p">[</span><span class="s">&#39;key&#39;</span><span class="p">]</span>
-</span><span class='line'><span class="s">&#39;value&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-Now we can rewrite this function using defaultdict:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">count_3</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
-</span><span class='line'>	<span class="n">res</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
-</span><span class='line'>	<span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
-</span><span class='line'>		<span class="n">res</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span class='line'>	<span class="k">return</span> <span class="n">res</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="nb">dict</span><span class="p">(</span><span class="n">count_3</span><span class="p">(</span><span class="n">l</span><span class="p">))</span>
-</span><span class='line'><span class="p">{</span><span class="s">&#39;mike&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;john&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;fred&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-This is much better. But to be really idiomatic we can use Counter class from  [collections](https://docs.python.org/2/library/collections.html) library:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">count</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="nb">dict</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span><span class="s">&#39;mike&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;john&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;fred&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-In addtion Counter class also provides more useful methods to work with counts [operations](https://docs.python.org/2/library/collections.html#collections.Counter) such as addition of counters, subtraction, intersection, etc.
 ]]></content>
   </entry>
   
