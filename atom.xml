@@ -4,7 +4,7 @@
   <title><![CDATA[Software Developer's diary]]></title>
   <link href="http://mushketyk.com/atom.xml" rel="self"/>
   <link href="http://mushketyk.com/"/>
-  <updated>2015-12-15T22:56:17+00:00</updated>
+  <updated>2015-12-20T00:12:41+00:00</updated>
   <id>http://mushketyk.com/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -12,6 +12,114 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Do Not Use Mutable Values as Default Values]]></title>
+    <link href="http://mushketyk.com/2015/12/19/do-not-use-mutable-values-as-default-values/"/>
+    <updated>2015-12-19T23:10:31+00:00</updated>
+    <id>http://mushketyk.com/2015/12/19/do-not-use-mutable-values-as-default-values</id>
+    <content type="html"><![CDATA[<p>In Python we can provide default values for function&rsquo;s arguments, which can make code more concise and readable:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">greetings</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;anonymous&quot;</span><span class="p">):</span>
+</span><span class='line'>  <span class="k">print</span> <span class="s">&quot;Hi, {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">greetings</span><span class="p">(</span><span class="s">&quot;Joe&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">Hi</span><span class="p">,</span> <span class="n">Joe</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">greetings</span><span class="p">()</span>
+</span><span class='line'><span class="n">Hi</span><span class="p">,</span> <span class="n">anonymous</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>However a seemingly innocuous code like this may cause significant problems:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">get_hostnames</span><span class="p">(</span><span class="n">hostnames</span><span class="o">=</span><span class="p">[]):</span>
+</span><span class='line'>  <span class="n">hostnames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;localhost&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">hostnames</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!--more-->
+
+
+<p>If we call it, it returns the expected list with &ldquo;localhost&rdquo; string in it, so everything seems fine:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">get_hostnames</span><span class="p">()</span>
+</span><span class='line'><span class="p">[</span><span class="s">&#39;localhost&#39;</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>But lets call the same function few more times:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">get_hostnames</span><span class="p">()</span>
+</span><span class='line'><span class="p">[</span><span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="s">&#39;localhost&#39;</span><span class="p">]</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">get_hostnames</span><span class="p">()</span>
+</span><span class='line'><span class="p">[</span><span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="s">&#39;localhost&#39;</span><span class="p">]</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">get_hostnames</span><span class="p">()</span>
+</span><span class='line'><span class="p">[</span><span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="s">&#39;localhost&#39;</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>What has just happened? This is definitely not what we expected!</p>
+
+<p>It turns out that Python interpreter does not evaluates default arguments for every function call. Instead it evaluates them only once during execution. It results in the same list instance being used over and over again for every single function call.</p>
+
+<h2>How to avoid this issue</h2>
+
+<p>Try to use immutable objects if you can. Mutability is the cause of the problem here and if an object cannot be changed it doesn&rsquo;t matter how many instances were created by Python interpreter. That&rsquo;s why it&rsquo;s ok to use strings and integers as default arguments.</p>
+
+<p>However if you need to use mutable arguments you can implement the desired behavior: create a new instance of a default argument for every function call:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">get_hostnames</span><span class="p">(</span><span class="n">hostnames</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</span><span class='line'>  <span class="k">if</span> <span class="ow">not</span> <span class="n">hostnames</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">hostnames</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span class='line'>  <span class="n">hostnames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;localhost&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">hostnames</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now everything works as expected:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">get_hostnames</span><span class="p">()</span>
+</span><span class='line'><span class="p">[</span><span class="s">&#39;localhost&#39;</span><span class="p">]</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">get_hostnames</span><span class="p">()</span>
+</span><span class='line'><span class="p">[</span><span class="s">&#39;localhost&#39;</span><span class="p">]</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">get_hostnames</span><span class="p">()</span>
+</span><span class='line'><span class="p">[</span><span class="s">&#39;localhost&#39;</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Sequence Unpacking in Python]]></title>

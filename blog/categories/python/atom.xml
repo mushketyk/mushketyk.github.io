@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Python | Software Developer's diary]]></title>
   <link href="http://mushketyk.com/blog/categories/python/atom.xml" rel="self"/>
   <link href="http://mushketyk.com/"/>
-  <updated>2015-12-15T22:56:17+00:00</updated>
+  <updated>2015-12-20T00:12:41+00:00</updated>
   <id>http://mushketyk.com/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -12,6 +12,105 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Do Not Use Mutable Values as Default Values]]></title>
+    <link href="http://mushketyk.com/2015/12/19/do-not-use-mutable-values-as-default-values/"/>
+    <updated>2015-12-19T23:10:31+00:00</updated>
+    <id>http://mushketyk.com/2015/12/19/do-not-use-mutable-values-as-default-values</id>
+    <content type="html"><![CDATA[In Python we can provide default values for function's arguments, which can make code more concise and readable:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">greetings</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;anonymous&quot;</span><span class="p">):</span>
+</span><span class='line'>	<span class="k">print</span> <span class="s">&quot;Hi, {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">greetings</span><span class="p">(</span><span class="s">&quot;Joe&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">Hi</span><span class="p">,</span> <span class="n">Joe</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">greetings</span><span class="p">()</span>
+</span><span class='line'><span class="n">Hi</span><span class="p">,</span> <span class="n">anonymous</span>
+</span></code></pre></td></tr></table></div></figure>
+
+However a seemingly innocuous code like this may cause significant problems:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">get_hostnames</span><span class="p">(</span><span class="n">hostnames</span><span class="o">=</span><span class="p">[]):</span>
+</span><span class='line'>  <span class="n">hostnames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;localhost&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">hostnames</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<!--more-->
+
+If we call it, it returns the expected list with "localhost" string in it, so everything seems fine:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">get_hostnames</span><span class="p">()</span>
+</span><span class='line'><span class="p">[</span><span class="s">&#39;localhost&#39;</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+But lets call the same function few more times:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">get_hostnames</span><span class="p">()</span>
+</span><span class='line'><span class="p">[</span><span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="s">&#39;localhost&#39;</span><span class="p">]</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">get_hostnames</span><span class="p">()</span>
+</span><span class='line'><span class="p">[</span><span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="s">&#39;localhost&#39;</span><span class="p">]</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">get_hostnames</span><span class="p">()</span>
+</span><span class='line'><span class="p">[</span><span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="s">&#39;localhost&#39;</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+What has just happened? This is definitely not what we expected!
+
+It turns out that Python interpreter does not evaluates default arguments for every function call. Instead it evaluates them only once during execution. It results in the same list instance being used over and over again for every single function call.
+
+## How to avoid this issue
+
+Try to use immutable objects if you can. Mutability is the cause of the problem here and if an object cannot be changed it doesn't matter how many instances were created by Python interpreter. That's why it's ok to use strings and integers as default arguments.
+
+However if you need to use mutable arguments you can implement the desired behavior: create a new instance of a default argument for every function call:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">get_hostnames</span><span class="p">(</span><span class="n">hostnames</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</span><span class='line'>  <span class="k">if</span> <span class="ow">not</span> <span class="n">hostnames</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">hostnames</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span class='line'>  <span class="n">hostnames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;localhost&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">hostnames</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Now everything works as expected:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">get_hostnames</span><span class="p">()</span>
+</span><span class='line'><span class="p">[</span><span class="s">&#39;localhost&#39;</span><span class="p">]</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">get_hostnames</span><span class="p">()</span>
+</span><span class='line'><span class="p">[</span><span class="s">&#39;localhost&#39;</span><span class="p">]</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">get_hostnames</span><span class="p">()</span>
+</span><span class='line'><span class="p">[</span><span class="s">&#39;localhost&#39;</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Sequence Unpacking in Python]]></title>
@@ -601,214 +700,6 @@ Now it should work as expected:
 </span><span class='line'>
 </span><span class='line'><span class="bp">True</span>
 </span></code></pre></td></tr></table></div></figure>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Generators in Python]]></title>
-    <link href="http://mushketyk.com/2015/09/21/generators-in-python/"/>
-    <updated>2015-09-21T21:03:13+01:00</updated>
-    <id>http://mushketyk.com/2015/09/21/generators-in-python</id>
-    <content type="html"><![CDATA[In previous articles I've wrote about how to create an iterator in Python by implementing [iterator protocol](/2015/09/07/anatomy-of-python-iterator/) or using [**yield** keyword](/2015/09/10/efficient-iterators-in-python-with-yield/). In this article I'll describe generators: a piece of Python syntax that can turn many iterators into one-liners.
-
-<!--more-->
-
-Generators syntax is very similar to list comprehension. The only difference is usage of parentheses instead of square braces:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span>
-</span><span class='line'><span class="o">&lt;</span><span class="n">generator</span> <span class="nb">object</span> <span class="o">&lt;</span><span class="n">genexpr</span><span class="o">&gt;</span> <span class="n">at</span> <span class="mh">0x7f4faa870960</span><span class="o">&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-As opposed to the list comprehension generator expression does not generate all values at once. But instead it returns an iterator that can be used to get values one-by-one:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'><span class="mi">0</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'><span class="mi">1</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'><span class="mi">2</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
-</span><span class='line'>  <span class="n">File</span> <span class="s">&quot;&lt;pyshell#14&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-</span><span class='line'>    <span class="n">gen</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'><span class="ne">StopIteration</span>
-</span></code></pre></td></tr></table></div></figure>
-
-Generators may be especially useful in situations when creation of each value requires extensive amount of computation. Instead of generating all values in advance generators create the next value only when it is requested (when the **next** method is called on the result iterator).
-
-Let's say we want to generate first few Fibonacci numbers. At first we need to implement a function that will calculate n-th Fibonacci number:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-</span><span class='line'>    <span class="c"># Print arguments so we know when a function is called</span>
-</span><span class='line'>    <span class="k">print</span> <span class="s">&quot;fib({})&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c"># Regular Fibonacci number calculation</span>
-</span><span class='line'>    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-</span><span class='line'>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Input should be non-negative&quot;</span><span class="p">)</span>
-</span><span class='line'>    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-</span><span class='line'>        <span class="k">return</span> <span class="n">n</span>
-</span><span class='line'>    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
-</span><span class='line'>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-</span><span class='line'>        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
-</span><span class='line'>    <span class="k">return</span> <span class="n">b</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">fib</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</span><span class='line'><span class="n">fib</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</span><span class='line'><span class="mi">2</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">fib</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>
-</span><span class='line'><span class="n">fib</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>
-</span><span class='line'><span class="mi">144</span>
-</span></code></pre></td></tr></table></div></figure>
-
-Now we can create an iterator for the first 100 Fibonacci numbers.
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">it</span> <span class="o">=</span> <span class="p">(</span><span class="n">fib</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">it</span>
-</span><span class='line'><span class="o">&lt;</span><span class="n">generator</span> <span class="nb">object</span> <span class="o">&lt;</span><span class="n">genexpr</span><span class="o">&gt;</span> <span class="n">at</span> <span class="mh">0x7f4faa870370</span><span class="o">&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-As you may notice there is no output from the **fib** function. This is because all calls to it were postponed until actual values are requested:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'><span class="n">fib</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-</span><span class='line'><span class="mi">0</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'><span class="n">fib</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-</span><span class='line'><span class="mi">1</span>
-</span></code></pre></td></tr></table></div></figure>
-
-In contrast, if we use list comprehension all 100 calls to the fib function would be performed before the result list is created:
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">lst</span> <span class="o">=</span> <span class="p">[</span><span class="n">fib</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)]</span>
-</span><span class='line'><span class="n">fib</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-</span><span class='line'><span class="n">fib</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-</span><span class='line'><span class="n">fib</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</span><span class='line'><span class="o">...</span>
-</span><span class='line'><span class="n">fib</span><span class="p">(</span><span class="mi">98</span><span class="p">)</span>
-</span><span class='line'><span class="n">fib</span><span class="p">(</span><span class="mi">99</span><span class="p">)</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">lst</span>
-</span><span class='line'><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="il">218922995834555169026L</span><span class="p">,</span> <span class="il">354224848179261915075L</span><span class="p">]</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-As you can see all numbers were created in advance.
-
-We can build more complicated generators using the same constructions we can use for list comprehensions. Similarly we can can filter some values using **if** statement at the end of a generator expression:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">it</span> <span class="o">=</span> <span class="p">(</span><span class="n">expression</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="o">...</span> <span class="k">if</span> <span class="n">cond</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-For example if we want to generate all numbers less than 100 that can be divided by 9 we can write code like:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">9</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'><span class="mi">0</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'><span class="mi">9</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-</span><span class='line'><span class="mi">18</span>
-</span><span class='line'><span class="o">...</span>
-</span></code></pre></td></tr></table></div></figure>
-
-We can also combine multiple loops in one generator using the following construction:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">it</span> <span class="o">=</span> <span class="p">(</span><span class="n">expression</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">a</span> <span class="k">if</span> <span class="n">cond1</span>
-</span><span class='line'>      <span class="n">j</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">b</span> <span class="k">if</span> <span class="n">cond2</span>
-</span><span class='line'>      <span class="o">...</span>
-</span><span class='line'>      <span class="n">final_condition</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-Which is equivalent to the following code:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">a</span><span class="p">:</span>
-</span><span class='line'>    <span class="k">if</span> <span class="n">cond1</span><span class="p">:</span>
-</span><span class='line'>        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">b</span><span class="p">:</span>
-</span><span class='line'>            <span class="k">if</span> <span class="n">cond2</span><span class="p">:</span>
-</span><span class='line'>                <span class="o">...</span>
-</span><span class='line'>                <span class="k">if</span> <span class="n">final_condition</span><span class="p">:</span>
-</span><span class='line'>                    <span class="k">yield</span> <span class="n">expression</span>
-</span></code></pre></td></tr></table></div></figure>
-
-## References
-
-[Generator Tricks for Systems Programmers](http://www.dabeaz.com/generators/)
 ]]></content>
   </entry>
   
