@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Python | Software Developer's diary]]></title>
   <link href="http://mushketyk.com/blog/categories/python/atom.xml" rel="self"/>
   <link href="http://mushketyk.com/"/>
-  <updated>2015-12-20T00:12:41+00:00</updated>
+  <updated>2015-12-26T17:59:45+00:00</updated>
   <id>http://mushketyk.com/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -12,6 +12,640 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Python Data Structures Idioms]]></title>
+    <link href="http://mushketyk.com/2015/12/21/python-data-structures-idioms/"/>
+    <updated>2015-12-21T08:59:24+00:00</updated>
+    <id>http://mushketyk.com/2015/12/21/python-data-structures-idioms</id>
+    <content type="html"><![CDATA[Significant portion of our time we as a developers spend writing code that manipulates basic data structures: traverse a list, create a map, filter elements in a collection. Therefore it is important to know how effectively do it in Python and make your code more readable and efficient.
+
+<!--more-->
+
+# Using lists
+
+## Iterate over a list
+
+There are many ways to iterate over a list in Python. And the simplest way would be just to maintain current position in list and increment it on each iteration:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">## SO WRONG</span>
+</span><span class='line'><span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+</span><span class='line'><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class='line'><span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+</span><span class='line'>	<span class="k">print</span> <span class="n">l</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</span><span class='line'>	<span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+</span></code></pre></td></tr></table></div></figure>
+
+This works, but Python provides a more convenient way to do using [**range**](https://docs.python.org/2/library/functions.html#range) function. **range** function can be used to generate numbers from 0 to N and this can be used as an analog of a **for** loop in C:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">## STILL WRONG</span>
+</span><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)):</span>
+</span><span class='line'>	<span class="k">print</span> <span class="n">l</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+While this is more concise, there is a better way to do it since Python let us iterate over a list directly, similarly to **foreach** loops in other languages:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># RIGHT</span>
+</span><span class='line'><span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">l</span><span class="p">:</span>
+</span><span class='line'>  <span class="k">print</span> <span class="n">v</span>
+</span></code></pre></td></tr></table></div></figure>
+
+## Iterate a list in reverse order
+
+How can we iterate a list in the reverse order? One way to do it would be to use an unreadable 3 arguments version of the **range** function and provide position of the last element in a list (first argument), position of an element before the first element in the list (second argument) and negative step to go in reverse order (third argument):
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># WRONG</span>
+</span><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+</span><span class='line'>	<span class="k">print</span> <span class="n">l</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+But as you've may already guessed Python should offer a much better way to do it. We can just use [**reversed**](https://docs.python.org/2/library/functions.html#reversed) function in a **for** loop:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># RIGHT</span>
+</span><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+</span><span class='line'>	<span class="k">print</span> <span class="n">i</span>
+</span></code></pre></td></tr></table></div></figure>
+
+## Access the last element
+
+A commonly used idiom to access the last element in a list would be: get length of a list, subtract 1 from it, use result number as a position of the last element:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># WRONG</span>
+</span><span class='line'><span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">l</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+</span><span class='line'><span class="mi">5</span>
+</span></code></pre></td></tr></table></div></figure>
+
+This is cumbersome in Python since it supports negative indexes to access elements from the end of the list. So -1 is the last element:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># RIGHT</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">l</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span><span class='line'><span class="mi">5</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Negative indexes can also be used to access a next to last element and so on:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># RIGHT</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">l</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+</span><span class='line'><span class="mi">4</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">l</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span>
+</span><span class='line'><span class="mi">3</span>
+</span></code></pre></td></tr></table></div></figure>
+
+## Use sequence unpacking
+
+A common way to extract values from a list to multiple variables in other programming languages would be to use indexes:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># WRONG</span>
+</span><span class='line'><span class="n">l1</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span><span class='line'><span class="n">l2</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</span><span class='line'><span class="n">l3</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+But Python supports sequence unpacking that lets us to extract values from a list to multiple variables:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># RIGHT</span>
+</span><span class='line'><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">,</span> <span class="n">l3</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">l1</span>
+</span><span class='line'><span class="mi">1</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">l2</span>
+</span><span class='line'><span class="mi">2</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">l3</span>
+</span><span class='line'><span class="mi">3</span>
+</span></code></pre></td></tr></table></div></figure>
+
+You can read more about sequence unpacking [here](/2015/12/14/sequence-unpacking-in-python/).
+
+## Use lists comprehensions
+
+Let's say we want to filter all grades for a movie posted by users of age 18 or bellow.
+
+How many times did you write code like this:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># WRONG</span>
+</span><span class='line'><span class="n">under_18_grades</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span class='line'><span class="k">for</span> <span class="n">grade</span> <span class="ow">in</span> <span class="n">grades</span><span class="p">:</span>
+</span><span class='line'>	<span class="k">if</span> <span class="n">grade</span><span class="o">.</span><span class="n">age</span> <span class="o">&lt;=</span> <span class="mi">18</span><span class="p">:</span>
+</span><span class='line'>		<span class="n">under_18_grades</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">grade</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Do it no more in Python and use list comprehensions with **if** statement instead.
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># RIGHT</span>
+</span><span class='line'><span class="n">under_18_grades</span> <span class="o">=</span> <span class="p">[</span><span class="n">grade</span> <span class="k">for</span> <span class="n">grade</span> <span class="ow">in</span> <span class="n">grades</span> <span class="k">if</span> <span class="n">grade</span><span class="o">.</span><span class="n">age</span> <span class="o">&lt;=</span> <span class="mi">18</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+## Use enumerate function
+
+Sometimes you need to iterate over a list and keep track of a position of each element. Say, if you need to display a menu items in a shell you can simply use the **range** function:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># WRONG</span>
+</span><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">menu_items</span><span class="p">)):</span>
+</span><span class='line'>	<span class="n">menu_items</span> <span class="o">=</span> <span class="n">menu_items</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</span><span class='line'>	<span class="k">print</span> <span class="s">&quot;{}. {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">menu_items</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+A better way to do it would be to use [**enumerate**](https://docs.python.org/2/library/functions.html#enumerate) function. It is a iterator that returns pairs each of which contains position of an element and the element itself:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># RIGHT</span>
+</span><span class='line'><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">menu_items</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">menu_items</span><span class="p">):</span>
+</span><span class='line'>	<span class="k">print</span> <span class="s">&quot;{}. {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">menu_items</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+## Use keys to sort
+
+A typical way to sort elements in other programming languages is to provide a function that compares two objects along with a collection to sort. In Python it would look like:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">people</span> <span class="o">=</span> <span class="p">[</span><span class="n">Person</span><span class="p">(</span><span class="s">&#39;John&#39;</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="n">Person</span><span class="p">(</span><span class="s">&#39;Peter&#39;</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span> <span class="n">Person</span><span class="p">(</span><span class="s">&#39;Joe&#39;</span><span class="p">,</span> <span class="mi">42</span><span class="p">)]</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># WRONG</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">compare_people</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">):</span>
+</span><span class='line'>	<span class="k">if</span> <span class="n">p1</span><span class="o">.</span><span class="n">age</span> <span class="o">&lt;</span> <span class="n">p2</span><span class="o">.</span><span class="n">age</span><span class="p">:</span>
+</span><span class='line'>		<span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+</span><span class='line'>	<span class="k">if</span> <span class="n">p1</span><span class="o">.</span><span class="n">age</span> <span class="o">&gt;</span> <span class="n">p2</span><span class="o">.</span><span class="n">age</span><span class="p">:</span>
+</span><span class='line'>		<span class="k">return</span> <span class="mi">1</span>
+</span><span class='line'>	<span class="k">return</span> <span class="mi">0</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">sorted</span><span class="p">(</span><span class="n">people</span><span class="p">,</span> <span class="nb">cmp</span><span class="o">=</span><span class="n">compare_people</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">[</span><span class="n">Person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;Peter&#39;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">28</span><span class="p">),</span> <span class="n">Person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;John&#39;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">30</span><span class="p">),</span> <span class="n">Person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;Joe&#39;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">42</span><span class="p">)]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+But this is not the best way to do it. Since all we need to do to compare two instances of **Person** class is to compare values of their **age** field. Why should we write a complex compare function for this?
+
+Specifically for this case [**sorted**](https://docs.python.org/2/library/functions.html#sorted) function accepts **key** function that is used to extract a key that will be used to compare two instances of an object:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># RIGHT</span>
+</span><span class='line'><span class="nb">sorted</span><span class="p">(</span><span class="n">people</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">age</span><span class="p">)</span>
+</span><span class='line'><span class="p">[</span><span class="n">Person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;Peter&#39;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">28</span><span class="p">),</span> <span class="n">Person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;John&#39;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">30</span><span class="p">),</span> <span class="n">Person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;Joe&#39;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">42</span><span class="p">)]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+## Use all/any functions
+
+If you want to check if all or any value in a collection is True one way would be iterate over a list:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># WRONG</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">all_true</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
+</span><span class='line'>	<span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
+</span><span class='line'>		<span class="k">if</span> <span class="ow">not</span> <span class="n">v</span><span class="p">:</span>
+</span><span class='line'>			<span class="k">return</span> <span class="bp">False</span>
+</span><span class='line'>	<span class="k">return</span> <span class="bp">True</span>
+</span></code></pre></td></tr></table></div></figure>
+
+But Python already has [**all**](https://docs.python.org/2/library/functions.html#all), [**any**](https://docs.python.org/2/library/functions.html#any) functions for that. **all** returns True if all values in an iterable passed to it are True, while **any** returns True if at least one of values passed to it is True:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># RIGHT</span>
+</span><span class='line'><span class="nb">all</span><span class="p">([</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">])</span>
+</span><span class='line'><span class="o">&gt;&gt;</span> <span class="bp">False</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">any</span><span class="p">([</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">])</span>
+</span><span class='line'><span class="o">&gt;&gt;</span> <span class="bp">True</span>
+</span></code></pre></td></tr></table></div></figure>
+
+To check if all items comply with a certain condition, you can convert a list of arbitrary objects to a list of booleans using list comprehension:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="nb">all</span><span class="p">([</span><span class="n">person</span><span class="o">.</span><span class="n">age</span> <span class="o">&gt;</span> <span class="mi">18</span> <span class="k">for</span> <span class="n">person</span> <span class="ow">in</span> <span class="n">people</span><span class="p">])</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Or you can pass a generator (just omit square braces around the list comprehension):
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="nb">all</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="n">age</span> <span class="o">&gt;</span> <span class="mi">18</span> <span class="k">for</span> <span class="n">person</span> <span class="ow">in</span> <span class="n">people</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Not only this will save you two keystrokes it will also omit creation of an intermediate list (more about this later).
+
+## Use slicing
+
+You can take part of a list using a technique called slicing. Instead of providing a single index in a square brackets when accessing a list you can provide the following three values
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">lst</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">:</span><span class="n">step</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+All of these parameters are optional and you can get different parts of a list if you omit some of them. If only start position is provided it will return all elements in a list starting from the specified index:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># RIGHT</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">lst</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">lst</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span>
+</span><span class='line'><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+If only end position is provided slicing will return all elements up to the provided position:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">lst</span><span class="p">[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span>
+</span><span class='line'><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+You can also get part of a list between two indexes:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">lst</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span>
+</span><span class='line'><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+By default step in slicing is equal to one which mean that all elements between start and end positions are returned. If you want to get only every second element or every third element you need to provide a step value:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">lst</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">8</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+</span><span class='line'><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+# Do not create unnecessary objects
+
+## Use xrange
+
+**range** is a useful function if you need to generate consistent integer values in a range, but it has one drawback: it returns a list with all generated values:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># WRONG</span>
+</span><span class='line'><span class="c"># Returns a too big list</span>
+</span><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000000000</span><span class="p">):</span>
+</span><span class='line'>	<span class="o">...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Solution here is to use [**xrange**](https://docs.python.org/2/library/functions.html#xrange) function. It immediately return an iterator instead of creating a list:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># RIGHT</span>
+</span><span class='line'><span class="c"># Returns an iterator</span>
+</span><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">1000000000</span><span class="p">):</span>
+</span><span class='line'>	<span class="o">...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+The drawback of **xrange** comparing to the **range** function is that it's output can be iterated only once.
+
+### New in Python 3
+
+In Python 3 **xrange** was removed and **range** function behaves like **xrange** in Python 2.x. If you need to iterate over an output of **range** in Python 3 multiple times you can convert its output in to a list:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+</span><span class='line'><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+## Use izip
+
+If you need to generate pairs from elements in two collections, one way to do it would be to use the **zip** function:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># WRONG</span>
+</span><span class='line'><span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;Joe&#39;</span><span class="p">,</span> <span class="s">&#39;Kate&#39;</span><span class="p">,</span> <span class="s">&#39;Peter&#39;</span><span class="p">]</span>
+</span><span class='line'><span class="n">ages</span> <span class="o">=</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">41</span><span class="p">]</span>
+</span><span class='line'><span class="c"># Creates a list</span>
+</span><span class='line'><span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">ages</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">[(</span><span class="s">&#39;Joe&#39;</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;Kate&#39;</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;Peter&#39;</span><span class="p">,</span> <span class="mi">41</span><span class="p">)]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Instead we can use the [**izip**](https://docs.python.org/2/library/itertools.html#itertools.izip) function that would return a return an iterator instead of creating a new list:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># RIGHT</span>
+</span><span class='line'><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">izip</span>
+</span><span class='line'><span class="c"># Creates an iterator</span>
+</span><span class='line'><span class="n">it</span> <span class="o">=</span> <span class="n">izip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">ages</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+## New in Python 3
+
+In Python 3 **izip** function is removed and **zip** behaves like **izip** function in Python 2.x.
+
+## Use generators
+
+Lists comprehensions is a powerful tool in Python, but since it can use extensive amount of memory since each list comprehension will create a new list:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># WRONG</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Original list</span>
+</span><span class='line'><span class="n">lst</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</span><span class='line'><span class="c"># This will create a new list</span>
+</span><span class='line'><span class="n">lst_1</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">]</span>
+</span><span class='line'><span class="c"># This will create another list</span>
+</span><span class='line'><span class="n">lst_2</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">lst_1</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+A way to avoid this is to use generators instead of list comprehensions. The difference in syntax is minimal: you should use parenthesis instead of square brackets, but the difference is crucial. The following example does not create any intermediate lists:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># RIGHT</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Original list</span>
+</span><span class='line'><span class="n">lst</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</span><span class='line'><span class="c"># Won&#39;t create a new list</span>
+</span><span class='line'><span class="n">lst_1</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">)</span>
+</span><span class='line'><span class="c"># Won&#39;t create another list</span>
+</span><span class='line'><span class="n">lst_2</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">lst_1</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+This is especially handy if you may need to process only part of the result collection to get a result, say to find a first element that match a certain condition.
+
+
+# Use dictionaries idiomatically
+
+## Avoid using keys() function
+
+If you need to iterate over keys in a dictionary you may be inclined to use **keys** function on a hash map:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># WRONG</span>
+</span><span class='line'><span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+</span><span class='line'>	<span class="k">print</span> <span class="n">k</span>
+</span></code></pre></td></tr></table></div></figure>
+
+But there is a better way, you use iterate over a dictionary it performs iteration over its keys, so you can do simply:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># RIGHT</span>
+</span><span class='line'><span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
+</span><span class='line'>	<span class="k">print</span> <span class="n">k</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Not only it will save you some typing it will prevent from creating a copy of all keys in a dict as **keys** method does.
+
+
+## Iterate over keys and values
+
+If you use **keys** method it's really easy to iterate keys and values in a dictionary like this:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">#WRONG</span>
+</span><span class='line'><span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">v</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+</span><span class='line'>	<span class="k">print</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span>
+</span></code></pre></td></tr></table></div></figure>
+
+But there is a better way. You can use **items** function that returns key-value pairs from a dictionary:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># RIGHT</span>
+</span><span class='line'><span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</span><span class='line'>	<span class="k">print</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Not only this method is more concise, it's a more efficient too.
+
+## Use dictionaries comprehension
+
+One way to create a dictionary is to assign values to it one-by-one:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># WRONG</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'><span class="k">for</span> <span class="n">person</span> <span class="ow">in</span> <span class="n">people</span><span class="p">:</span>
+</span><span class='line'>	<span class="n">d</span><span class="p">[</span><span class="n">person</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">person</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Instead you can use a dictionary comprehension to turn this into a one liner:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># RIGHT</span>
+</span><span class='line'><span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="n">person</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">person</span> <span class="k">for</span> <span class="n">person</span> <span class="ow">in</span> <span class="n">people</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+# Use collections module
+
+## Use namedtuple
+
+If you need a struct like type you may just define a class with an **__init__** method and a bunch of fields:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># WRONG</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Point</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+</span><span class='line'>	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+</span><span class='line'>		<span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+</span><span class='line'>		<span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
+</span></code></pre></td></tr></table></div></figure>
+
+However [**collections**](https://docs.python.org/2/library/collections.html) module from Python library provides a [**namedtuple**](https://docs.python.org/2/library/collections.html#collections.namedtuple) type that turns this into a one-liner:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># RIGHT</span>
+</span><span class='line'><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+</span><span class='line'><span class="n">Point</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;Point&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">,</span> <span class="s">&#39;y&#39;</span><span class="p">])</span>
+</span></code></pre></td></tr></table></div></figure>
+
+In addition **namedtuple** implements **\_\_str\_\_**, **\_\_repr\_\_**, and **\_\_eq\_\_** methods:
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span><span class='line'><span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span><span class='line'><span class="bp">True</span>
+</span></code></pre></td></tr></table></div></figure>
+
+## Use defaultdict
+
+If we need to count a number of times an element is encountered in a collection, we can use a common approach:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># WRONG</span>
+</span><span class='line'><span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'><span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
+</span><span class='line'>	<span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
+</span><span class='line'>		<span class="n">d</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span class='line'>	<span class="k">else</span><span class="p">:</span>
+</span><span class='line'>		<span class="n">d</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+</span></code></pre></td></tr></table></div></figure>
+
+**collections** module provides a very handy class for this case which is called **defaultdict**. It's constructor accepts a function that will be used to calculate a value for a non-existing key:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">42</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">d</span><span class="p">[</span><span class="s">&#39;key&#39;</span><span class="p">]</span>
+</span><span class='line'><span class="mi">42</span>
+</span></code></pre></td></tr></table></div></figure>
+
+To rewrite counting example we can pass the **int** function to **defaultdict** which returns zero if called with no arguments:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># RIGHT</span>
+</span><span class='line'><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+</span><span class='line'><span class="n">d</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+</span><span class='line'><span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
+</span><span class='line'>	<span class="n">d</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+</span></code></pre></td></tr></table></div></figure>
+
+**defaultdict** is useful when you need to create any kind of grouping of items in a collection, but you just need to get count of elements you may use **Counter** class instead:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># RIGHT</span>
+</span><span class='line'><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">counter</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">counter</span>
+</span><span class='line'><span class="n">Counter</span><span class="p">({</span><span class="mi">4</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Do Not Use Mutable Values as Default Values]]></title>
@@ -554,151 +1188,6 @@ A similar issue can arise without explicitly using an assignment. If you use a n
 </pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">split</span><span class="p">(</span><span class="nb">str</span><span class="p">):</span>
 </span><span class='line'>  <span class="c"># &quot;str&quot; function is no longer available in this function</span>
 </span><span class='line'>  <span class="o">...</span>
-</span></code></pre></td></tr></table></div></figure>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Avoid Comparisons in if Statements]]></title>
-    <link href="http://mushketyk.com/2015/11/30/avoid-comparisons-in-if-statements/"/>
-    <updated>2015-11-30T22:10:25+00:00</updated>
-    <id>http://mushketyk.com/2015/11/30/avoid-comparisons-in-if-statements</id>
-    <content type="html"><![CDATA[If you come from Java or C# background, your instincts may tell you to write a code like this:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">is_list_empty</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
-</span><span class='line'>  <span class="sd">&quot;&quot;&quot;</span>
-</span><span class='line'><span class="sd">  Check if a linked list is empty.</span>
-</span><span class='line'><span class="sd">  &quot;&quot;&quot;</span>
-</span><span class='line'>  <span class="k">if</span> <span class="n">node</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
-</span><span class='line'>    <span class="k">return</span> <span class="bp">False</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">return</span> <span class="bp">True</span>
-</span></code></pre></td></tr></table></div></figure>
-<!--more-->
-
-While this would be a perfectly valid code in other languages it looks non-idiomatic in Python and it can be rewritten as:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">is_list_empty</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
-</span><span class='line'>  <span class="k">if</span> <span class="n">node</span><span class="p">:</span>
-</span><span class='line'>    <span class="k">return</span> <span class="bp">False</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">return</span> <span class="bp">True</span>
-</span></code></pre></td></tr></table></div></figure>
-
-It turns out that in Python an object can be evaluated as True or False depending on it's value. None is evaluated as False in if/while statements, while an object (a non-null reference) is evaluated as True.
-
-Python has simple rules about what values are considered to be False in if statements:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="bp">None</span>    <span class="c"># None reference</span>
-</span><span class='line'><span class="bp">False</span>   <span class="c"># False boolean value</span>
-</span><span class='line'><span class="s">&#39;&#39;</span>      <span class="c"># empty string</span>
-</span><span class='line'><span class="mi">0</span><span class="p">,</span> <span class="mf">0.0</span>  <span class="c"># zero</span>
-</span><span class='line'><span class="p">[]</span>      <span class="c"># empty array</span>
-</span><span class='line'><span class="p">()</span>      <span class="c"># empty tuple</span>
-</span><span class='line'><span class="p">{}</span>      <span class="c"># empty dictionary</span>
-</span><span class='line'><span class="nb">set</span><span class="p">()</span>   <span class="c"># empty set</span>
-</span></code></pre></td></tr></table></div></figure>
-
-Everything else is considered to be True.
-
-
-## Determine how custom object is evaluated in a boolean context
-
-Default Python rules are good for built-in types, but what if we need to define how an instance of our class is evaluated in a boolean context?
-
-Let's say we have a matrix class that can be created with a set height and width and two methods to get and set values from it:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">Matrix</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-</span><span class='line'>	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">):</span>
-</span><span class='line'>		<span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">height</span>
-</span><span class='line'>		<span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">width</span>
-</span><span class='line'>    <span class="c"># Create table height x width and fill it with zeros</span>
-</span><span class='line'>		<span class="bp">self</span><span class="o">.</span><span class="n">matrix</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">width</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">height</span><span class="p">)]</span>
-</span><span class='line'>
-</span><span class='line'>	<span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
-</span><span class='line'>		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span>
-</span><span class='line'>
-</span><span class='line'>	<span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-</span><span class='line'>		<span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-</span></code></pre></td></tr></table></div></figure>
-
-It would be nice if an empty matrix would be treated as False in a boolean context, but as we know by default all object are treated as True in Python.
-
-To change this behavior we need to implement **\_\_nonzero\_\_** method in our class. This method will be called by the Python interpretor when an object is used in boolean context in if/while statements:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">Matrix</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-</span><span class='line'>  <span class="o">...</span>
-</span><span class='line'>	<span class="k">def</span> <span class="nf">__nonzero__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span class='line'>    <span class="c"># This will return True only if both &quot;height&quot; and &quot;width&quot; are non-zero</span>
-</span><span class='line'>		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span>
-</span></code></pre></td></tr></table></div></figure>
-
-Now it should work as expected:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">m</span> <span class="o">=</span> <span class="n">Matrix</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="nb">bool</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
-</span><span class='line'><span class="bp">False</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">m</span><span class="p">:</span>
-</span><span class='line'>	<span class="k">print</span> <span class="s">&quot;False&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="bp">False</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">if</span> <span class="n">Matrix</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
-</span><span class='line'>	<span class="k">print</span> <span class="s">&quot;True&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="bp">True</span>
 </span></code></pre></td></tr></table></div></figure>
 ]]></content>
   </entry>
