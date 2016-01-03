@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Python | Software Developer's diary]]></title>
   <link href="http://mushketyk.com/blog/categories/python/atom.xml" rel="self"/>
   <link href="http://mushketyk.com/"/>
-  <updated>2015-12-26T17:59:45+00:00</updated>
+  <updated>2016-01-03T15:59:48+00:00</updated>
   <id>http://mushketyk.com/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -416,7 +416,7 @@ Instead we can use the [**izip**](https://docs.python.org/2/library/itertools.ht
 </span><span class='line'><span class="c"># Creates an iterator</span>
 </span><span class='line'><span class="n">it</span> <span class="o">=</span> <span class="n">izip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">ages</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
-## New in Python 3
+### New in Python 3
 
 In Python 3 **izip** function is removed and **zip** behaves like **izip** function in Python 2.x.
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Software Developer's diary]]></title>
   <link href="http://mushketyk.com/atom.xml" rel="self"/>
   <link href="http://mushketyk.com/"/>
-  <updated>2015-12-26T17:59:45+00:00</updated>
+  <updated>2016-01-03T15:59:48+00:00</updated>
   <id>http://mushketyk.com/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -449,7 +449,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h2>New in Python 3</h2>
+<h3>New in Python 3</h3>
 
 <p>In Python 3 <strong>izip</strong> function is removed and <strong>zip</strong> behaves like <strong>izip</strong> function in Python 2.x.</p>
 
