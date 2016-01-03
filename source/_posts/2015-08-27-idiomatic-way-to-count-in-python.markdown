@@ -4,7 +4,7 @@ title: "Idiomatic way to count in Python"
 date: 2015-08-27 20:07:29 +0100
 comments: true
 categories: [python]
-description: ""
+description: "Short post that describes how to count items in a collection in Python idiomatically"
 keywords: "python, idiomatic, idiom, count, pythonic"
 ---
 

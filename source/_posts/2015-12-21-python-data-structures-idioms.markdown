@@ -324,7 +324,7 @@ from itertools import izip
 # Creates an iterator
 it = izip(names, ages)
 ```
-## New in Python 3
+### New in Python 3
 
 In Python 3 **izip** function is removed and **zip** behaves like **izip** function in Python 2.x.
 

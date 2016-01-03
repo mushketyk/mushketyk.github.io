@@ -4,7 +4,7 @@ title: "Git productivity tip"
 date: 2015-08-24 21:48:32 +0100
 comments: true
 categories: [git]
-description: ""
+description: "Simple git productivity tip to speedup your merges and checkouts"
 keywords: "git, productivity, merge"
 ---
 

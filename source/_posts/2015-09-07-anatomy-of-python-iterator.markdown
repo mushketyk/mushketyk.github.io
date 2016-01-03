@@ -4,7 +4,7 @@ title: "Anatomy of a Python Iterator"
 date: 2015-09-07 21:52:41 +0100
 comments: true
 categories: [python]
-description: ""
+description: "Post describes how to implement a Python iterator for a custom type"
 keywords: "python, iterator, __iter__, internals"
 ---
 

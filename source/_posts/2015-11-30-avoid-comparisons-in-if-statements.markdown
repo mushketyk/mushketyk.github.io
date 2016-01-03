@@ -4,7 +4,7 @@ title: "Avoid comparisons in if statements"
 date: 2015-11-30 22:10:25 +0000
 comments: true
 categories: [python]
-description: ""
+description: "Why you should avoid comparisons in if statements in Python"
 keywords: "python, idiom, if"
 ---
 

@@ -4,7 +4,7 @@ title: "Hot deployment with Gradle and Jetty"
 date: 2015-08-30 21:35:05 +0100
 comments: true
 categories: [java]
-description: ""
+description: "Posts describes how to setup hot deployment with Gradle and Jetty"
 keywords: "gradle, jetty, java, deployment"
 ---
 

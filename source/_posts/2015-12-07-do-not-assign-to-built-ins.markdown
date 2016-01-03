@@ -4,7 +4,7 @@ title: "Do not assign to built-ins"
 date: 2015-12-07 08:48:58 +0000
 comments: true
 categories: [python]
-description: ""
+description: "How to avoid assignment to built-ins in Python"
 keywords: "python, built-in"
 ---
 

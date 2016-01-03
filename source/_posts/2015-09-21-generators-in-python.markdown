@@ -4,7 +4,7 @@ title: "Generators in Python"
 date: 2015-09-21 21:03:13 +0100
 comments: true
 categories: [python]
-description: ""
+description: "Post describes what is a generator in Python and how to use it"
 keywords: "python, iterator, generator"
 ---
 

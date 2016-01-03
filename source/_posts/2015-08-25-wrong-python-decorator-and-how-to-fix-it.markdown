@@ -4,7 +4,7 @@ title: "Wrong Python decorator and how to fix it"
 date: 2015-08-25 20:19:02 +0100
 comments: true
 categories: [python]
-description: ""
+description: "This post describes a correct way to implement Python decorator"
 keywords: "python, decorator, bug"
 ---
 
