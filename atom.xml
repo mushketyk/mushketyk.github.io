@@ -4,7 +4,7 @@
   <title><![CDATA[Software Developer's diary]]></title>
   <link href="http://mushketyk.com/atom.xml" rel="self"/>
   <link href="http://mushketyk.com/"/>
-  <updated>2016-03-28T20:09:40+01:00</updated>
+  <updated>2016-03-28T20:51:19+01:00</updated>
   <id>http://mushketyk.com/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -87,7 +87,13 @@
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get install python-dev build-essential
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># Install dependencies for virtualenv
+</span><span class='line'>sudo apt-get install python-dev build-essential
+</span><span class='line'>
+</span><span class='line'># Install virtualenv
 </span><span class='line'>sudo pip install virtualenv virtualenvwrapper</span></code></pre></td></tr></table></div></figure>
 
 
