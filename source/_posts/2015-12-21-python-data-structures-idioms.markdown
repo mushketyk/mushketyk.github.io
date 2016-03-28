@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Python data structures idioms"
+title: 	"Python data structures idioms"
 date: 2015-12-21 08:59:24 +0000
 comments: true
 categories: [python]
