@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Python | Software Developer's diary]]></title>
   <link href="http://mushketyk.com/blog/categories/python/atom.xml" rel="self"/>
   <link href="http://mushketyk.com/"/>
-  <updated>2016-03-30T22:18:25+01:00</updated>
+  <updated>2016-04-02T19:09:28+01:00</updated>
   <id>http://mushketyk.com/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -40,6 +40,14 @@ If you want to write a Python script you will need to explicitly output values y
 </span><span class='line'><span class="n">Hello</span><span class="p">,</span> <span class="n">world</span><span class="err">!</span>
 </span></code></pre></td></tr></table></div></figure>
 
+Notice that there is no need for a semicolon after a statement. Adding a semicolon would not change the outcome of a statement, but is discouraged.
+
+Comments are started with **#** symbol and are ignored by both interpeter and interactive shells:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># comment</span>
+</span></code></pre></td></tr></table></div></figure>
+
 ## Python 3
 
 In Python 3 operator **print** was removed and was replaced with **print** function. So "Hello world" example will look like this:
@@ -55,15 +63,15 @@ In Python 3 operator **print** was removed and was replaced with **print** funct
 To define a variable in Python just write **var_name = value**:
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">var</span> <span class="o">=</span> <span class="mi">123</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">foo</span> <span class="o">=</span> <span class="mi">123</span>
 </span></code></pre></td></tr></table></div></figure>
 
 Python is a dynamic programming language, so there is no restriction on types of values that can be assigned to a particular variable:
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">var</span> <span class="o">=</span> <span class="mi">123</span>
-</span><span class='line'><span class="n">var</span> <span class="o">=</span> <span class="s">&quot;Hello, world!&quot;</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">foo</span> <span class="o">=</span> <span class="mi">123</span>
+</span><span class='line'><span class="n">foo</span> <span class="o">=</span> <span class="s">&quot;Hello, world!&quot;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 Python supports all usual basic types that can be found in other programming languages:
@@ -89,7 +97,7 @@ In addition to that Python supports [complex numbers](https://en.wikipedia.org/w
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 </pre></td><td class='code'><pre><code class='python'><span class='line'><span class="mi">1</span> <span class="o">+</span> <span class="mi">1j</span>  <span class="c"># complex number</span>
-</span><span class='line'><span class="mi">2j</span>      <span class="c"># imaginary number</span>
+</span><span class='line'><span class="mi">2j</span>      <span class="c"># just imaginary part</span>
 </span></code></pre></td></tr></table></div></figure>
 
 As can be expected Python supports all common mathematical operators:
@@ -178,6 +186,24 @@ As can be expected Python supports all common mathematical operators:
 </span><span class='line'><span class="mi">1</span>
 </span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="o">~</span><span class="mi">2</span>        <span class="c"># invert bits</span>
 </span><span class='line'><span class="o">-</span><span class="mi">3</span>
+</span></code></pre></td></tr></table></div></figure>
+
+As many other imperative programming languages Python supports shortcuts for reassigning variables:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">a</span> <span class="o">+=</span> <span class="n">b</span> <span class="c"># a = a + b</span>
+</span><span class='line'><span class="n">a</span> <span class="o">-=</span> <span class="n">b</span> <span class="c"># a = a - b</span>
+</span><span class='line'><span class="n">a</span> <span class="o">*=</span> <span class="n">b</span> <span class="c"># a = a * b</span>
+</span><span class='line'><span class="n">a</span> <span class="o">/=</span> <span class="n">b</span> <span class="c"># a = a / b</span>
+</span><span class='line'><span class="n">a</span> <span class="o">%=</span> <span class="n">b</span> <span class="c"># a = a % b</span>
+</span><span class='line'><span class="n">a</span> <span class="o">**=</span> <span class="n">b</span> <span class="c"># a = a ** b</span>
+</span><span class='line'><span class="n">a</span> <span class="o">//=</span> <span class="n">b</span> <span class="c"># a = a // b</span>
 </span></code></pre></td></tr></table></div></figure>
 
 In Python it's possible to assign values to several variables in one line:
@@ -300,12 +326,18 @@ But this is just the beginning. The second version of the [] operator allows you
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
 </pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
 </span><span class='line'><span class="s">&#39;str&#39;</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
-</span><span class='line'><span class="s">&#39;tri&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Second index can be a negative number. For example to remove last character of from a string we can write:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="s">&#39;string&#39;</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span><span class='line'><span class="s">&#39;strin&#39;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 The third and less used version of the [] operator lets you provide three parameters: start index, stop index, and a step:
@@ -363,6 +395,20 @@ Strings are immutable so every function that performs any changes to a string wi
 </span></code></pre></td></tr></table></div></figure>
 
 Notice that all of them return a new value instead of changing a string in-place.
+
+**+** or **+=** operators are used to concatenate strings:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="s">&quot;Hello,&quot;</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="n">s</span> <span class="o">+</span> <span class="s">&quot; John&quot;</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">+=</span> <span class="s">&quot; Doe&quot;</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">s</span>
+</span><span class='line'><span class="s">&#39;Hello, John Doe&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
 
 # Data structures
 
