@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Python | Software Developer's diary]]></title>
   <link href="http://mushketyk.com/blog/categories/python/atom.xml" rel="self"/>
   <link href="http://mushketyk.com/"/>
-  <updated>2016-04-02T19:09:28+01:00</updated>
+  <updated>2016-04-03T21:13:28+01:00</updated>
   <id>http://mushketyk.com/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -12,6 +12,838 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Python in One Hour. Part 2]]></title>
+    <link href="http://mushketyk.com/2016/03/29/python-in-one-hour-part-2/"/>
+    <updated>2016-03-29T08:56:28+01:00</updated>
+    <id>http://mushketyk.com/2016/03/29/python-in-one-hour-part-2</id>
+    <content type="html"><![CDATA[This is the second part of the "Python in 1 hour" tutorial. It will go into more advanced Python features that will help you to develop complex and robust applications.
+
+The only prerequisite for this article is that you should be familiar with the content of the part of this tutorial that you can find [here](/2016/03/28/python-in-one-hour-part-1/).
+
+<!--more-->
+
+# Comprehensions
+
+If you have been programming for some time you probably wrote a lot of loops where need to change every value in a collection like:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span class='line'><span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">strings</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Probably even more often you are writing code that needs to filter a collection based on some criteria:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">non_empty</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span class='line'><span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">strings</span><span class="p">:</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">s</span> <span class="o">!=</span> <span class="s">&quot;&quot;</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">non_empty</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Python has a very powerful syntax that can help you to do just that. For instance, the first example in this section can be rewritten like this:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">strings</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+This construction called a list comprehensions and it allows us to transform a list in just one line of code. It has two parts. The left part before the **for** keyword defines the transformation of every element in the original collection. The right part defines what collection should be processed and a variable name that will be used to access every element of this collection.
+
+Notice that this will not change a list in-place but will create a new list instead. To update a list in-place you need to use a **for** loop.
+
+To filter a collection we just to change the comprehension expression slightly:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">strings</span> <span class="k">if</span> <span class="n">s</span> <span class="o">!=</span> <span class="s">&quot;&quot;</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+This construction will only return those elements for which the expression in the **if** clause is true.
+
+Filtering and updating can be combined together in a single list comprehension. We can do this with the following expression.
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">lower</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">strings</span> <span class="k">if</span> <span class="n">s</span> <span class="o">!=</span> <span class="s">&quot;foo&quot;</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Comprehensions can be written not only for lists but also for dictionaries and sets. To make a comprehension expression that will return a set, simply use curly brackets instead of square once:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">numbers</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">}</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">even</span> <span class="o">=</span> <span class="p">{</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">numbers</span> <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">}</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">even</span>
+</span><span class='line'><span class="nb">set</span><span class="p">([</span><span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+</span></code></pre></td></tr></table></div></figure>
+
+To create a dictionary comprehension use the following expression:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="p">{</span><span class="n">n</span><span class="p">:</span> <span class="n">n</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]}</span>
+</span><span class='line'><span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">9</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+You could expect that using parentheses instead of curly or square brackets in comprehensions will generate a tuple:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">lower</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">strings</span> <span class="k">if</span> <span class="n">s</span> <span class="o">!=</span> <span class="s">&quot;foo&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Despite the fact that this resembles the list comprehension it will create an iterator. Such an expression is called "generator" in Python. Generators is a more advanced Python concept and you can read about them [here](/2015/09/21/generators-in-python/).
+
+
+# Imports
+
+Soon after you start programming in Python you will need to use someone else code.
+
+The process of using a third-party code in your program is called importing. This tutorial assumes that you have already installed a third-party code that you are going to use and it's visible to your Python interpreter. To read more about how to do it read this [introduction](/2016/03/27/introduction-to-python/) to Python.
+
+The basic block of code reuse in Python is a module. Put simply, a module is a file where a developer can define types, constants, and functions. For example, let's assume that someone wrote a module with a two functions and you want to use it in your program:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># my_module.py</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">filter_odd</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
+</span><span class='line'>  <span class="k">return</span> <span class="p">[</span><span class="n">num</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">lst</span> <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">filter_even</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
+</span><span class='line'>  <span class="k">return</span> <span class="p">[</span><span class="n">num</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">lst</span> <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+There are two ways we can use functions defined in it. The first one is to import the whole module into out code using the **import** statement. In this case, we can access items from a module using construction **my_module.filter_even**:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">my_module</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">my_module</span><span class="o">.</span><span class="n">filter_even</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+</span><span class='line'><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Sometimes writing a module name and a function name may be cumbersome and it's better to write just a function name. To do this we can import just a single function from a module using **from my_module import filter_even**:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">my_module</span> <span class="kn">import</span> <span class="n">filter_even</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">filter_even</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+</span><span class='line'><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+It's possible to import multiple functions from a module:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">my_module</span> <span class="kn">import</span> <span class="n">filter_even</span><span class="p">,</span> <span class="n">filter_odd</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Or to import all functions defined in it:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">my_module</span> <span class="kn">import</span> <span class="o">*</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Both methods will make functions **filter_odd** or **filter_even** available in our code:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">filter_odd</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+</span><span class='line'><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">filter_even</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+</span><span class='line'><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+To organize multiple modules they can be placed in packages or simply hierarchical directories:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">.</span>
+</span><span class='line'><span class="err">└──</span> <span class="n">package_1</span>
+</span><span class='line'>    <span class="err">├──</span> <span class="n">__init__</span><span class="o">.</span><span class="n">py</span>
+</span><span class='line'>    <span class="err">├──</span> <span class="n">package_2</span>
+</span><span class='line'>    <span class="err">│  </span> <span class="err">├──</span> <span class="n">__init__</span><span class="o">.</span><span class="n">py</span>
+</span><span class='line'>    <span class="err">│  </span> <span class="err">└──</span> <span class="n">my_module</span><span class="o">.</span><span class="n">py</span>
+</span><span class='line'>    <span class="err">└──</span> <span class="n">package_3</span>
+</span><span class='line'>        <span class="err">└──</span> <span class="n">__init__</span><span class="o">.</span><span class="n">py</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Importing modules in packages is not much different from importing a single module. Just import a module from a particular package:
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">package_1.package_2</span> <span class="kn">import</span> <span class="n">my_module</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">module</span><span class="o">.</span><span class="n">filter_odd</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+</span><span class='line'><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+As with the regular module import you can import separate function:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">package_1.package_2.my_module</span> <span class="kn">import</span> <span class="n">filter_odd</span><span class="p">,</span> <span class="n">filter_even</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Not every directory is considered to be a package by Python. Every package should contain **__init__.py** file in order for Python interpreter to see it as a package. This file is usually empty and is serves only as a marker.
+
+# Classes
+
+As in many other programming languages, classes in Python is a way to combine code and data together to facilitate code reuse. As an exercise let's define a class for a user that will have name, surname as fields and will have a method to generate a full name:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+</span><span class='line'>	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">surname</span><span class="p">):</span>
+</span><span class='line'>		<span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+</span><span class='line'>		<span class="bp">self</span><span class="o">.</span><span class="n">surname</span> <span class="o">=</span> <span class="n">surname</span>
+</span><span class='line'>
+</span><span class='line'>	<span class="k">def</span> <span class="nf">get_full_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>		<span class="n">res</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+</span><span class='line'>		<span class="n">res</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+</span><span class='line'>		<span class="n">res</span> <span class="o">+=</span> <span class="s">&quot; &quot;</span>
+</span><span class='line'>		<span class="n">res</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">surname</span>
+</span><span class='line'>		<span class="k">return</span> <span class="n">res</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Now we can use this class:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="s">&quot;John&quot;</span><span class="p">,</span> <span class="s">&quot;Doe&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">p</span><span class="o">.</span><span class="n">get_full_name</span><span class="p">()</span>
+</span><span class='line'><span class="s">&#39;John Doe&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+There is a lot going on in this simple class definition, so let's go through this line by line.
+
+In the first line we define a type **Person** and inherit it from **object** type:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+</span><span class='line'>  <span class="o">...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Inheriting from the **object** type looks awkward, but it's a way that was introduced in Python 2 to use so-called **new-style** classes. If you simply write:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">Person</span><span class="p">:</span>
+</span><span class='line'>  <span class="o">...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+you will define a class, but this will be a so-called **old-style** class. New-style classes were introduced in Python 2.2 to unify type system. It's worth noting that Python 3 does not have this separation and only have new-style classes that can be created with a simpler version of this syntax:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">Person</span><span class="p">:</span>
+</span><span class='line'>  <span class="o">...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+The second line defines a constructor of our class:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'>  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">surname</span><span class="p">):</span>
+</span><span class='line'>    <span class="o">...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+The first argument is an analog of a **this** reference in other programming languages and should be explicitly be added as the first argument in every method. After the  **self** argument we need to define a list of arguments to a class constructor that we pass when we create an instance of this class, e.g.:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">p</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="s">&quot;John&quot;</span><span class="p">,</span> <span class="s">&quot;Doe&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Except the fact that constructor should not return a value, it is similar to any other function. You can use named arguments and default values as described [here](/2016/03/28/python-in-one-hour-part-1/).
+
+If a constructor is not defined or have no arguments except **self** you can create an instance without passing any values to it:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+</span><span class='line'>  <span class="c"># no constructor</span>
+</span><span class='line'>  <span class="o">...</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">p</span> <span class="o">=</span> <span class="n">Person</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Notice that **\_\_init\_\_** name is surrounded with two **_** symbols. This is a naming format for so-called **magic methods** such as **\_\_eq\_\_** (define objects equality), **\_\_str\_\_** (to define object's string representation) and many [others](http://www.rafekettler.com/magicmethods.html).
+
+In a constructor we can initialize an instance and assign values to it's fields:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'>  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">surname</span><span class="p">):</span>
+</span><span class='line'>    <span class="c"># Initialize &quot;name&quot; field</span>
+</span><span class='line'>    <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+</span><span class='line'>    <span class="c"># Initialize  &quot;surname&quot; field</span>
+</span><span class='line'>    <span class="bp">self</span><span class="o">.</span><span class="n">surname</span> <span class="o">=</span> <span class="n">surname</span>
+</span></code></pre></td></tr></table></div></figure>
+
+After a constructor, we defined a single method of our class. It's written as a usual function except the first **self** argument that will be used to access fields of an instance:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">get_full_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>	<span class="n">res</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+</span><span class='line'>	<span class="n">res</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+</span><span class='line'>	<span class="n">res</span> <span class="o">+=</span> <span class="s">&quot; &quot;</span>
+</span><span class='line'>	<span class="n">res</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">surname</span>
+</span><span class='line'>	<span class="k">return</span> <span class="n">res</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Note that all fields defined in a constructor of a class are public and can be changed outside of methods:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="s">&quot;John&quot;</span><span class="p">,</span> <span class="s">&quot;Doe&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;Foo&quot;</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">p</span><span class="o">.</span><span class="n">surname</span> <span class="o">=</span> <span class="s">&quot;Bar&quot;</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">p</span><span class="o">.</span><span class="n">get_full_name</span><span class="p">()</span>
+</span><span class='line'><span class="s">&#39;Foo Bar&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Common naming convention is to prepend a name of a "private" field with an underscore symbol:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+</span><span class='line'>	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">surname</span><span class="p">):</span>
+</span><span class='line'>		<span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+</span><span class='line'>		<span class="bp">self</span><span class="o">.</span><span class="n">_surname</span> <span class="o">=</span> <span class="n">surname</span>
+</span><span class='line'>
+</span><span class='line'>	<span class="k">def</span> <span class="nf">get_full_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>		<span class="n">res</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+</span><span class='line'>		<span class="n">res</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+</span><span class='line'>		<span class="n">res</span> <span class="o">+=</span> <span class="s">&quot; &quot;</span>
+</span><span class='line'>		<span class="n">res</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_surname</span>
+</span><span class='line'>		<span class="k">return</span> <span class="n">res</span>
+</span></code></pre></td></tr></table></div></figure>
+
+This won't stop a user of your class from changing a value of a "private" field, but it will be much more visible:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="s">&quot;John&quot;</span><span class="p">,</span> <span class="s">&quot;Doe&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">p</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="s">&quot;John&quot;</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">p</span><span class="o">.</span><span class="n">get_full_name</span><span class="p">()</span>
+</span><span class='line'><span class="s">&#39;John Doe&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+# Inheritance
+
+Let's extend the previous example and create a sub-class **Employee** that will have same fields as the **Person** class with an additional **salary** field:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">Employee</span><span class="p">(</span><span class="n">Person</span><span class="p">):</span>
+</span><span class='line'>	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">surname</span><span class="p">,</span> <span class="n">salary</span><span class="p">):</span>
+</span><span class='line'>		<span class="nb">super</span><span class="p">(</span><span class="n">Person</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">surname</span><span class="p">)</span>
+</span><span class='line'>		<span class="bp">self</span><span class="o">.</span><span class="n">salary</span> <span class="o">=</span> <span class="n">salary</span>
+</span></code></pre></td></tr></table></div></figure>
+
+The new class will have fields and methods from both classes:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">e</span> <span class="o">=</span> <span class="n">Employee</span><span class="p">(</span><span class="s">&quot;John&quot;</span><span class="p">,</span> <span class="s">&quot;Doe&quot;</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">e</span><span class="o">.</span><span class="n">name</span>
+</span><span class='line'><span class="s">&#39;John&#39;</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">e</span><span class="o">.</span><span class="n">surname</span>
+</span><span class='line'><span class="s">&#39;Doe&#39;</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">e</span><span class="o">.</span><span class="n">salary</span>
+</span><span class='line'><span class="mi">10000</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">e</span><span class="o">.</span><span class="n">get_full_name</span><span class="p">()</span>
+</span><span class='line'><span class="s">&#39;John Doe&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+The only new element that is used in the definition of the **Employee** class is the **super** function:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="nb">super</span><span class="p">(</span><span class="n">Person</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">surname</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+It is used to call a constructor from a super class. **super(Person, self).\_\_init\_\_** returns a reference to a method from a superclass.
+
+
+## Python 3
+
+In Python 3 calling a method of a superclass was changed and now it looks much simpler:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">Employee</span><span class="p">(</span><span class="n">Person</span><span class="p">):</span>
+</span><span class='line'>	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">surname</span><span class="p">,</span> <span class="n">salary</span><span class="p">):</span>
+</span><span class='line'>		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">surname</span><span class="p">)</span>
+</span><span class='line'>		<span class="bp">self</span><span class="o">.</span><span class="n">salary</span> <span class="o">=</span> <span class="n">salary</span>
+</span></code></pre></td></tr></table></div></figure>
+
+# Exceptions
+
+To throw an exception in Python use the **raise** keyword followed by an instance of an exception to raise:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;terrible thing has just happened&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+</span><span class='line'>  <span class="n">File</span> <span class="s">&quot;&lt;pyshell#106&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;terrible thing has just happened&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="ne">Exception</span><span class="p">:</span> <span class="n">terrible</span> <span class="n">thing</span> <span class="n">has</span> <span class="n">just</span> <span class="n">happened</span>
+</span></code></pre></td></tr></table></div></figure>
+
+To catch an exception Python provides a **try/except** block that is slightly different than in other languages:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">f</span> <span class="o">=</span> <span class="bp">None</span>
+</span><span class='line'><span class="k">try</span><span class="p">:</span>
+</span><span class='line'> <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;filename&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span class='line'> <span class="k">print</span> <span class="n">e</span>
+</span><span class='line'><span class="k">else</span><span class="p">:</span>
+</span><span class='line'> <span class="k">print</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span><span class='line'><span class="k">finally</span><span class="p">:</span>
+</span><span class='line'> <span class="k">if</span> <span class="n">f</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+</span><span class='line'>   <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+**try** and **except** blocks similar to their analogs in many other programming languages. **try** block contains code that may raise an exception while **except** block contains code that will be executed if an exception was raised.
+
+If we need to process different exceptions in a different way we can have multiple **except** blocks:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span class='line'> <span class="k">print</span> <span class="s">&quot;IOError&quot;</span>
+</span><span class='line'><span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span class='line'> <span class="k">print</span> <span class="s">&quot;ValueError&quot;</span>
+</span><span class='line'><span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span class='line'> <span class="k">print</span> <span class="s">&quot;IOError&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Keep in mind that if an exception is raised except blocks are tried sequentially top to bottom. If an exception's type matches one of them it's executed and rest **except** blocks are ignored. This means that in the following case last two **except** block will never be executed:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span class='line'> <span class="k">print</span> <span class="s">&quot;Exception&quot;</span>
+</span><span class='line'><span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span class='line'> <span class="k">print</span> <span class="s">&quot;IOError&quot;</span>
+</span><span class='line'><span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span class='line'> <span class="k">print</span> <span class="s">&quot;ValueError&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+**else** block in the try/except is only executed if an exception was not raised in the **try** block. It is executed before the **finally** block and is used to separate code that can raise an exception from code that should not raise any. If an exception is raised in the **else** block it is not going to be processed by any of the **except** blocks.
+
+The **finally** block will be executed in any case no matter if an exception was raised. It is used to close any resources that are used in **try** or **else** blocks.
+
+If you do not need to access an instance of a caught exception you can ignore it by writing the **except** clause like:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Python has a number of built-in exception types defined, here is a [list](https://docs.python.org/2/library/exceptions.html) of them.
+
+An exception constructor can accept any number of arguments, but most of the built-in exceptions can be created by passing just an error message or no arguments at all:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Didn&#39;t pass verification&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+</span><span class='line'>  <span class="n">File</span> <span class="s">&quot;&lt;pyshell#112&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Didn&#39;t pass verification&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="ne">ValueError</span><span class="p">:</span> <span class="n">Didn</span><span class="s">&#39;t pass verification</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&quot;Nope&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+</span><span class='line'>  <span class="n">File</span> <span class="s">&quot;&lt;pyshell#113&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&quot;Nope&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="ne">TypeError</span><span class="p">:</span> <span class="n">Nope</span>
+</span></code></pre></td></tr></table></div></figure>
+
+## Python 3
+
+Python 2 also supports an alternative syntax for raising exception:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">raise</span> <span class="ne">Exception</span><span class="p">,</span> <span class="s">&quot;error message&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+And catching exceptions:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+</span><span class='line'>  <span class="o">...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Both were removed in Python 3.
+
+# Properties
+
+Many classes end up with having some methods for accessing and changing its state called "getters" and "setters". Python provides a special mechanism for writing getters and setters called "properties". Let's rewrite class from one of the previous sections using properties:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+</span><span class='line'>  <span class="c"># Same constructor as before</span>
+</span><span class='line'>	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">surname</span><span class="p">):</span>
+</span><span class='line'>		<span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+</span><span class='line'>		<span class="bp">self</span><span class="o">.</span><span class="n">_surname</span> <span class="o">=</span> <span class="n">surname</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c"># getter for &quot;name&quot; field  </span>
+</span><span class='line'>	<span class="nd">@property</span>
+</span><span class='line'>	<span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c"># setter for &quot;name&quot; field</span>
+</span><span class='line'>	<span class="nd">@name.setter</span>
+</span><span class='line'>	<span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_name</span><span class="p">):</span>
+</span><span class='line'>		<span class="k">if</span> <span class="n">new_name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+</span><span class='line'>			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
+</span><span class='line'>		<span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">new_name</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c"># getter for &quot;surname&quot; field  </span>
+</span><span class='line'>	<span class="nd">@property</span>
+</span><span class='line'>	<span class="k">def</span> <span class="nf">surname</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_surname</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c"># setter for &quot;surname&quot; field  </span>
+</span><span class='line'>	<span class="nd">@surname.setter</span>
+</span><span class='line'>	<span class="k">def</span> <span class="nf">surname</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_surname</span><span class="p">):</span>
+</span><span class='line'>		<span class="k">if</span> <span class="n">new_surname</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+</span><span class='line'>			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
+</span><span class='line'>		<span class="bp">self</span><span class="o">.</span><span class="n">_surname</span> <span class="o">=</span> <span class="n">new_surname</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c"># getter for &quot;full_name&quot; that is not based on a single field</span>
+</span><span class='line'>	<span class="nd">@property</span>
+</span><span class='line'>	<span class="k">def</span> <span class="nf">full_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>		<span class="n">res</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+</span><span class='line'>		<span class="n">res</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+</span><span class='line'>		<span class="n">res</span> <span class="o">+=</span> <span class="s">&quot; &quot;</span>
+</span><span class='line'>		<span class="n">res</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_surname</span>
+</span><span class='line'>		<span class="k">return</span> <span class="n">res</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Now we can use this class bit differently:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="s">&#39;John&#39;</span><span class="p">,</span> <span class="s">&#39;Doe&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">p</span><span class="o">.</span><span class="n">full_name</span>
+</span><span class='line'><span class="s">&#39;John Doe&#39;</span>
+</span><span class='line'><span class="c"># Use setters for the fields</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#39;Foo&#39;</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">p</span><span class="o">.</span><span class="n">surname</span> <span class="o">=</span> <span class="s">&#39;Bar&#39;</span>
+</span><span class='line'><span class="c"># Use getters for the fields</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span>
+</span><span class='line'><span class="s">&#39;Foo&#39;</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">p</span><span class="o">.</span><span class="n">surname</span>
+</span><span class='line'><span class="s">&#39;Bar&#39;</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">p</span><span class="o">.</span><span class="n">full_name</span>
+</span><span class='line'><span class="s">&#39;Foo Bar&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Let's go through the main new elements in this code. The first few lines define a constructor just as in the original example. The next function defines a getter method for the **name** field:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="nd">@property</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Apart from the **@property** (it's called decorator in Python), this is a regular function. The only difference that to trigger it we do not need to write parentheses to trigger it:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="s">&#39;John&#39;</span><span class="p">,</span> <span class="s">&#39;Doe&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span>
+</span><span class='line'><span class="s">&#39;John&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+The name of the function is very important here because it defines the name of the property.
+
+The next few lines define a setter method:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="nd">@name.setter</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_name</span><span class="p">):</span>
+</span><span class='line'>	<span class="k">if</span> <span class="n">new_name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+</span><span class='line'>		<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
+</span><span class='line'>	<span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">new_name</span>
+</span></code></pre></td></tr></table></div></figure>
+
+To make this method a property it should start with **@<property_name>.setter**. The name of the method should be the same as the name of the property. This function should not return anything and only change the internal state of an object.
+
+The next few lines define the **surname** property and they are not much different from the **name** property.
+
+The last function in the class defines the **full_name**. The only thing that is interesting about it is that it's not based on a single field, but rather generates a value using multiple fields from an object:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="nd">@property</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">full_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>	<span class="n">res</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+</span><span class='line'>	<span class="n">res</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+</span><span class='line'>	<span class="n">res</span> <span class="o">+=</span> <span class="s">&quot; &quot;</span>
+</span><span class='line'>	<span class="n">res</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_surname</span>
+</span><span class='line'>	<span class="k">return</span> <span class="n">res</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Note that since we didn't define a setter for the **full_name** property we cannot assign values to it:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="s">&#39;John&#39;</span><span class="p">,</span> <span class="s">&#39;Doe&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">p</span><span class="o">.</span><span class="n">full_name</span> <span class="o">=</span> <span class="s">&#39;abc&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+</span><span class='line'>  <span class="n">File</span> <span class="s">&quot;&lt;pyshell#104&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="n">p</span><span class="o">.</span><span class="n">full_name</span> <span class="o">=</span> <span class="s">&#39;abc&#39;</span>
+</span><span class='line'><span class="ne">AttributeError</span><span class="p">:</span> <span class="n">can</span><span class="s">&#39;t set attribute</span>
+</span></code></pre></td></tr></table></div></figure>
+
+# Context manager
+
+To ensure that all acquired resources are released one can use **try**/**finally** blocks like this:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">f</span> <span class="o">=</span> <span class="bp">None</span>
+</span><span class='line'><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;/etc/passwd&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="k">try</span><span class="p">:</span>
+</span><span class='line'>  <span class="k">print</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span><span class='line'><span class="k">finally</span><span class="p">:</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">f</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Similar code should be written if we need to interact with locks:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">threading</span>
+</span><span class='line'><span class="n">lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">try</span><span class="p">:</span>
+</span><span class='line'>	<span class="n">lock</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+</span><span class='line'>  <span class="k">print</span> <span class="s">&quot;foo&quot;</span>
+</span><span class='line'><span class="k">finally</span><span class="p">:</span>
+</span><span class='line'>	<span class="n">lock</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Fortunately, Python provides a better mechanism for that. The **with** keyword was introduced in Python 2.5 that helps to rewrite the previous example using just two lines of code:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">with</span> <span class="n">lock</span><span class="p">:</span>
+</span><span class='line'>  <span class="k">print</span> <span class="s">&quot;foo&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+It encapsulates code for acquiring and releasing the resource and lets us concentrate on the business logic instead. In terms of implementation, context managers boil down to calling special methods **\_\_enter\_\_** and **\_\_exit\_\_** on an object before and after a code in a **with** block.
+
+For some objects, you need to use a special function that will allow using an object with a context manager. To work with files using a context managers we need to use **closing** from the **contextlib**:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">closing</span>
+</span><span class='line'><span class="k">with</span> <span class="n">closing</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;/etc/passwd&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span><span class='line'>	<span class="k">print</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+This function can be used with all objects that control resources and have **close** method that is used to release a resource.
+
+## Conclusion
+
+At this point, you should know basics of Python that should allow you to read and write quite sophisticated programs.
+
+If you want to learn more about Python, you can read following articles:
+
+[Anatomy of Python Iterator](/2015/09/07/anatomy-of-python-iterator/)
+[Generators in Python](/2015/09/21/generators-in-python/)
+[Python data structures idioms](/2015/12/21/python-data-structures-idioms/)
+
+Do not hesitate to write a comment if you have any questions about this article and share it if you like it.
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Python in One Hour. Part 1]]></title>
@@ -2129,251 +2961,6 @@ Now everything works as expected:
 </span><span class='line'><span class="p">[</span><span class="s">&#39;localhost&#39;</span><span class="p">]</span>
 </span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">get_hostnames</span><span class="p">()</span>
 </span><span class='line'><span class="p">[</span><span class="s">&#39;localhost&#39;</span><span class="p">]</span>
-</span></code></pre></td></tr></table></div></figure>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Sequence Unpacking in Python]]></title>
-    <link href="http://mushketyk.com/2015/12/14/sequence-unpacking-in-python/"/>
-    <updated>2015-12-14T20:44:26+00:00</updated>
-    <id>http://mushketyk.com/2015/12/14/sequence-unpacking-in-python</id>
-    <content type="html"><![CDATA[One of the unusual features of Python that other programming languages usually don't have is sequence unpacking. Not only using it makes code more Pythonic it also makes it shorter, safer and easier to understand.
-
-
-<!--more-->
-
-
-Let's say we have a sequence of variables that represent information about a person and we would like to unpack it to a set of variables, such as "name", "surname", etc.
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">person</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;John&quot;</span><span class="p">,</span> <span class="s">&quot;Doe&quot;</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-One way to do it would be to assign values from a list to other variables one by one:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">name</span> <span class="o">=</span> <span class="n">person</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-</span><span class='line'><span class="n">surname</span> <span class="o">=</span> <span class="n">person</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-</span><span class='line'><span class="n">age</span> <span class="o">=</span> <span class="n">person</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-</span><span class='line'><span class="n">male</span> <span class="o">=</span> <span class="n">person</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-But Python has a special syntax specifically for this case. It's called "sequence unpacking" and lets us assign all values from a tuple to a set of variables:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">name</span><span class="p">,</span> <span class="n">surname</span><span class="p">,</span> <span class="n">age</span><span class="p">,</span> <span class="n">male</span> <span class="o">=</span> <span class="n">person</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">name</span>
-</span><span class='line'><span class="s">&#39;John&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-It works with lists, deques and strings too:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span>
-</span><span class='line'><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">deque</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
-</span><span class='line'><span class="n">deque</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="s">&#39;abc&#39;</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span>
-</span><span class='line'><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="s">&#39;c&#39;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-If a number of elements on the left and right sides of an assignment are different, Python does not attempt to assign anything and just raises an exception:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
-</span><span class='line'>  <span class="n">File</span> <span class="s">&quot;&lt;pyshell#11&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-</span><span class='line'>    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-</span><span class='line'><span class="ne">ValueError</span><span class="p">:</span> <span class="n">too</span> <span class="n">many</span> <span class="n">values</span> <span class="n">to</span> <span class="n">unpack</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
-</span><span class='line'>  <span class="n">File</span> <span class="s">&quot;&lt;pyshell#12&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-</span><span class='line'>    <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-</span><span class='line'><span class="ne">ValueError</span><span class="p">:</span> <span class="n">need</span> <span class="n">more</span> <span class="n">than</span> <span class="mi">2</span> <span class="n">values</span> <span class="n">to</span> <span class="n">unpack</span>
-</span></code></pre></td></tr></table></div></figure>
-
-## Other usages
-
-Sequence unpacking can not only be used to extract values from a sequence. It can be used to swap values of two variables:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span>
-</span></code></pre></td></tr></table></div></figure>
-
-See how simple it is comparing to a common way of swapping values of two variables using a temporary one:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">t</span> <span class="o">=</span> <span class="n">x</span>
-</span><span class='line'><span class="n">x</span> <span class="o">=</span> <span class="n">y</span>
-</span><span class='line'><span class="n">y</span> <span class="o">=</span> <span class="n">t</span>
-</span></code></pre></td></tr></table></div></figure>
-
-It also can be used to assign new values to a set of variables
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span>
-</span></code></pre></td></tr></table></div></figure>
-
-This is especially handy if we have a multi-step algorithm where on every step we should calculate a new set of values using values received from a previous step. For example this technique can be used to calculate n-th number of [Fibonacci sequence](https://en.wikipedia.org/wiki/Fibonacci_number):
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-</span><span class='line'>	<span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
-</span><span class='line'>	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-</span><span class='line'>		<span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
-</span><span class='line'>	<span class="k">return</span> <span class="n">b</span>
-</span></code></pre></td></tr></table></div></figure>
-
-## Sequence unpacking of a custom type
-
-To implement sequence unpacking in your own custom type, all you need to do is to implement an **__iter__** method that would return an iterator for your object:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">List</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-</span><span class='line'>
-</span><span class='line'>	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lst</span><span class="p">):</span>
-</span><span class='line'>		<span class="bp">self</span><span class="o">.</span><span class="n">lst</span> <span class="o">=</span> <span class="n">lst</span>
-</span><span class='line'>
-</span><span class='line'>	<span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span class='line'>		<span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lst</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-Now our custom type can behave just as built-in types:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">List</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span>
-</span><span class='line'><span class="mi">1</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">b</span>
-</span><span class='line'><span class="mi">2</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">c</span>
-</span><span class='line'><span class="mi">3</span>
-</span></code></pre></td></tr></table></div></figure>
-
-You can read more about iterators in Python [here](/2015/09/07/anatomy-of-python-iterator/).
-
-## Changes in Python 3
-
-Python 3 brings a new feature called "Extended Iterable Unpacking" defined in [PEP 3132](https://www.python.org/dev/peps/pep-3132/).
-
-Python 3 introduced a "catch-all" syntax that can be used to assign a part of sequence to a new sequence. It allows for example to separate a first element of a list from other elements:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">first</span><span class="p">,</span> <span class="o">*</span><span class="n">rest</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">first</span>
-</span><span class='line'><span class="mi">0</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">rest</span>
-</span><span class='line'><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-Last element of a list:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span>
-</span><span class='line'><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">b</span>
-</span><span class='line'><span class="mi">4</span>
-</span></code></pre></td></tr></table></div></figure>
-
-Or both:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">,</span> <span class="o">*</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span>
-</span><span class='line'><span class="mi">0</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">b</span>
-</span><span class='line'><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">c</span>
-</span><span class='line'><span class="mi">4</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-You can see how much simpler it is comparing to Python 2:
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">first</span><span class="p">,</span> <span class="n">rest</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">l</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">first</span>
-</span><span class='line'><span class="mi">1</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">rest</span>
-</span><span class='line'><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
 </span></code></pre></td></tr></table></div></figure>
 ]]></content>
   </entry>
