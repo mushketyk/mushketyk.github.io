@@ -4,7 +4,7 @@ title: "Python in one hour. Part 1"
 date: 2016-03-28 20:09:40 +0100
 comments: true
 categories: [python]
-keywords:
+keywords: "tutorial, python, introduction"
 description:
 ---
 
