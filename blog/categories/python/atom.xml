@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Python | Software Developer's diary]]></title>
   <link href="http://mushketyk.com/blog/categories/python/atom.xml" rel="self"/>
   <link href="http://mushketyk.com/"/>
-  <updated>2016-04-03T21:52:59+01:00</updated>
+  <updated>2016-04-03T22:09:51+01:00</updated>
   <id>http://mushketyk.com/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -2307,7 +2307,7 @@ It has less features than paid version of PyCharm, but it's absolutely free.
     <link href="http://mushketyk.com/2015/12/21/python-data-structures-idioms/"/>
     <updated>2015-12-21T08:59:24+00:00</updated>
     <id>http://mushketyk.com/2015/12/21/python-data-structures-idioms</id>
-    <content type="html"><![CDATA[Significant portion of our time we as a developers spend writing code that manipulates basic data structures: traverse a list, create a map, filter elements in a collection. Therefore it is important to know how effectively do it in Python and make your code more readable and efficient.
+    <content type="html"><![CDATA[A significant portion of our time we as developers spend writing code that manipulates basic data structures: traverse a list, create a map, filter elements in a collection. Therefore, it is important to know how effectively do it in Python and make your code more readable and efficient.
 
 <!--more-->
 
@@ -2425,7 +2425,7 @@ A common way to extract values from a list to multiple variables in other progra
 </span><span class='line'><span class="n">l3</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 </span></code></pre></td></tr></table></div></figure>
 
-But Python supports sequence unpacking that lets us to extract values from a list to multiple variables:
+But Python supports sequence unpacking that lets us extract values from a list to multiple variables:
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -2477,7 +2477,7 @@ Do it no more in Python and use list comprehensions with **if** statement instea
 
 ## Use enumerate function
 
-Sometimes you need to iterate over a list and keep track of a position of each element. Say, if you need to display a menu items in a shell you can simply use the **range** function:
+Sometimes you need to iterate over a list and keep track of a position of each element. Say, if you need to display menu items in a shell you can simply use the **range** function:
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -2489,7 +2489,7 @@ Sometimes you need to iterate over a list and keep track of a position of each e
 </span><span class='line'>	<span class="k">print</span> <span class="s">&quot;{}. {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">menu_items</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
-A better way to do it would be to use [**enumerate**](https://docs.python.org/2/library/functions.html#enumerate) function. It is a iterator that returns pairs each of which contains position of an element and the element itself:
+A better way to do it would be to use [**enumerate**](https://docs.python.org/2/library/functions.html#enumerate) function. It is an iterator that returns pairs each of which contains position of an element and the element itself:
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -2531,9 +2531,9 @@ A typical way to sort elements in other programming languages is to provide a fu
 </span><span class='line'><span class="p">[</span><span class="n">Person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;Peter&#39;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">28</span><span class="p">),</span> <span class="n">Person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;John&#39;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">30</span><span class="p">),</span> <span class="n">Person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;Joe&#39;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">42</span><span class="p">)]</span>
 </span></code></pre></td></tr></table></div></figure>
 
-But this is not the best way to do it. Since all we need to do to compare two instances of **Person** class is to compare values of their **age** field. Why should we write a complex compare function for this?
+But this is not the best way to do it. Since all, we need to do to compare two instances of **Person** class is to compare values of their **age** field. Why should we write a complex compare function for this?
 
-Specifically for this case [**sorted**](https://docs.python.org/2/library/functions.html#sorted) function accepts **key** function that is used to extract a key that will be used to compare two instances of an object:
+Specifically, for this case [**sorted**](https://docs.python.org/2/library/functions.html#sorted) function accepts **key** function that is used to extract a key that will be used to compare two instances of an object:
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -2545,7 +2545,7 @@ Specifically for this case [**sorted**](https://docs.python.org/2/library/functi
 
 ## Use all/any functions
 
-If you want to check if all or any value in a collection is True one way would be iterate over a list:
+If you want to check if all or any value in a collection is True one way would be to iterate over a list:
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -2561,7 +2561,7 @@ If you want to check if all or any value in a collection is True one way would b
 </span><span class='line'>	<span class="k">return</span> <span class="bp">True</span>
 </span></code></pre></td></tr></table></div></figure>
 
-But Python already has [**all**](https://docs.python.org/2/library/functions.html#all), [**any**](https://docs.python.org/2/library/functions.html#any) functions for that. **all** returns True if all values in an iterable passed to it are True, while **any** returns True if at least one of values passed to it is True:
+But Python already has [**all**](https://docs.python.org/2/library/functions.html#all), [**any**](https://docs.python.org/2/library/functions.html#any) functions for that. **all** returns **True** if all values in an iterable passed to it are **True**, while **any** returns **True** if at least one of values passed to it is **True**:
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -2593,13 +2593,13 @@ Not only this will save you two keystrokes it will also omit creation of an inte
 
 ## Use slicing
 
-You can take part of a list using a technique called slicing. Instead of providing a single index in a square brackets when accessing a list you can provide the following three values
+You can take part of a list using a technique called slicing. Instead of providing a single index in square brackets when accessing a list you can provide the following three values
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">lst</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">:</span><span class="n">step</span><span class="p">]</span>
 </span></code></pre></td></tr></table></div></figure>
 
-All of these parameters are optional and you can get different parts of a list if you omit some of them. If only start position is provided it will return all elements in a list starting from the specified index:
+All of these parameters are optional and you can get different parts of a list if you omit some of them. If only start position is provided it will return all elements in a list starting at the specified index:
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -2627,7 +2627,7 @@ You can also get part of a list between two indexes:
 </span><span class='line'><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
 </span></code></pre></td></tr></table></div></figure>
 
-By default step in slicing is equal to one which mean that all elements between start and end positions are returned. If you want to get only every second element or every third element you need to provide a step value:
+By default step in slicing is equal to one which means that all elements between start and end positions are returned. If you want to get only every second element or every third element you need to provide a step value:
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -2650,7 +2650,7 @@ By default step in slicing is equal to one which mean that all elements between 
 </span><span class='line'>	<span class="o">...</span>
 </span></code></pre></td></tr></table></div></figure>
 
-Solution here is to use [**xrange**](https://docs.python.org/2/library/functions.html#xrange) function. It immediately return an iterator instead of creating a list:
+The solution here is to use [**xrange**](https://docs.python.org/2/library/functions.html#xrange) function. It immediately returns an iterator instead of creating a list:
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -2666,7 +2666,7 @@ The drawback of **xrange** comparing to the **range** function is that it's outp
 
 ### New in Python 3
 
-In Python 3 **xrange** was removed and **range** function behaves like **xrange** in Python 2.x. If you need to iterate over an output of **range** in Python 3 multiple times you can convert its output in to a list:
+In Python 3 **xrange** was removed and **range** function behaves like **xrange** in Python 2.x. If you need to iterate over an output of **range** in Python 3 multiple times you can convert its output into a list:
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -2694,7 +2694,7 @@ If you need to generate pairs from elements in two collections, one way to do it
 </span><span class='line'><span class="p">[(</span><span class="s">&#39;Joe&#39;</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;Kate&#39;</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;Peter&#39;</span><span class="p">,</span> <span class="mi">41</span><span class="p">)]</span>
 </span></code></pre></td></tr></table></div></figure>
 
-Instead we can use the [**izip**](https://docs.python.org/2/library/itertools.html#itertools.izip) function that would return a return an iterator instead of creating a new list:
+Instead, we can use the [**izip**](https://docs.python.org/2/library/itertools.html#itertools.izip) function that would return a return an iterator instead of creating a new list:
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -2751,7 +2751,7 @@ A way to avoid this is to use generators instead of list comprehensions. The dif
 </span><span class='line'><span class="n">lst_2</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">lst_1</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
-This is especially handy if you may need to process only part of the result collection to get a result, say to find a first element that match a certain condition.
+This is especially handy if you may need to process only part of the result collection to get a result, say to find a first element that matches a certain condition.
 
 
 # Use dictionaries idiomatically
@@ -2768,7 +2768,7 @@ If you need to iterate over keys in a dictionary you may be inclined to use **ke
 </span><span class='line'>	<span class="k">print</span> <span class="n">k</span>
 </span></code></pre></td></tr></table></div></figure>
 
-But there is a better way, you use iterate over a dictionary it performs iteration over its keys, so you can do simply:
+But there is a better way. To iterate over keys in a dictionary you can simply do:
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -2823,7 +2823,7 @@ One way to create a dictionary is to assign values to it one-by-one:
 </span><span class='line'>	<span class="n">d</span><span class="p">[</span><span class="n">person</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">person</span>
 </span></code></pre></td></tr></table></div></figure>
 
-Instead you can use a dictionary comprehension to turn this into a one liner:
+Instead, you can use a dictionary comprehension to turn this into a one-liner:
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -2837,7 +2837,7 @@ Instead you can use a dictionary comprehension to turn this into a one liner:
 
 ## Use namedtuple
 
-If you need a struct like type you may just define a class with an **__init__** method and a bunch of fields:
+If you need a struct-like type you may just define a class with an **__init__** method and a bunch of fields:
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -2894,7 +2894,7 @@ If we need to count a number of times an element is encountered in a collection,
 </span><span class='line'>		<span class="n">d</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
 </span></code></pre></td></tr></table></div></figure>
 
-**collections** module provides a very handy class for this case which is called **defaultdict**. It's constructor accepts a function that will be used to calculate a value for a non-existing key:
+**collections** module provides a very handy class for this case which is called **defaultdict**. Its constructor accepts a function that will be used to calculate a value for a non-existing key:
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -2918,7 +2918,7 @@ To rewrite counting example we can pass the **int** function to **defaultdict** 
 </span><span class='line'>	<span class="n">d</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
 </span></code></pre></td></tr></table></div></figure>
 
-**defaultdict** is useful when you need to create any kind of grouping of items in a collection, but you just need to get count of elements you may use **Counter** class instead:
+**defaultdict** is useful when you need to create any kind of grouping of items in a collection, but you just need to get the count of elements you may use **Counter** class instead:
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>

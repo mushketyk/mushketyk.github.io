@@ -128,7 +128,7 @@
   </header>
 
 
-<div class="entry-content"><p>Significant portion of our time we as a developers spend writing code that manipulates basic data structures: traverse a list, create a map, filter elements in a collection. Therefore it is important to know how effectively do it in Python and make your code more readable and efficient.</p>
+<div class="entry-content"><p>A significant portion of our time we as developers spend writing code that manipulates basic data structures: traverse a list, create a map, filter elements in a collection. Therefore, it is important to know how effectively do it in Python and make your code more readable and efficient.</p>
 
 <!--more-->
 
@@ -256,7 +256,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>But Python supports sequence unpacking that lets us to extract values from a list to multiple variables:</p>
+<p>But Python supports sequence unpacking that lets us extract values from a list to multiple variables:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -311,7 +311,7 @@
 
 <h2>Use enumerate function</h2>
 
-<p>Sometimes you need to iterate over a list and keep track of a position of each element. Say, if you need to display a menu items in a shell you can simply use the <strong>range</strong> function:</p>
+<p>Sometimes you need to iterate over a list and keep track of a position of each element. Say, if you need to display menu items in a shell you can simply use the <strong>range</strong> function:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -324,7 +324,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>A better way to do it would be to use <a href="https://docs.python.org/2/library/functions.html#enumerate"><strong>enumerate</strong></a> function. It is a iterator that returns pairs each of which contains position of an element and the element itself:</p>
+<p>A better way to do it would be to use <a href="https://docs.python.org/2/library/functions.html#enumerate"><strong>enumerate</strong></a> function. It is an iterator that returns pairs each of which contains position of an element and the element itself:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -368,9 +368,9 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>But this is not the best way to do it. Since all we need to do to compare two instances of <strong>Person</strong> class is to compare values of their <strong>age</strong> field. Why should we write a complex compare function for this?</p>
+<p>But this is not the best way to do it. Since all, we need to do to compare two instances of <strong>Person</strong> class is to compare values of their <strong>age</strong> field. Why should we write a complex compare function for this?</p>
 
-<p>Specifically for this case <a href="https://docs.python.org/2/library/functions.html#sorted"><strong>sorted</strong></a> function accepts <strong>key</strong> function that is used to extract a key that will be used to compare two instances of an object:</p>
+<p>Specifically, for this case <a href="https://docs.python.org/2/library/functions.html#sorted"><strong>sorted</strong></a> function accepts <strong>key</strong> function that is used to extract a key that will be used to compare two instances of an object:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -383,7 +383,7 @@
 
 <h2>Use all/any functions</h2>
 
-<p>If you want to check if all or any value in a collection is True one way would be iterate over a list:</p>
+<p>If you want to check if all or any value in a collection is True one way would be to iterate over a list:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -400,7 +400,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>But Python already has <a href="https://docs.python.org/2/library/functions.html#all"><strong>all</strong></a>, <a href="https://docs.python.org/2/library/functions.html#any"><strong>any</strong></a> functions for that. <strong>all</strong> returns True if all values in an iterable passed to it are True, while <strong>any</strong> returns True if at least one of values passed to it is True:</p>
+<p>But Python already has <a href="https://docs.python.org/2/library/functions.html#all"><strong>all</strong></a>, <a href="https://docs.python.org/2/library/functions.html#any"><strong>any</strong></a> functions for that. <strong>all</strong> returns <strong>True</strong> if all values in an iterable passed to it are <strong>True</strong>, while <strong>any</strong> returns <strong>True</strong> if at least one of values passed to it is <strong>True</strong>:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -435,14 +435,14 @@
 
 <h2>Use slicing</h2>
 
-<p>You can take part of a list using a technique called slicing. Instead of providing a single index in a square brackets when accessing a list you can provide the following three values</p>
+<p>You can take part of a list using a technique called slicing. Instead of providing a single index in square brackets when accessing a list you can provide the following three values</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">lst</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">:</span><span class="n">step</span><span class="p">]</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>All of these parameters are optional and you can get different parts of a list if you omit some of them. If only start position is provided it will return all elements in a list starting from the specified index:</p>
+<p>All of these parameters are optional and you can get different parts of a list if you omit some of them. If only start position is provided it will return all elements in a list starting at the specified index:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -473,7 +473,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>By default step in slicing is equal to one which mean that all elements between start and end positions are returned. If you want to get only every second element or every third element you need to provide a step value:</p>
+<p>By default step in slicing is equal to one which means that all elements between start and end positions are returned. If you want to get only every second element or every third element you need to provide a step value:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -499,7 +499,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Solution here is to use <a href="https://docs.python.org/2/library/functions.html#xrange"><strong>xrange</strong></a> function. It immediately return an iterator instead of creating a list:</p>
+<p>The solution here is to use <a href="https://docs.python.org/2/library/functions.html#xrange"><strong>xrange</strong></a> function. It immediately returns an iterator instead of creating a list:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -516,7 +516,7 @@
 
 <h3>New in Python 3</h3>
 
-<p>In Python 3 <strong>xrange</strong> was removed and <strong>range</strong> function behaves like <strong>xrange</strong> in Python 2.x. If you need to iterate over an output of <strong>range</strong> in Python 3 multiple times you can convert its output in to a list:</p>
+<p>In Python 3 <strong>xrange</strong> was removed and <strong>range</strong> function behaves like <strong>xrange</strong> in Python 2.x. If you need to iterate over an output of <strong>range</strong> in Python 3 multiple times you can convert its output into a list:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -546,7 +546,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Instead we can use the <a href="https://docs.python.org/2/library/itertools.html#itertools.izip"><strong>izip</strong></a> function that would return a return an iterator instead of creating a new list:</p>
+<p>Instead, we can use the <a href="https://docs.python.org/2/library/itertools.html#itertools.izip"><strong>izip</strong></a> function that would return a return an iterator instead of creating a new list:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -607,7 +607,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>This is especially handy if you may need to process only part of the result collection to get a result, say to find a first element that match a certain condition.</p>
+<p>This is especially handy if you may need to process only part of the result collection to get a result, say to find a first element that matches a certain condition.</p>
 
 <h1>Use dictionaries idiomatically</h1>
 
@@ -624,7 +624,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>But there is a better way, you use iterate over a dictionary it performs iteration over its keys, so you can do simply:</p>
+<p>But there is a better way. To iterate over keys in a dictionary you can simply do:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -682,7 +682,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Instead you can use a dictionary comprehension to turn this into a one liner:</p>
+<p>Instead, you can use a dictionary comprehension to turn this into a one-liner:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -695,7 +695,7 @@
 
 <h2>Use namedtuple</h2>
 
-<p>If you need a struct like type you may just define a class with an <strong><strong>init</strong></strong> method and a bunch of fields:</p>
+<p>If you need a struct-like type you may just define a class with an <strong><strong>init</strong></strong> method and a bunch of fields:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -755,7 +755,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p><strong>collections</strong> module provides a very handy class for this case which is called <strong>defaultdict</strong>. It&rsquo;s constructor accepts a function that will be used to calculate a value for a non-existing key:</p>
+<p><strong>collections</strong> module provides a very handy class for this case which is called <strong>defaultdict</strong>. Its constructor accepts a function that will be used to calculate a value for a non-existing key:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -781,7 +781,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p><strong>defaultdict</strong> is useful when you need to create any kind of grouping of items in a collection, but you just need to get count of elements you may use <strong>Counter</strong> class instead:</p>
+<p><strong>defaultdict</strong> is useful when you need to create any kind of grouping of items in a collection, but you just need to get the count of elements you may use <strong>Counter</strong> class instead:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
