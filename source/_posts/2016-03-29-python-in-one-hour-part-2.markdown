@@ -5,7 +5,7 @@ date: 2016-03-29 08:56:28 +0100
 comments: true
 categories: [python]
 keywords: "tutorial, python, introduction"
-description:
+description: "Short Python tutorial for people familiar with programming"
 ---
 
 This is the second part of the "Python in 1 hour" tutorial. It will go into more advanced Python features that will help you to develop complex and robust applications.

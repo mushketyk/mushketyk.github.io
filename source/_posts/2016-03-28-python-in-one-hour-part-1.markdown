@@ -5,7 +5,7 @@ date: 2016-03-28 20:09:40 +0100
 comments: true
 categories: [python]
 keywords: "tutorial, python, introduction"
-description:
+description: "Short Python tutorial for people familiar with programming"
 ---
 
 This is a relatively short and concise article that will give you all that you need to know to start reading/writing Python code. It will start with defining a variable and will discuss types, data structures, if-else statements, loops, and functions.
@@ -792,6 +792,50 @@ If called with 3 arguments it will return values from **n** to **m-1** with a de
 
 Python also provides the **xrange** function that does not generate a list in advance but creates an iterator instead. Since creating an iterator is usually faster and occupies less space it's preferable to use **xrange** instead of **range**.
 
+If you want to iterate over a list of tuples with the same number of elements in each tuple instead of writing a code like this:
+
+```python
+>>> l = [(1, 10), (2, 20)]
+>>> for t in l:
+	print t[0]
+	print t[1]
+
+
+1
+10
+2
+20
+```
+
+You can unpack every tuple in the **for** statement:
+
+```python
+>>> for a, b in l:
+	print a
+	print b
+
+
+1
+10
+2
+20
+```
+
+This is especially useful when you work with dictionaries and want to iterate over keys and values:
+
+```python
+>>> d = {"k1": "v1", "k2": "v2"}
+>>> for k, v in d.iteritems():
+	print k
+	print v
+
+
+k2
+v2
+k1
+v1
+```
+
 ## Python 3
 
 In Python 3 there is no **xrange** function while **range** behaves exactly like **xrange** in Python 2.
@@ -864,6 +908,6 @@ SyntaxError: non-keyword arg after keyword arg
 
 # Conclusion
 
-This articles covered basics of Python and you should be ready to write your own code.
+This articles covered basics of Python and you should be ready to write your own code. If you want to read more about Python please read the second part of this [tutorial]({% post_url 2016-03-29-python-in-one-hour-part-2 %}).
 
 Please write your thoughts on this article in the comments section and share if you liked it.
