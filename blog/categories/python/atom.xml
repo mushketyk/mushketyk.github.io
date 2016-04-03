@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Python | Software Developer's diary]]></title>
   <link href="http://mushketyk.com/blog/categories/python/atom.xml" rel="self"/>
   <link href="http://mushketyk.com/"/>
-  <updated>2016-04-03T21:13:28+01:00</updated>
+  <updated>2016-04-03T21:52:59+01:00</updated>
   <id>http://mushketyk.com/</id>
   <author>
     <name><![CDATA[Ivan Mushketyk]]></name>
@@ -1932,6 +1932,76 @@ If called with 3 arguments it will return values from **n** to **m-1** with a de
 
 Python also provides the **xrange** function that does not generate a list in advance but creates an iterator instead. Since creating an iterator is usually faster and occupies less space it's preferable to use **xrange** instead of **range**.
 
+If you want to iterate over a list of tuples with the same number of elements in each tuple instead of writing a code like this:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">l</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">20</span><span class="p">)]</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">l</span><span class="p">:</span>
+</span><span class='line'>	<span class="k">print</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span><span class='line'>	<span class="k">print</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="mi">1</span>
+</span><span class='line'><span class="mi">10</span>
+</span><span class='line'><span class="mi">2</span>
+</span><span class='line'><span class="mi">20</span>
+</span></code></pre></td></tr></table></div></figure>
+
+You can unpack every tuple in the **for** statement:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">l</span><span class="p">:</span>
+</span><span class='line'>	<span class="k">print</span> <span class="n">a</span>
+</span><span class='line'>	<span class="k">print</span> <span class="n">b</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="mi">1</span>
+</span><span class='line'><span class="mi">10</span>
+</span><span class='line'><span class="mi">2</span>
+</span><span class='line'><span class="mi">20</span>
+</span></code></pre></td></tr></table></div></figure>
+
+This is especially useful when you work with dictionaries and want to iterate over keys and values:
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;k1&quot;</span><span class="p">:</span> <span class="s">&quot;v1&quot;</span><span class="p">,</span> <span class="s">&quot;k2&quot;</span><span class="p">:</span> <span class="s">&quot;v2&quot;</span><span class="p">}</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+</span><span class='line'>	<span class="k">print</span> <span class="n">k</span>
+</span><span class='line'>	<span class="k">print</span> <span class="n">v</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="n">k2</span>
+</span><span class='line'><span class="n">v2</span>
+</span><span class='line'><span class="n">k1</span>
+</span><span class='line'><span class="n">v1</span>
+</span></code></pre></td></tr></table></div></figure>
+
 ## Python 3
 
 In Python 3 there is no **xrange** function while **range** behaves exactly like **xrange** in Python 2.
@@ -2025,7 +2095,7 @@ The only restriction on key-value arguments is that key-value arguments should b
 
 # Conclusion
 
-This articles covered basics of Python and you should be ready to write your own code.
+This articles covered basics of Python and you should be ready to write your own code. If you want to read more about Python please read the second part of this [tutorial](/2016/03/29/python-in-one-hour-part-2/).
 
 Please write your thoughts on this article in the comments section and share if you liked it.
 ]]></content>
